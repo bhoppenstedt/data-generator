@@ -58,17 +58,14 @@ class  CosinusSignal(Resource):
     def put(self,signal_name):
         args = sinus_arguments.parse_args()
         running_signals[signal_name] = args
-        signal_name = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+        signal_name = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
         signal_name.sendPeriodicSinusSignal()
-
-
-
 
 
 
 api.add_resource(RandomSignal, '/api/random/<string:signal_name>/')
 api.add_resource(SinusSignal, '/api/sinus/<string:signal_name>/')
-
+api.add_resource(CosinusSignal, '/api/cosinus/<string:signal_name>/')
 
 @app.route("/api/")
 def root():
