@@ -61,7 +61,7 @@ class RandomSignal(Resource):
 
 
 class SinusSignal(Resource):
-    def post(self,signal_name):
+    def put(self,signal_name):
         args = sinus_arguments.parse_args()
 
         producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
@@ -82,7 +82,7 @@ class SinusSignal(Resource):
 
 
 class CosinusSignal(Resource):
-    def post(self,signal_name):
+    def put(self,signal_name):
         args = cosinus_arguments.parse_args()
 
         producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
@@ -100,7 +100,7 @@ class CosinusSignal(Resource):
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
-"""
+
 
 
 class  EmphasizedSignal(Resource):
@@ -113,13 +113,10 @@ class  EmphasizedSignal(Resource):
 
 
 
-
-api.add_resource(EmphasizedSignal, '/api/emphasized/<string:signal_name>/')
-
-"""
 api.add_resource(RandomSignal, '/api/random/<string:signal_name>/')
 api.add_resource(SinusSignal, '/api/sinus/<string:signal_name>/')
 api.add_resource(CosinusSignal, '/api/cosinus/<string:signal_name>/')
+api.add_resource(EmphasizedSignal, '/api/emphasized/<string:signal_name>/')
 
 @app.route("/api/")
 def root():
