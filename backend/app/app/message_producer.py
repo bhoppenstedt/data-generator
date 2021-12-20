@@ -43,6 +43,7 @@ class Sinus_signal_producer(object):
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         )  
+        self.running=True
         self.frequency=frequency
         self.amplitude=amplitude
         self.transmissionFrequency=transmissionFrequency   
@@ -56,12 +57,14 @@ class Sinus_signal_producer(object):
             amplitude (float): Die Amplitude des Signals
             transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
         """
-        while(True):
+        while(self.running):
             for i in range(0,360):
                 periodic_number= self.amplitude*math.sin(self.frequency*math.radians(i))
                 print(f"Sending number {periodic_number}")
                 self.producer.send('Periodic-Signal', value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
+                if(not self.running):
+                    break
     
                 
 
@@ -71,11 +74,12 @@ class Cosinus_signal_producer(object):
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         )  
+        self.running=True
         self.frequency=frequency
         self.amplitude=amplitude
         self.transmissionFrequency=transmissionFrequency   
 
-    def sendPeriodicSinusSignal(self):
+    def sendPeriodicCosinusSignal(self):
         """Es wird ein Sinus-Singal mit der übergebenen Frequenz und Amplitude erstellt und an das Kafka Topic "Periodic Signal" geschickt. 
         'transmissionFrequency' beschreibt die Übertragungsrate des Signals.
 
@@ -84,19 +88,22 @@ class Cosinus_signal_producer(object):
             amplitude (float): Die Amplitude des Signals
             transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
         """
-        while(True):
+        while(self.running):
             for i in range(0,360):
                 periodic_number= self.amplitude*math.cos(self.frequency*math.radians(i))
                 print(f"Sending number {periodic_number}")
                 self.producer.send('Periodic-Signal', value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
-
+                if(not self.running):
+                    break
+                
 class Emphasized_signal_producer(object):
 
     def __init__(self,center,scale,transmissionFrequency):
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         ) 
+        self.running=True
         self.center=center
         self.scale=scale
         self.transmissionFrequency=transmissionFrequency
@@ -110,7 +117,7 @@ class Emphasized_signal_producer(object):
             scale (float): Die Standardabweichung der Normalverteilung
             transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
         """    
-        while(True):
+        while(self.running):
             data = normal(loc=self.center, scale=self.scale, size=200)
             for i in data:
                 emphasizedNumber = i
@@ -124,6 +131,7 @@ class Spiked_signal_producer(object):
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         ) 
+        self.running=True
         self.base=base
         self.distance=distance
         self.propability=propability
@@ -142,7 +150,7 @@ class Spiked_signal_producer(object):
             transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
         """    
         i=0
-        while(True):
+        while(self.running):
             if i % self.distance == 0 and random.random() <= self.propability:
                 spiked_number = self.base + self.size
                 print(f"Sending number {spiked_number}")
@@ -154,12 +162,4 @@ class Spiked_signal_producer(object):
             i=i+1
     
 
-       
-        
-
-#sendSpikedSignal(4,0.8,3.5,100)
-#sendEmphasisedRandomSinal(100,8)
-#sendPeriodicSinusSignal(5,30,.2)
-#sendRandomSignal(1,100000,1)
-        
 
