@@ -108,7 +108,7 @@ class Emphasized_signal_producer(object):
         self.scale=scale
         self.transmissionFrequency=transmissionFrequency
 
-    def sendEmphasizedRandomSinal(self):
+    def sendEmphasizedRandomSignal(self):
         """Es wird ein Signal, das einer Normalverteilung mit dem Erwartungswert 'center' und der Standardabweichung 'scale' folgt erstellt und an das Kafka Topic "Emphasised Signal"
         geschickt. 'transmissionFrequency' beschreibt die Übertragungsrate des Signals.
 
@@ -124,6 +124,8 @@ class Emphasized_signal_producer(object):
                 print(f"Sending number {emphasizedNumber}")
                 self.producer.send('Emphasized-Signal', value=serialize(emphasizedNumber))
                 sleep(self.transmissionFrequency)
+                if(not self.running):
+                    break
 
 class Spiked_signal_producer(object):
 

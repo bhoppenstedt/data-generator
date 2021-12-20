@@ -104,11 +104,24 @@ class CosinusSignal(Resource):
 
 
 class  EmphasizedSignal(Resource):
-    def post(self,signal_name):
+    def put(self,signal_name):
         args = emphasized_arguments.parse_args()
-        running_signals[signal_name] = args
-        signal_name = Emphasized_signal_producer(args["center"],args["scale"],args["transmissionFrequency"])
-        signal_name.sendEmphasizedRandomSinal()
+        print (args)
+        producer = Emphasized_signal_producer(args["center"],args["scale"],args["transmissionFrequency"])
+
+        running_signal_objects[signal_name] = producer
+
+        producer.sendEmphasizedRandomSignal()
+    def patch(self,signal_name):
+    
+        running_signal_objects[signal_name].running = not running_signal_objects[signal_name].running
+    
+        running_signal_objects[signal_name].sendEmphasizedRandomSignal()
+
+    def delete(self,signal_name):
+        running_signal_objects[signal_name].running = False 
+
+        del running_signal_objects[signal_name]
 
 
 
