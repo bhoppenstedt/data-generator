@@ -106,7 +106,7 @@ class CosinusSignal(Resource):
 class  EmphasizedSignal(Resource):
     def put(self,signal_name):
         args = emphasized_arguments.parse_args()
-        print (args)
+        
         producer = Emphasized_signal_producer(args["center"],args["scale"],args["transmissionFrequency"])
 
         running_signal_objects[signal_name] = producer
@@ -123,6 +123,26 @@ class  EmphasizedSignal(Resource):
 
         del running_signal_objects[signal_name]
 
+class  SpikedSignal(Resource):
+    def put(self,signal_name):
+        args = spiked_arguments.parse_args()
+
+        producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"], args["size"],args["transmissionFrequency"])
+
+        running_signal_objects[signal_name] = producer
+
+        producer.sendSpikedSignal()
+    def patch(self,signal_name):
+    
+        running_signal_objects[signal_name].running = not running_signal_objects[signal_name].running
+    
+        running_signal_objects[signal_name].sendSpikedSignal()
+
+    def delete(self,signal_name):
+        running_signal_objects[signal_name].running = False 
+
+        del running_signal_objects[signal_name]
+
 
 
 
@@ -130,6 +150,7 @@ api.add_resource(RandomSignal, '/api/random/<string:signal_name>/')
 api.add_resource(SinusSignal, '/api/sinus/<string:signal_name>/')
 api.add_resource(CosinusSignal, '/api/cosinus/<string:signal_name>/')
 api.add_resource(EmphasizedSignal, '/api/emphasized/<string:signal_name>/')
+api.add_resource(SpikedSignal, '/api/spiked/<string:signal_name>/')
 
 @app.route("/api/")
 def root():
