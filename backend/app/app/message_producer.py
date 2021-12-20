@@ -14,7 +14,8 @@ class Random_signal_producer(object):
     def __init__(self,lowerBoundary,upperBoundary,transmissionFrequency): 
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
-        )  
+        ) 
+        self.running=True
         self.lowerBoundary=lowerBoundary
         self.upperBoundary=upperBoundary
         self.transmissionFrequency=transmissionFrequency
@@ -29,7 +30,7 @@ class Random_signal_producer(object):
             upperBoundary (int): Die obere Grenze des Signals
             transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
         """
-        while(True):
+        while(self.running):
             random_number= int(random.randint(self.lowerBoundary,self.upperBoundary))
             print(f"Sending number {random_number}")
             self.producer.send('Random-Signal', value = serialize((random_number)))
@@ -61,6 +62,7 @@ class Sinus_signal_producer(object):
                 print(f"Sending number {periodic_number}")
                 self.producer.send('Periodic-Signal', value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
+    
                 
 
 class Cosinus_signal_producer(object): 
@@ -111,9 +113,9 @@ class Emphasized_signal_producer(object):
         while(True):
             data = normal(loc=self.center, scale=self.scale, size=200)
             for i in data:
-                emphasisedNumber = i
-                print(f"Sending number {emphasisedNumber}")
-                self.producer.send('Emphasized-Signal', value=serialize(emphasisedNumber))
+                emphasizedNumber = i
+                print(f"Sending number {emphasizedNumber}")
+                self.producer.send('Emphasized-Signal', value=serialize(emphasizedNumber))
                 sleep(self.transmissionFrequency)
 
 class Spiked_signal_producer(object):

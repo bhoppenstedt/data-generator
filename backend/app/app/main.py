@@ -9,7 +9,8 @@ app = Flask(__name__)
 api = Api(app)
 
 
-running_signals={}
+running_signal_objects={}
+
 
 random_arguments = reqparse.RequestParser()
 random_arguments.add_argument("lowerBoundary", type = int)
@@ -40,32 +41,54 @@ spiked_arguments.add_argument("size", type = float)
 spiked_arguments.add_argument("transmissionFrequency", type = float)
 
 class RandomSignal(Resource):
-    def put(self,signal_name):
+    def post(self,signal_name):
         args = random_arguments.parse_args()
-        running_signals[signal_name] = args
-        signal_name = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
-        signal_name.sendRandomSignal()
-    
 
+        producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+
+        running_signal_objects[signal_name] = producer
+
+        producer.sendRandomSignal()
+    def patch(self,signal_name):
+        running_signal_objects[signal_name].running = not running_signal_objects[signal_name].running
+        running_signal_objects[signal_name].sendRandomSignal()
+    def delete(self,signal_name):
+        running_signal_objects[signal_name].running = False 
+        del running_signal_objects[signal_name]
+
+
+"""
 class SinusSignal(Resource):
-    def put(self,signal_name):
+    def post(self,signal_name):
         args = sinus_arguments.parse_args()
         running_signals[signal_name] = args
         signal_name = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
         signal_name.sendPeriodicSinusSignal()
 
 class  CosinusSignal(Resource):
-    def put(self,signal_name):
-        args = sinus_arguments.parse_args()
+    def post(self,signal_name):
+        args = cosinus_arguments.parse_args()
         running_signals[signal_name] = args
         signal_name = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
         signal_name.sendPeriodicSinusSignal()
 
 
+class  EmphasizedSignal(Resource):
+    def post(self,signal_name):
+        args = emphasized_arguments.parse_args()
+        running_signals[signal_name] = args
+        signal_name = Emphasized_signal_producer(args["center"],args["scale"],args["transmissionFrequency"])
+        signal_name.sendEmphasizedRandomSinal()
 
-api.add_resource(RandomSignal, '/api/random/<string:signal_name>/')
+
+
+
 api.add_resource(SinusSignal, '/api/sinus/<string:signal_name>/')
 api.add_resource(CosinusSignal, '/api/cosinus/<string:signal_name>/')
+api.add_resource(EmphasizedSignal, '/api/emphasized/<string:signal_name>/')
+
+"""
+api.add_resource(RandomSignal, '/api/random/<string:signal_name>/')
 
 @app.route("/api/")
 def root():

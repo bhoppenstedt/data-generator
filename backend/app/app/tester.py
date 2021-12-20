@@ -1,5 +1,7 @@
 import requests
+from time import sleep
 
-BASE = "http://localhost/api/sinus/"
-#requests.put(BASE + "kevin/", {"lowerBoundary": 1, "upperBoundary": 90, "transmissionFrequency":1})
-requests.put(BASE + "kevin/", {"frequency": 5, "amplitude": 90, "transmissionFrequency":1})
+BASE = "http://localhost/api/"
+requests.post(BASE + "random/test/", {"lowerBoundary": 1, "upperBoundary": 90, "transmissionFrequency":1})
+#sleep(2)
+#requests.post(BASE + "emphasized/test2/", {"center": 5, "scale": 2, "transmissionFrequency":1})
