@@ -10,6 +10,7 @@ api = Api(app)
 
 
 running_signal_objects={}
+running_signal_args={}
 
 
 random_arguments = reqparse.RequestParser()
@@ -47,16 +48,19 @@ class RandomSignal(Resource):
         producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
         running_signal_objects[signal_name] = producer
+        running_signal_args[signal_name] = args
 
-        producer.sendRandomSignal()
+        return True
     def patch(self,signal_name):
-        running_signal_objects[signal_name].running = not running_signal_objects[signal_name].running
-
-        running_signal_objects[signal_name].sendRandomSignal()
+        running_signal_objects[signal_name].patch()
+        return True
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
+        del running_signal_args[signal_name]
+
+        return running_signal_args
 
 
 
@@ -67,18 +71,19 @@ class SinusSignal(Resource):
         producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
 
         running_signal_objects[signal_name] = producer
+        running_signal_args[signal_name] = args
 
-        producer.sendPeriodicSinusSignal()
+        return True
     def patch(self,signal_name):
-    
-        running_signal_objects[signal_name].running = not running_signal_objects[signal_name].running
-    
-        running_signal_objects[signal_name].sendPeriodicSinusSignal()
-
+        running_signal_objects[signal_name].patch()
+        return True
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
+        del running_signal_args[signal_name]
+
+        return running_signal_args
 
 
 class CosinusSignal(Resource):
@@ -88,18 +93,21 @@ class CosinusSignal(Resource):
         producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
 
         running_signal_objects[signal_name] = producer
+        running_signal_args[signal_name] = args
 
-        producer.sendPeriodicCosinusSignal()
+        return True
     def patch(self,signal_name):
-    
-        running_signal_objects[signal_name].running = not running_signal_objects[signal_name].running
-    
-        running_signal_objects[signal_name].sendPeriodicCosinusSignal()
+        running_signal_objects[signal_name].patch()
 
+        return True
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
+        del running_signal_args[signal_name]
+
+        return running_signal_args
+
 
 
 
@@ -110,18 +118,20 @@ class  EmphasizedSignal(Resource):
         producer = Emphasized_signal_producer(args["center"],args["scale"],args["transmissionFrequency"])
 
         running_signal_objects[signal_name] = producer
+        running_signal_args[signal_name] = args
 
-        producer.sendEmphasizedRandomSignal()
+        return True
     def patch(self,signal_name):
-    
-        running_signal_objects[signal_name].running = not running_signal_objects[signal_name].running
-    
-        running_signal_objects[signal_name].sendEmphasizedRandomSignal()
+        running_signal_objects[signal_name].patch()
 
+        return True
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
+        del running_signal_args[signal_name]
+
+        return running_signal_args
 
 class  SpikedSignal(Resource):
     def put(self,signal_name):
@@ -130,20 +140,27 @@ class  SpikedSignal(Resource):
         producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"], args["size"],args["transmissionFrequency"])
 
         running_signal_objects[signal_name] = producer
+        running_signal_args[signal_name] = args
 
-        producer.sendSpikedSignal()
+        return True
     def patch(self,signal_name):
-    
-        running_signal_objects[signal_name].running = not running_signal_objects[signal_name].running
-    
-        running_signal_objects[signal_name].sendSpikedSignal()
+        running_signal_objects[signal_name].patch()
 
+        return True
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
+        del running_signal_args[signal_name]
+
+        return running_signal_args
+
+class GetAllSignals(Resource):
+    def get(self):
+        return running_signal_args
 
 
+api.add_resource(GetAllSignals, '/api/signals/')
 api.add_resource(RandomSignal, '/api/random/<string:signal_name>/')
 api.add_resource(SinusSignal, '/api/sinus/<string:signal_name>/')
 api.add_resource(CosinusSignal, '/api/cosinus/<string:signal_name>/')

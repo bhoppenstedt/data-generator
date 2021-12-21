@@ -15,10 +15,15 @@ class Random_signal_producer(object):
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         ) 
-        self.running=True
+        self.running=False
         self.lowerBoundary=lowerBoundary
         self.upperBoundary=upperBoundary
         self.transmissionFrequency=transmissionFrequency
+    
+    def patch(self):
+        self.running= not self.running
+        self.sendRandomSignal()
+        return True
 
 
     def sendRandomSignal(self):
@@ -43,13 +48,18 @@ class Sinus_signal_producer(object):
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         )  
-        self.running=True
+        self.running=False
         self.frequency=frequency
         self.amplitude=amplitude
         self.transmissionFrequency=transmissionFrequency   
 
-    def sendPeriodicSinusSignal(self):
-        """Es wird ein Sinus-Singal mit der übergebenen Frequenz und Amplitude erstellt und an das Kafka Topic "Periodic Signal" geschickt. 
+    def patch(self):
+        self.running= not self.running
+        self.sendSinusSignal()
+        return True
+
+    def sendSinusSignal(self):
+        """Es wird ein Sinus-Singal mit der übergebenen Frequenz und Amplitude erstellt und an das Kafka Topic "Sinus Signal" geschickt. 
         'transmissionFrequency' beschreibt die Übertragungsrate des Signals.
 
         Args:
@@ -74,12 +84,17 @@ class Cosinus_signal_producer(object):
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         )  
-        self.running=True
+        self.running=False
         self.frequency=frequency
         self.amplitude=amplitude
         self.transmissionFrequency=transmissionFrequency   
 
-    def sendPeriodicCosinusSignal(self):
+    def patch(self):
+        self.running= not self.running
+        self.sendCosinusSignal()
+        return True
+
+    def sendCosinusSignal(self):
         """Es wird ein Sinus-Singal mit der übergebenen Frequenz und Amplitude erstellt und an das Kafka Topic "Periodic Signal" geschickt. 
         'transmissionFrequency' beschreibt die Übertragungsrate des Signals.
 
@@ -103,10 +118,15 @@ class Emphasized_signal_producer(object):
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         ) 
-        self.running=True
+        self.running=False
         self.center=center
         self.scale=scale
         self.transmissionFrequency=transmissionFrequency
+
+    def patch(self):
+        self.running= not self.running
+        self.sendEmphasizedRandomSignal()
+        return True
 
     def sendEmphasizedRandomSignal(self):
         """Es wird ein Signal, das einer Normalverteilung mit dem Erwartungswert 'center' und der Standardabweichung 'scale' folgt erstellt und an das Kafka Topic "Emphasised Signal"
@@ -133,12 +153,17 @@ class Spiked_signal_producer(object):
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         ) 
-        self.running=True
+        self.running=False
         self.base=base
         self.distance=distance
         self.propability=propability
         self.size=size
         self.transmissionFrequency=transmissionFrequency
+    
+    def patch(self):
+        self.running= not self.running
+        self.sendSpikedSignal()
+        return True
 
     def sendSpikedSignal(self):
         """Es wird ein Signal mit der Basis 'base' erstellt, welches in Abständen 'distance' mit der Wahrscheinlichkeit 'propablity' einen Spike der Größe 'size' besitzt.
