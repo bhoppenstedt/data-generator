@@ -48,7 +48,7 @@ class RandomSignal(Resource):
 
         running_signal_objects[signal_name] = producer
 
-        producer.start()
+        producer.sendRandomSignal()
     def patch(self,signal_name):
         running_signal_objects[signal_name].running = not running_signal_objects[signal_name].running
 
@@ -142,8 +142,6 @@ class  SpikedSignal(Resource):
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
-
-
 
 
 api.add_resource(RandomSignal, '/api/random/<string:signal_name>/')

@@ -16,5 +16,5 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: localhost
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CREATE_TOPICS: "Random-Signal:1:1,Periodic-Signal:1:1,Emphasised-Signal:1:1,Spiked-Signal:1:1"
+      KAFKA_CREATE_TOPICS: "Random-Signal:1:1,Sinus-Signal:1:1,Cosinus-Signal:1:1,Emphasised-Signal:1:1,Spiked-Signal:1:1"
       

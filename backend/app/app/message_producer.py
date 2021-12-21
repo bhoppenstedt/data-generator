@@ -61,7 +61,7 @@ class Sinus_signal_producer(object):
             for i in range(0,360):
                 periodic_number= self.amplitude*math.sin(self.frequency*math.radians(i))
                 print(f"Sending number {periodic_number}")
-                self.producer.send('Periodic-Signal', value=serialize(periodic_number))
+                self.producer.send('Sinus-Signal', value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
                 if(not self.running):
                     break
@@ -92,7 +92,7 @@ class Cosinus_signal_producer(object):
             for i in range(0,360):
                 periodic_number= self.amplitude*math.cos(self.frequency*math.radians(i))
                 print(f"Sending number {periodic_number}")
-                self.producer.send('Periodic-Signal', value=serialize(periodic_number))
+                self.producer.send('Cosinus-Signal', value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
                 if(not self.running):
                     break
