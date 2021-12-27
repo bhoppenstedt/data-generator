@@ -54,6 +54,7 @@ class RandomSignal(Resource):
     def patch(self,signal_name):
         running_signal_objects[signal_name].patch()
         return True
+
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
@@ -77,6 +78,7 @@ class SinusSignal(Resource):
     def patch(self,signal_name):
         running_signal_objects[signal_name].patch()
         return True
+
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
@@ -98,8 +100,8 @@ class CosinusSignal(Resource):
         return True
     def patch(self,signal_name):
         running_signal_objects[signal_name].patch()
-
         return True
+
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
@@ -123,8 +125,8 @@ class  EmphasizedSignal(Resource):
         return True
     def patch(self,signal_name):
         running_signal_objects[signal_name].patch()
-
         return True
+
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
@@ -145,8 +147,8 @@ class  SpikedSignal(Resource):
         return True
     def patch(self,signal_name):
         running_signal_objects[signal_name].patch()
-
         return True
+        
     def delete(self,signal_name):
         running_signal_objects[signal_name].running = False 
 
