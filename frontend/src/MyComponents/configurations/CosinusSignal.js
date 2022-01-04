@@ -1,53 +1,47 @@
 import React from 'react'
 import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
-import Stack from "@mui/material/Stack";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import { Link as RouterLink, MemoryRouter as Router } from "react-router-dom";
-import Link from "@mui/material/Link";
-import Box1 from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import CasinoOutlinedIcon from "@mui/icons-material/CasinoOutlined";
-import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
-import AutoGraphOutlinedIcon from "@mui/icons-material/AutoGraphOutlined";
-import { deepPurple, lightBlue } from "@mui/material/colors";
+import { purple } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
-
 import Divider from '@mui/material/Divider';
 import { NumberFormatCustom } from "../NumberFormatCustom";
+
+const commonStyles = {
+  bgcolor: 'background.paper',
+  m: 1,
+  border: 1,
+  width: '5rem',
+  height: '5rem',
+};
 
 export const CosinusSignal = (props) => {
     return (
         <Grid
             container
-            spacing={10}
-            direction="column"
-            sx={{ mx: -20, my: -50, pt: -20 }}
-            alignItems="center"
-            justifyContent="center"
           >
-            <Box sx={{ mx: 30, my: 10, pt: -40, minWidth: 200 }}>
-              <Grid container style={{ height: "30vh" }} spacing={10}>
-                <Card sx={{ mx: -30, my: -16, height: 644, minWidth: 350, bgcolor: lightBlue[50]}}>
+             <Box sx={{minWidth: 200, pt:3}}>
+              <Grid container style={{ height: "30vh" }}>
+             <Typography
+                    component="div"
+                    variant="h5"
+                    sx={{ color: purple[900], mx: 5, my:2 }}
+                  >
+                    Signal configuration
+                  </Typography> 
+                <Card variant="outlined" sx={{ height: 670, minWidth: 350,mx:-10,commonStyles, borderColor: 'secondary.main'}}>
+          
                   <Typography
                     component="div"
                     variant="h5"
-                    sx={{ color: lightBlue[700], mx: 10, my: 5 }}
+                    sx={{ color:purple[900], mx: 5, my: 3 }}
                   >
                   Cosinus Signal
                   </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{ my: 10, mx: 5, pt: 1, minWidth: 200 }}
+                    sx={{ my: 2, mx: 5, pt: 1, minWidth: 300 }}
                     label="Frequence"
                     value={props.numberformat}
                     onChange={props.handleChange}
@@ -59,7 +53,7 @@ export const CosinusSignal = (props) => {
                   />
                   <TextField
                     variant="outlined"
-                    sx={{ my: 1, mx: 5, pt: 1, minWidth: 200 }}
+                    sx={{ my: 4, mx: 5, pt: 1, minWidth: 300 }}
                     label="Amplitude"
                     value={props.numberformat}
                     onChange={props.handleChange}
@@ -71,7 +65,7 @@ export const CosinusSignal = (props) => {
                   />
                   <TextField
                     variant="outlined"
-                    sx={{ m: -15, mx: -32, my: 20, pt: 1, minWidth: 200 }}
+                    sx={{ m: -15, mx: -42.5, my: 18, pt: 1, minWidth: 300 }}
                     label="Transmission frequency"
                     value={props.numberformat}
                     onChange={props.handleChange}
@@ -82,9 +76,9 @@ export const CosinusSignal = (props) => {
                     }}
                   />
                 </Card>
-                <Grid item xs={1}></Grid>
+              
               </Grid>
-            </Box>{" "}
+            </Box>
           </Grid>
     )
 }

@@ -2,25 +2,12 @@ import * as React from "react";
 import ReactDOM from "react-dom";
 import logo from "./logo.svg";
 import "./App.css";
-import {Card,Grid,Button,Autocomplete,Positions,Paper,} from "@mui/material";
-import { ButtonUnstyled } from "@mui/core/ButtonUnstyled";
-import TextField from "@mui/material/TextField";
-import Stack from "@mui/material/Stack";
-import { styled } from "@mui/material/styles";
+import {Card,Grid,Button,Autocomplete,Positions,Paper, Container,Grow} from "@mui/material";
 import Header from "./MyComponents/Header";
 import { Footer } from "./MyComponents/Footer";
 import { Middle } from "./MyComponents/Middle";
 import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Signal from "./MyComponents/Signal";
-import Routing from "./MyComponents/Header";
-import { Link as RouterLink, MemoryRouter as Router } from 'react-router-dom';
-import Link from '@mui/material/Link';
-import Box1 from '@mui/material/Box';
-import Uppermid from "./MyComponents/Uppermid";
+
 
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
@@ -29,11 +16,25 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 function App() {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
- 
-
   return (
+      <Grid
+      container
+      >
+        <Grid item xs ={12}>
+        <Header title="Data generator" colorMode={colorMode} theme={theme} />
+        </Grid>
+        <Grid item xs ={7}>
+          <Middle/>
+        </Grid>
+        <Grid item xs ={5}>
+        <Footer/>
+        </Grid>
+      </Grid>
+  );
+
+  /*return (
      <>
-<Paper>
+<Paper variant="outlined" >
     <Header title="Data generator" colorMode={colorMode} theme={theme} />
   
 
@@ -52,6 +53,7 @@ function App() {
 </Paper>
   </>
   );
+}*/
 }
 export default function App1() {
   const [mode, setMode] = React.useState("light");

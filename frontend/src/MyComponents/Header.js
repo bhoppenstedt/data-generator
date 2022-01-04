@@ -3,12 +3,10 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { useTheme, ThemeProvider, createTheme } from "@mui/material/styles";
+import { useTheme} from "@mui/material/styles";
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -17,7 +15,7 @@ export default function Header(props) {
   const colorMode = React.useContext(ColorModeContext);
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',}}>
+      <AppBar position="static" sx={{background: 'linear-gradient(45deg, #90BDFB 30%, #A1A5F9 90%)',}}>
         <Toolbar>
           <IconButton
             size="large"
@@ -28,7 +26,7 @@ export default function Header(props) {
           >
             
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ mx:50,flexGrow: 1 }}>
             Datastream Generator
           </Typography>
           <IconButton
@@ -46,31 +44,5 @@ export default function Header(props) {
         </Toolbar>
       </AppBar>
     </Box>
-    /*<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">{props.title}</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Register</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Login</a>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
-*/
   );
 }

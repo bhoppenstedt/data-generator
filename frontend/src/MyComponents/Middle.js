@@ -2,26 +2,16 @@ import React, { useEffect, useState } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
-import { Grid } from "@mui/material";
+import { Grid, Card } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import { Link as RouterLink, MemoryRouter as Router } from "react-router-dom";
-import Link from "@mui/material/Link";
-import Box1 from "@mui/material/Box";
 import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import CasinoOutlinedIcon from "@mui/icons-material/CasinoOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import AutoGraphOutlinedIcon from "@mui/icons-material/AutoGraphOutlined";
-import { deepPurple, lightBlue } from "@mui/material/colors";
+import { deepPurple, lightBlue, purple } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
-
 import Divider from '@mui/material/Divider';
 import { SignalButton } from "./SignalButton";
 import { RandomSignal } from "./configurations/RandomSignal";
@@ -51,8 +41,13 @@ const Item = styled(Paper)(({ theme }) => ({
   </Box>
 );
 */
-
-
+const commonStyles = {
+  bgcolor: 'background.paper',
+  m: 1,
+  border: 1,
+  width: '5rem',
+  height: '5rem',
+};
 
 
 export function Middle() {
@@ -203,43 +198,51 @@ export function Middle() {
   );
   */
   return (
-    <div>
-    <Box sx={{ mx: 60, my: -35, pt: -40, minWidth: 200, color: lightBlue[700]}} fixed>
-        <Stack
-          container
-          sx={{ mx: -50, my: -10, pt: 20 }}
-          spacing={2}
-          direction="column"
-          alignItems="flex-start"
-          justifyContent="flex-start"
-        >
-          <Typography>
-          Signal Type</Typography>
+    <Card variant= "outlined" sx={{height: 770,minWidth: 150,my:2,mx:2, commonStyles, borderColor: 'secondary.main'}}>
+    <Grid container>
+      <Grid item xs={6}>
+        <Box sx={{minWidth: 200, color: purple[900],mx:4}} >
+          <Stack
+            container
+            sx={{}}
+            spacing={2}
+            direction="column"
+            alignItems="flex-start"
+            justifyContent="flex-start"
+          >
+            <Typography component="div"
+                      variant="h5"
+                      sx={{ color: purple[900], mx: 5, my: 3 }}>
+            Signal Type</Typography>
 
-          <SignalButton name={"Random signal"} onClick={() => setConfig(setShowRS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 50, color: lightBlue[700] }} />}/>
+            <SignalButton name={"Random signal"} onClick={() => setConfig(setShowRS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 50, color: purple[900] }} />}/>
 
-          <SignalButton name={"Sinus Signal"} onClick={() => setConfig(setShowSS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 50, color: lightBlue[700] }} />}/>
+            <SignalButton name={"Sinus Signal"} onClick={() => setConfig(setShowSS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 50, color: purple[900] }} />}/>
 
-          <SignalButton name={"Cosinus Signal"} onClick={() => setConfig(setShowCS)} icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50, color: lightBlue[700] }}/>}/>
+            <SignalButton name={"Cosinus Signal"} onClick={() => setConfig(setShowCS)} icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50, color: purple[900]}}/>}/>
 
-          <SignalButton name={"Signal with spikes"} onClick={() => setConfig(setShowSWS)} icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50, color: lightBlue[700] }} />}/>
+            <SignalButton name={"Signal with spikes"} onClick={() => setConfig(setShowSWS)} icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50, color: purple[900]}} />}/>
 
-          <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS)} icon={<TimelineOutlinedIcon sx={{ fontSize: 50, color: lightBlue[700] }} />}/>
+            <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS)} icon={<TimelineOutlinedIcon sx={{ fontSize: 50, color: purple[900] }} />}/>
 
 
-        </Stack>
-
-      <Box sx={{ mx: 40, my: -65, pt: -40, minWidth: 200 }} variant="outlined">
+          </Stack>
+        </Box>
         
-        {showrs ? (<RandomSignal handleChange={handleChange} numberformat={value.numberformat}/>)
-        : showss ? <SinusSignal handleChange={handleChange} numberformat={value.numberformat}/>
-        : showcs ? <CosinusSignal handleChange={handleChange} numberformat={value.numberformat}/>
-        : showsws ? <SpikesSignal handleChange={handleChange} numberformat={value.numberformat}/>
-        : showns ? <NormallyDistributed handleChange={handleChange} numberformat={value.numberformat}/>
-        : null }
-
-      </Box>
-    </Box>
-    </div>
+      </Grid>
+      <Grid item xs={6}>
+        <Box sx={{ minWidth: 200, mx:7 }} variant="outlined">
+            
+            {showrs ? (<RandomSignal handleChange={handleChange} numberformat={value.numberformat}/>)
+            : showss ? <SinusSignal handleChange={handleChange} numberformat={value.numberformat}/>
+            : showcs ? <CosinusSignal handleChange={handleChange} numberformat={value.numberformat}/>
+            : showsws ? <SpikesSignal handleChange={handleChange} numberformat={value.numberformat}/>
+            : showns ? <NormallyDistributed handleChange={handleChange} numberformat={value.numberformat}/>
+            : null }
+            
+          </Box> 
+      </Grid>
+    </Grid>
+    </Card>
   );
 }
