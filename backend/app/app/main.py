@@ -48,6 +48,7 @@ class RandomSignal(Resource):
              return "Signal name already in use"
 
         args = random_arguments.parse_args()
+        args["type"] = "random_signal"
 
         producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
@@ -76,6 +77,7 @@ class SinusSignal(Resource):
              return "Signal name already in use"
 
         args = sinus_arguments.parse_args()
+        args["type"] = "sinus_signal"
 
         producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
 
@@ -103,6 +105,7 @@ class CosinusSignal(Resource):
              return "Signal name already in use"
 
         args = cosinus_arguments.parse_args()
+        args["type"] = "cosinus_signal"
 
         producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
 
@@ -132,6 +135,7 @@ class  EmphasizedSignal(Resource):
              return "Signal name already in use"
 
         args = emphasized_arguments.parse_args()
+        args["type"] = "emphasized_signal"
         
         producer = Emphasized_signal_producer(args["center"],args["scale"],args["transmissionFrequency"])
 
@@ -156,8 +160,9 @@ class  SpikedSignal(Resource):
 
         if signal_name in running_signal_args:
              return "Signal name already in use"
-             
+
         args = spiked_arguments.parse_args()
+        args["type"] = "spiked_signal"
 
         producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"], args["size"],args["transmissionFrequency"])
 
