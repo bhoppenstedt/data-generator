@@ -14,32 +14,32 @@ running_signal_args={}
 
 
 random_arguments = reqparse.RequestParser()
-random_arguments.add_argument("lowerBoundary", type = int)
-random_arguments.add_argument("upperBoundary", type = int)
-random_arguments.add_argument("transmissionFrequency", type = float)
+random_arguments.add_argument("lowerBoundary", type = int, required=True)
+random_arguments.add_argument("upperBoundary", type = int, required=True)
+random_arguments.add_argument("transmissionFrequency", type = float, required=True)
 
 sinus_arguments = reqparse.RequestParser()
-sinus_arguments.add_argument("frequency", type = float)
-sinus_arguments.add_argument("amplitude", type = float)
-sinus_arguments.add_argument("transmissionFrequency", type = float)
+sinus_arguments.add_argument("frequency", type = float, required=True)
+sinus_arguments.add_argument("amplitude", type = float, required=True)
+sinus_arguments.add_argument("transmissionFrequency", type = float, required=True)
 
 cosinus_arguments = reqparse.RequestParser()
-cosinus_arguments.add_argument("frequency", type = float)
-cosinus_arguments.add_argument("amplitude", type = float)
-cosinus_arguments.add_argument("transmissionFrequency", type = float)
+cosinus_arguments.add_argument("frequency", type = float, required=True)
+cosinus_arguments.add_argument("amplitude", type = float, required=True)
+cosinus_arguments.add_argument("transmissionFrequency", type = float, required=True)
 
 
 emphasized_arguments = reqparse.RequestParser()
-emphasized_arguments.add_argument("center", type = float)
-emphasized_arguments.add_argument("scale", type = float)
-emphasized_arguments.add_argument("transmissionFrequency", type = float)
+emphasized_arguments.add_argument("center", type = float, required=True)
+emphasized_arguments.add_argument("scale", type = float, required=True)
+emphasized_arguments.add_argument("transmissionFrequency", type = float, required=True)
 
 spiked_arguments = reqparse.RequestParser()
-spiked_arguments.add_argument("base", type = float)
-spiked_arguments.add_argument("distance", type = float)
-spiked_arguments.add_argument("propability", type = float)
-spiked_arguments.add_argument("size", type = float)
-spiked_arguments.add_argument("transmissionFrequency", type = float)
+spiked_arguments.add_argument("base", type = float, required=True)
+spiked_arguments.add_argument("distance", type = float, required=True)
+spiked_arguments.add_argument("propability", type = float, required=True)
+spiked_arguments.add_argument("size", type = float, required=True)
+spiked_arguments.add_argument("transmissionFrequency", type = float, required=True)
 
 class RandomSignal(Resource):
     def put(self,signal_name):
