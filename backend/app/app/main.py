@@ -49,6 +49,7 @@ class RandomSignal(Resource):
 
         args = random_arguments.parse_args()
         args["type"] = "random_signal"
+        args["running"] = False
 
         producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
@@ -57,6 +58,7 @@ class RandomSignal(Resource):
 
         return True
     def patch(self,signal_name):
+        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
         return True
 
@@ -78,6 +80,7 @@ class SinusSignal(Resource):
 
         args = sinus_arguments.parse_args()
         args["type"] = "sinus_signal"
+        args["running"] = False
 
         producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
 
@@ -86,6 +89,7 @@ class SinusSignal(Resource):
 
         return True
     def patch(self,signal_name):
+        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
         return True
 
@@ -106,6 +110,7 @@ class CosinusSignal(Resource):
 
         args = cosinus_arguments.parse_args()
         args["type"] = "cosinus_signal"
+        args["running"] = False
 
         producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
 
@@ -114,6 +119,7 @@ class CosinusSignal(Resource):
 
         return True
     def patch(self,signal_name):
+        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
         return True
 
@@ -136,6 +142,7 @@ class  EmphasizedSignal(Resource):
 
         args = emphasized_arguments.parse_args()
         args["type"] = "emphasized_signal"
+        args["running"] = False
         
         producer = Emphasized_signal_producer(args["center"],args["scale"],args["transmissionFrequency"])
 
@@ -144,6 +151,7 @@ class  EmphasizedSignal(Resource):
 
         return True
     def patch(self,signal_name):
+        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
         return True
 
@@ -163,6 +171,7 @@ class  SpikedSignal(Resource):
 
         args = spiked_arguments.parse_args()
         args["type"] = "spiked_signal"
+        args["running"] = False
 
         producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"], args["size"],args["transmissionFrequency"])
 
@@ -171,6 +180,7 @@ class  SpikedSignal(Resource):
 
         return True
     def patch(self,signal_name):
+        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
         return True
         
