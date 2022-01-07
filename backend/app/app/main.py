@@ -28,7 +28,6 @@ cosinus_arguments.add_argument("frequency", type = float, required=True)
 cosinus_arguments.add_argument("amplitude", type = float, required=True)
 cosinus_arguments.add_argument("transmissionFrequency", type = float, required=True)
 
-
 emphasized_arguments = reqparse.RequestParser()
 emphasized_arguments.add_argument("center", type = float, required=True)
 emphasized_arguments.add_argument("scale", type = float, required=True)
@@ -58,11 +57,16 @@ class RandomSignal(Resource):
 
         return True
     def patch(self,signal_name):
+        if running_signal_args[signal_name]["type"] != "random_signal":
+            return "invalid request for this URL "
+
         running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
         return True
-
     def delete(self,signal_name):
+        if running_signal_args[signal_name]["type"] != "random_signal":
+            return "invalid request for this URL "
+            
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
@@ -89,11 +93,13 @@ class SinusSignal(Resource):
 
         return True
     def patch(self,signal_name):
+
         running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
-        return True
 
+        return True
     def delete(self,signal_name):
+
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
