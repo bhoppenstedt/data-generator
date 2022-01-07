@@ -58,7 +58,7 @@ class RandomSignal(Resource):
         return True
     def patch(self,signal_name):
         if running_signal_args[signal_name]["type"] != "random_signal":
-            return "invalid request for this URL "
+            return "invalid request for this URL"
 
         running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
@@ -66,7 +66,7 @@ class RandomSignal(Resource):
     def delete(self,signal_name):
         if running_signal_args[signal_name]["type"] != "random_signal":
             return "invalid request for this URL "
-            
+
         running_signal_objects[signal_name].running = False 
 
         del running_signal_objects[signal_name]
