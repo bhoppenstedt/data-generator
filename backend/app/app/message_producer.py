@@ -5,13 +5,20 @@ from kafka import KafkaProducer
 
 
 def serialize(signal):
-    """Serialisierung des übergebenen Signals."""
+    """Serializing the signal."""
     return json.dumps(signal).encode(('utf-8'))
    
 
 class Random_signal_producer(object):
 
     def __init__(self,lowerBoundary,upperBoundary,transmissionFrequency): 
+        """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables.
+
+        Args:
+            lowerBoundary (int): The lower boundary of the random signal       
+            upperBoundary (int): The upper boundary of the random signal 
+            transmissionFrequency(float): The pause in between ticks of the signal 
+        """       
         self.producer= KafkaProducer(
         bootstrap_servers=['localhost:9092']
         ) 
@@ -21,19 +28,19 @@ class Random_signal_producer(object):
         self.transmissionFrequency=transmissionFrequency
     
     def patch(self):
+        """[Start/Pause the signal]
+
+        Returns:
+            [Bool]: [Returns true if successful. Note there's no Return when starting a signal]
+        """
         self.running= not self.running
         self.sendRandomSignal()
         return True
 
 
     def sendRandomSignal(self):
-        """Es wird eine Random-Zahl zwischen 'lowerBoundary' und 'upperBoundary' erstellt und diese an das Kafka Topic "Random Signal" geschickt. 
-        'transmissionFrequency' beschreibt die Übertragungsrate des Signals.
+        """A random signal with the parameters of the corresponding signal is created and sent to the kafka topic 'Random-Signal'.
         
-        Args:
-            lowerBoundary (int): Die untere Grenze des Signals        
-            upperBoundary (int): Die obere Grenze des Signals
-            transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
         """
         while(self.running):
             random_number= int(random.randint(self.lowerBoundary,self.upperBoundary))
@@ -54,6 +61,11 @@ class Sinus_signal_producer(object):
         self.transmissionFrequency=transmissionFrequency   
 
     def patch(self):
+        """[Start/Pause the signal]
+
+        Returns:
+            [Bool]: [Returns true if successful. Note there's no Return when starting a signal]
+        """        
         self.running= not self.running
         self.sendSinusSignal()
         return True
