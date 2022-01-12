@@ -43,23 +43,53 @@ spiked_arguments.add_argument("size", type=float, required=True)
 spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 
-class RandomSignal(Resource):
-    def put(self, signal_name):
+class HandleSignals(Resource):
+    def put(self, signal_type, signal_name):
 
         # Check if the the given name is already in use 
         if signal_name in running_signal_args:
             return "Signal name already in use"
 
         # Add the arguments of the signal to the args dictionary 
-        args = random_arguments.parse_args()
-        args["type"] = "random_signal"
-        args["running"] = False
+        if(signal_type == "random"):
+            args = random_arguments.parse_args()
+            args["type"] = "random"
+            args["running"] = False
 
-        # Crete a producer object
-        producer = Random_signal_producer(
-            args["lowerBoundary"],
-            args["upperBoundary"],
-            args["transmissionFrequency"])
+            # Crete a producer object
+            producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+
+        elif(signal_type == "sinus"):
+            args = sinus_arguments.parse_args()
+            args["type"] = "sinus"
+            args["running"] = False
+
+            producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+
+        elif(signal_type=="cosinus"):
+            args = cosinus_arguments.parse_args()
+            args["type"] = "cosinus"
+            args["running"] = False
+
+            producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+        
+        elif(signal_type=="emphasized"):
+            args = emphasized_arguments.parse_args()
+            args["type"] = "emphasized"
+            args["running"] = False
+
+            producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
+
+        elif(signal_type=="spiked"):
+            args = spiked_arguments.parse_args()
+            args["type"] = "spiked"
+            args["running"] = False
+
+            producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
+
+        else:
+            return "Invalid signal type"
+
 
         # Add the signal object to the objects dictionary 
         running_signal_objects[signal_name] = producer
@@ -68,158 +98,18 @@ class RandomSignal(Resource):
         running_signal_args[signal_name] = args
 
         return True
-
-    def patch(self, signal_name):
-        if running_signal_args[signal_name]["type"] != "random_signal":
+    def patch(self, signal_type,signal_name):
+        if running_signal_args[signal_name]["type"] != signal_type:
             return "invalid request for this URL"
 
         running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
         return True
 
-    def delete(self, signal_name):
-        if running_signal_args[signal_name]["type"] != "random_signal":
+    def delete(self, signal_type, signal_name):
+        if running_signal_args[signal_name]["type"] != signal_type:
             return "invalid request for this URL "
 
-        running_signal_objects[signal_name].running = False
-
-        del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
-
-        return running_signal_args
-
-
-class SinusSignal(Resource):
-    def put(self, signal_name):
-
-        if signal_name in running_signal_args:
-            return "Signal name already in use"
-
-        args = sinus_arguments.parse_args()
-        args["type"] = "sinus_signal"
-        args["running"] = False
-
-        producer = Sinus_signal_producer(
-            args["frequency"],
-            args["amplitude"],
-            args["transmissionFrequency"])
-
-        running_signal_objects[signal_name] = producer
-        running_signal_args[signal_name] = args
-
-        return True
-
-    def patch(self, signal_name):
-
-        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
-        running_signal_objects[signal_name].patch()
-
-        return True
-
-    def delete(self, signal_name):
-
-        running_signal_objects[signal_name].running = False
-
-        del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
-
-        return running_signal_args
-
-
-class CosinusSignal(Resource):
-    def put(self, signal_name):
-
-        if signal_name in running_signal_args:
-            return "Signal name already in use"
-
-        args = cosinus_arguments.parse_args()
-        args["type"] = "cosinus_signal"
-        args["running"] = False
-
-        producer = Cosinus_signal_producer(
-            args["frequency"],
-            args["amplitude"],
-            args["transmissionFrequency"])
-
-        running_signal_objects[signal_name] = producer
-        running_signal_args[signal_name] = args
-
-        return True
-
-    def patch(self, signal_name):
-        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
-        running_signal_objects[signal_name].patch()
-        return True
-
-    def delete(self, signal_name):
-        running_signal_objects[signal_name].running = False
-
-        del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
-
-        return running_signal_args
-
-
-class EmphasizedSignal(Resource):
-    def put(self, signal_name):
-
-        if signal_name in running_signal_args:
-            return "Signal name already in use"
-
-        args = emphasized_arguments.parse_args()
-        args["type"] = "emphasized_signal"
-        args["running"] = False
-
-        producer = Emphasized_signal_producer(
-            args["center"], args["scale"], args["transmissionFrequency"])
-
-        running_signal_objects[signal_name] = producer
-        running_signal_args[signal_name] = args
-
-        return True
-
-    def patch(self, signal_name):
-        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
-        running_signal_objects[signal_name].patch()
-        return True
-
-    def delete(self, signal_name):
-        running_signal_objects[signal_name].running = False
-
-        del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
-
-        return running_signal_args
-
-
-class SpikedSignal(Resource):
-    def put(self, signal_name):
-
-        if signal_name in running_signal_args:
-            return "Signal name already in use"
-
-        args = spiked_arguments.parse_args()
-        args["type"] = "spiked_signal"
-        args["running"] = False
-
-        producer = Spiked_signal_producer(
-            args["base"],
-            args["distance"],
-            args["propability"],
-            args["size"],
-            args["transmissionFrequency"])
-
-        running_signal_objects[signal_name] = producer
-        running_signal_args[signal_name] = args
-
-        return True
-
-    def patch(self, signal_name):
-        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
-        running_signal_objects[signal_name].patch()
-        return True
-
-    def delete(self, signal_name):
         running_signal_objects[signal_name].running = False
 
         del running_signal_objects[signal_name]
@@ -234,12 +124,7 @@ class GetAllSignals(Resource):
 
 
 api.add_resource(GetAllSignals, '/api/signals/')
-api.add_resource(RandomSignal, '/api/random/<string:signal_name>/')
-api.add_resource(SinusSignal, '/api/sinus/<string:signal_name>/')
-api.add_resource(CosinusSignal, '/api/cosinus/<string:signal_name>/')
-api.add_resource(EmphasizedSignal, '/api/emphasized/<string:signal_name>/')
-api.add_resource(SpikedSignal, '/api/spiked/<string:signal_name>/')
-
+api.add_resource(HandleSignals,'/api/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
 def root():
