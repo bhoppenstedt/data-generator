@@ -87,7 +87,7 @@ class Sinus_signal_producer(object):
         return True
 
     def sendSinusSignal(self):
-        """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Random-Signal'.
+        """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
         """
         while(self.running):
             for i in range(0, 360):
@@ -135,7 +135,7 @@ class Cosinus_signal_producer(object):
         return True
 
     def sendCosinusSignal(self):
-        """A cosinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Random-Signal'.
+        """A cosinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Cosinus-Signal'.
         """
 
         while(self.running):
@@ -154,6 +154,15 @@ class Cosinus_signal_producer(object):
 class Emphasized_signal_producer(object):
 
     def __init__(self, center, scale, transmissionFrequency):
+        """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
+        is not intially running and has to be patched once at the start.
+
+
+        Args:
+            center (float): The expected value of the normal distribution
+            scale (float): The standard deviation of the normal distribution
+            transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
+        """
         self.producer = KafkaProducer(
             bootstrap_servers=['localhost:9092']
         )
@@ -173,13 +182,7 @@ class Emphasized_signal_producer(object):
         return True
 
     def sendEmphasizedRandomSignal(self):
-        """Es wird ein Signal, das einer Normalverteilung mit dem Erwartungswert 'center' und der Standardabweichung 'scale' folgt erstellt und an das Kafka Topic "Emphasised Signal"
-        geschickt. 'transmissionFrequency' beschreibt die Übertragungsrate des Signals.
-
-        Args:
-            center (float): Der Erwartungswert der Normalverteilung
-            scale (float): Die Standardabweichung der Normalverteilung
-            transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
+        """A normally distributed signal with the parameters of the corresponding object is created and sent to the kafka topic 'Emphasized-Signal'.
         """
         while(self.running):
             data = normal(loc=self.center, scale=self.scale, size=200)
