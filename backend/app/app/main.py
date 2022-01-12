@@ -4,56 +4,43 @@ from flask_restful import Resource, Api, reqparse
 from numpy import add
 from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
 
-# Import app code
+# Initialize Server and API
 app = Flask(__name__)
 api = Api(app)
 
-
+# Create dictionary in which the objects of the created signals are stored
 running_signal_objects = {}
+
+# Create dictionary in which the arguments of the created signals are stored
 running_signal_args = {}
 
-
+# Add required arguments to each signal via the reqparse module 
 random_arguments = reqparse.RequestParser()
 random_arguments.add_argument("lowerBoundary", type=int, required=True)
 random_arguments.add_argument("upperBoundary", type=int, required=True)
-random_arguments.add_argument(
-    "transmissionFrequency",
-    type=float,
-    required=True)
+random_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 sinus_arguments = reqparse.RequestParser()
 sinus_arguments.add_argument("frequency", type=float, required=True)
 sinus_arguments.add_argument("amplitude", type=float, required=True)
-sinus_arguments.add_argument(
-    "transmissionFrequency",
-    type=float,
-    required=True)
+sinus_arguments.add_argument( "transmissionFrequency",type=float,required=True)
 
 cosinus_arguments = reqparse.RequestParser()
 cosinus_arguments.add_argument("frequency", type=float, required=True)
 cosinus_arguments.add_argument("amplitude", type=float, required=True)
-cosinus_arguments.add_argument(
-    "transmissionFrequency",
-    type=float,
-    required=True)
+cosinus_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 emphasized_arguments = reqparse.RequestParser()
 emphasized_arguments.add_argument("center", type=float, required=True)
 emphasized_arguments.add_argument("scale", type=float, required=True)
-emphasized_arguments.add_argument(
-    "transmissionFrequency",
-    type=float,
-    required=True)
+emphasized_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 spiked_arguments = reqparse.RequestParser()
 spiked_arguments.add_argument("base", type=float, required=True)
 spiked_arguments.add_argument("distance", type=float, required=True)
 spiked_arguments.add_argument("propability", type=float, required=True)
 spiked_arguments.add_argument("size", type=float, required=True)
-spiked_arguments.add_argument(
-    "transmissionFrequency",
-    type=float,
-    required=True)
+spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 
 class RandomSignal(Resource):
