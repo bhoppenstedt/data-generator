@@ -50,13 +50,12 @@ class HandleSignals(Resource):
         if signal_name in running_signal_args:
             return "Signal name already in use"
 
-        # Add the arguments of the signal to the args dictionary 
+        # Add the arguments of the signal to the args dictionary and create the correct producer object 
         if(signal_type == "random"):
             args = random_arguments.parse_args()
             args["type"] = "random"
             args["running"] = False
 
-            # Crete a producer object
             producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
         elif(signal_type == "sinus"):
@@ -99,23 +98,31 @@ class HandleSignals(Resource):
 
         return True
     def patch(self, signal_type,signal_name):
+
+        #Check if the given signal type is correct
         if running_signal_args[signal_name]["type"] != signal_type:
             return "invalid request for this URL"
 
+        # Start/Stop the signal. Return true if successful 
         running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
         return True
 
     def delete(self, signal_type, signal_name):
+
+        # Check if the given signal type is correct
         if running_signal_args[signal_name]["type"] != signal_type:
             return "invalid request for this URL "
 
+        # Stop signal
         running_signal_objects[signal_name].running = False
 
+        # Delete the signal from the dictionaries
         del running_signal_objects[signal_name]
         del running_signal_args[signal_name]
 
-        return running_signal_args
+        # Return true if successful
+        return True
 
 
 class GetAllSignals(Resource):
