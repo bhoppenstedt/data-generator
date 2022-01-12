@@ -46,19 +46,25 @@ spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 class RandomSignal(Resource):
     def put(self, signal_name):
 
+        # Check if the the given name is already in use 
         if signal_name in running_signal_args:
             return "Signal name already in use"
 
+        # Add the arguments of the signal to the args dictionary 
         args = random_arguments.parse_args()
         args["type"] = "random_signal"
         args["running"] = False
 
+        # Crete a producer object
         producer = Random_signal_producer(
             args["lowerBoundary"],
             args["upperBoundary"],
             args["transmissionFrequency"])
 
+        # Add the signal object to the objects dictionary 
         running_signal_objects[signal_name] = producer
+
+        # Add the arguments of the signal to the args dictionary 
         running_signal_args[signal_name] = args
 
         return True
