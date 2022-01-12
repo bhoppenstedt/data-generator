@@ -161,7 +161,7 @@ class Emphasized_signal_producer(object):
         Args:
             center (float): The expected value of the normal distribution
             scale (float): The standard deviation of the normal distribution
-            transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
+            transmissionFrequency(float): The pause in between ticks of the signal
         """
         self.producer = KafkaProducer(
             bootstrap_servers=['localhost:9092']
@@ -199,13 +199,18 @@ class Emphasized_signal_producer(object):
 
 class Spiked_signal_producer(object):
 
-    def __init__(
-            self,
-            base,
-            distance,
-            propability,
-            size,
-            transmissionFrequency):
+    def __init__(self,base,distance,propability,size,transmissionFrequency):
+        """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
+        is not intially running and has to be patched once at the start.
+
+
+        Args:
+            base (float): The signals base
+            distance (float): The distance between potential spikes
+            propability (float): The propability of a spike occuring
+            size (float): The size of the spikes
+            transmissionFrequency(float): The pause in between ticks of the signal
+        """
         self.producer = KafkaProducer(
             bootstrap_servers=['localhost:9092']
         )
@@ -227,15 +232,7 @@ class Spiked_signal_producer(object):
         return True
 
     def sendSpikedSignal(self):
-        """Es wird ein Signal mit der Basis 'base' erstellt, welches in Abständen 'distance' mit der Wahrscheinlichkeit 'propablity' einen Spike der Größe 'size' besitzt.
-        'transmissionFrequency' beschreibt die Übertragungsrate des Signals.
-
-        Args:
-            base (float): Die Basis des Signals
-            distance (float): Der Abstand in dem ein potentieller Spike entsteht
-            propability (float): Die Wahrscheinlichkeit für einen Spike
-            size (float): Die Größe der Spikes
-            transmissionFrequency(float): Pause zwischen den einzelnen Werten des Signals
+        """A spiked signal with the parameters of the corresponding object is created and sent to the kafka topic 'Spiked-Signal'.
         """
         i = 0
         while(self.running):
