@@ -1,6 +1,0 @@
-Kafka Container "öffnen":
-docker exec -it kafka /bin/sh
-
-Consumer erstellen, der aus dem Topic "Random-Signal" liest
-kafka-console-consumer.sh --bootstrap-server kafka:9092 --topic Random-Signal
-
