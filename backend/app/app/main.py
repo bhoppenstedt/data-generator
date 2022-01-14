@@ -1,180 +1,146 @@
 # Import installed packages
 from flask import Flask, jsonify
-from flask_restful import Resource, Api,reqparse
+from flask_restful import Resource, Api, reqparse
 from numpy import add
-from message_producer import Random_signal_producer,Sinus_signal_producer,Cosinus_signal_producer,Spiked_signal_producer,Emphasized_signal_producer
+from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
 
-# Import app code
+# Initialize Server and API
 app = Flask(__name__)
 api = Api(app)
 
+# Create dictionary in which the objects of the created signals are stored
+running_signal_objects = {}
 
-running_signal_objects={}
-running_signal_args={}
+# Create dictionary in which the arguments of the created signals are stored
+running_signal_args = {}
 
-
+# Add required arguments to each signal via the reqparse module 
 random_arguments = reqparse.RequestParser()
-random_arguments.add_argument("lowerBoundary", type = int)
-random_arguments.add_argument("upperBoundary", type = int)
-random_arguments.add_argument("transmissionFrequency", type = float)
+random_arguments.add_argument("lowerBoundary", type=int, required=True)
+random_arguments.add_argument("upperBoundary", type=int, required=True)
+random_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 sinus_arguments = reqparse.RequestParser()
-sinus_arguments.add_argument("frequency", type = float)
-sinus_arguments.add_argument("amplitude", type = float)
-sinus_arguments.add_argument("transmissionFrequency", type = float)
+sinus_arguments.add_argument("frequency", type=float, required=True)
+sinus_arguments.add_argument("amplitude", type=float, required=True)
+sinus_arguments.add_argument( "transmissionFrequency",type=float,required=True)
 
 cosinus_arguments = reqparse.RequestParser()
-cosinus_arguments.add_argument("frequency", type = float)
-cosinus_arguments.add_argument("amplitude", type = float)
-cosinus_arguments.add_argument("transmissionFrequency", type = float)
-
+cosinus_arguments.add_argument("frequency", type=float, required=True)
+cosinus_arguments.add_argument("amplitude", type=float, required=True)
+cosinus_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 emphasized_arguments = reqparse.RequestParser()
-emphasized_arguments.add_argument("center", type = float)
-emphasized_arguments.add_argument("scale", type = float)
-emphasized_arguments.add_argument("transmissionFrequency", type = float)
+emphasized_arguments.add_argument("center", type=float, required=True)
+emphasized_arguments.add_argument("scale", type=float, required=True)
+emphasized_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 spiked_arguments = reqparse.RequestParser()
-spiked_arguments.add_argument("base", type = float)
-spiked_arguments.add_argument("distance", type = float)
-spiked_arguments.add_argument("propability", type = float)
-spiked_arguments.add_argument("size", type = float)
-spiked_arguments.add_argument("transmissionFrequency", type = float)
-
-class RandomSignal(Resource):
-    def put(self,signal_name):
-        args = random_arguments.parse_args()
-
-        producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
-
-        running_signal_objects[signal_name] = producer
-        running_signal_args[signal_name] = args
-
-        return True
-    def patch(self,signal_name):
-        running_signal_objects[signal_name].patch()
-        return True
-
-    def delete(self,signal_name):
-        running_signal_objects[signal_name].running = False 
-
-        del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
-
-        return running_signal_args
+spiked_arguments.add_argument("base", type=float, required=True)
+spiked_arguments.add_argument("distance", type=float, required=True)
+spiked_arguments.add_argument("propability", type=float, required=True)
+spiked_arguments.add_argument("size", type=float, required=True)
+spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 
+class HandleSignals(Resource):
+    def put(self, signal_type, signal_name):
 
-class SinusSignal(Resource):
-    def put(self,signal_name):
-        args = sinus_arguments.parse_args()
+        # Check if the the given name is already in use 
+        if signal_name in running_signal_args:
+            return "Signal name already in use"
 
-        producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+        # Add the arguments of the signal to the args dictionary and create the correct producer object 
+        if(signal_type == "random"):
+            args = random_arguments.parse_args()
+            args["type"] = "random"
+            args["running"] = False
 
-        running_signal_objects[signal_name] = producer
-        running_signal_args[signal_name] = args
+            producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
-        return True
-    def patch(self,signal_name):
-        running_signal_objects[signal_name].patch()
-        return True
+        elif(signal_type == "sinus"):
+            args = sinus_arguments.parse_args()
+            args["type"] = "sinus"
+            args["running"] = False
 
-    def delete(self,signal_name):
-        running_signal_objects[signal_name].running = False 
+            producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
 
-        del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
+        elif(signal_type=="cosinus"):
+            args = cosinus_arguments.parse_args()
+            args["type"] = "cosinus"
+            args["running"] = False
 
-        return running_signal_args
-
-
-class CosinusSignal(Resource):
-    def put(self,signal_name):
-        args = cosinus_arguments.parse_args()
-
-        producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
-
-        running_signal_objects[signal_name] = producer
-        running_signal_args[signal_name] = args
-
-        return True
-    def patch(self,signal_name):
-        running_signal_objects[signal_name].patch()
-        return True
-
-    def delete(self,signal_name):
-        running_signal_objects[signal_name].running = False 
-
-        del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
-
-        return running_signal_args
-
-
-
-
-class  EmphasizedSignal(Resource):
-    def put(self,signal_name):
-        args = emphasized_arguments.parse_args()
+            producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
         
-        producer = Emphasized_signal_producer(args["center"],args["scale"],args["transmissionFrequency"])
+        elif(signal_type=="emphasized"):
+            args = emphasized_arguments.parse_args()
+            args["type"] = "emphasized"
+            args["running"] = False
 
+            producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
+
+        elif(signal_type=="spiked"):
+            args = spiked_arguments.parse_args()
+            args["type"] = "spiked"
+            args["running"] = False
+
+            producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
+
+        else:
+            return "Invalid signal type"
+
+
+        # Add the signal object to the objects dictionary 
         running_signal_objects[signal_name] = producer
+
+        # Add the arguments of the signal to the args dictionary 
         running_signal_args[signal_name] = args
 
         return True
-    def patch(self,signal_name):
+    def patch(self, signal_type,signal_name):
+
+        #Check if the given signal type is correct
+        if running_signal_args[signal_name]["type"] != signal_type:
+            return "invalid request for this URL"
+
+        # Start/Stop the signal. Return true if successful 
+        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
         return True
 
-    def delete(self,signal_name):
-        running_signal_objects[signal_name].running = False 
+    def delete(self, signal_type, signal_name):
 
+        # Check if the given signal type is correct
+        if running_signal_args[signal_name]["type"] != signal_type:
+            return "invalid request for this URL "
+
+        # Stop signal
+        running_signal_objects[signal_name].running = False
+
+        # Delete the signal from the dictionaries
         del running_signal_objects[signal_name]
         del running_signal_args[signal_name]
 
-        return running_signal_args
-
-class  SpikedSignal(Resource):
-    def put(self,signal_name):
-        args = spiked_arguments.parse_args()
-
-        producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"], args["size"],args["transmissionFrequency"])
-
-        running_signal_objects[signal_name] = producer
-        running_signal_args[signal_name] = args
-
+        # Return true if successful
         return True
-    def patch(self,signal_name):
-        running_signal_objects[signal_name].patch()
-        return True
-        
-    def delete(self,signal_name):
-        running_signal_objects[signal_name].running = False 
 
-        del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
-
-        return running_signal_args
 
 class GetAllSignals(Resource):
+    
+    # Return all running signals 
     def get(self):
         return running_signal_args
 
-
+# Add the GET Endpoint to the API 
 api.add_resource(GetAllSignals, '/api/signals/')
-api.add_resource(RandomSignal, '/api/random/<string:signal_name>/')
-api.add_resource(SinusSignal, '/api/sinus/<string:signal_name>/')
-api.add_resource(CosinusSignal, '/api/cosinus/<string:signal_name>/')
-api.add_resource(EmphasizedSignal, '/api/emphasized/<string:signal_name>/')
-api.add_resource(SpikedSignal, '/api/spiked/<string:signal_name>/')
+
+# Add the PUT, PATCH, DELETE endpoints the API
+api.add_resource(HandleSignals,'/api/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
 def root():
     return jsonify({"message": "Message"})
 
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=80)
-
-  
-  
