@@ -126,15 +126,11 @@ class HandleSignals(Resource):
 
 
 class GetAllSignals(Resource):
-    
-    # Return all running signals 
     def get(self):
         return running_signal_args
 
-# Add the GET Endpoint to the API 
-api.add_resource(GetAllSignals, '/api/signals/')
 
-# Add the PUT, PATCH, DELETE endpoints the API
+api.add_resource(GetAllSignals, '/api/signals/')
 api.add_resource(HandleSignals,'/api/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
