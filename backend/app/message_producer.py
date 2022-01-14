@@ -69,7 +69,7 @@ class Sinus_signal_producer(object):
             transmissionFrequency(float): The pause in between ticks of the signal
         """
         self.producer = KafkaProducer(
-            bootstrap_servers=['localhost:9092']
+            bootstrap_servers=['kafka:9092']
         )
         self.running = False
         self.frequency = frequency
@@ -116,7 +116,7 @@ class Cosinus_signal_producer(object):
         """
 
         self.producer = KafkaProducer(
-            bootstrap_servers=['localhost:9092']
+            bootstrap_servers=['kafka:9092']
         )
         self.running = False
         self.frequency = frequency
@@ -164,7 +164,7 @@ class Emphasized_signal_producer(object):
             transmissionFrequency(float): The pause in between ticks of the signal
         """
         self.producer = KafkaProducer(
-            bootstrap_servers=['localhost:9092']
+            bootstrap_servers=['kafka:9092']
         )
         self.running = False
         self.center = center
@@ -212,7 +212,7 @@ class Spiked_signal_producer(object):
             transmissionFrequency(float): The pause in between ticks of the signal
         """
         self.producer = KafkaProducer(
-            bootstrap_servers=['localhost:9092']
+            bootstrap_servers=['kafka:9092']
         )
         self.running = False
         self.base = base
