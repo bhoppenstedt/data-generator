@@ -23,7 +23,7 @@ class Random_signal_producer(object):
             transmissionFrequency(float): The pause in between ticks of the signal
         """
         self.producer = KafkaProducer(
-            bootstrap_servers=['localhost:9092']
+            bootstrap_servers=['kafka:9092']
         )
         self.running = False
         self.lowerBoundary = lowerBoundary
