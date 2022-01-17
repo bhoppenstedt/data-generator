@@ -37,11 +37,11 @@ const SignalScreen = () => {
             <Grid container>
                 <Grid item xs={6}>
                     <Stack container spacing={'15px'} direction="column" alignItems="center" justifyContent="center">
-                        <Typography component="div" variant="h5" sx={{ color: purple[900], marginTop:"1vw" }}>
-                            signal Type
+                        <Typography component="div" sx={{ fontSize: 25, fontWeight: "bold", color: purple[900], marginTop:"1vw" }}>
+                            signal type
                         </Typography>
 
-                        <SignalButton name={"Random signal"} onClick={() => setConfig(setShowRS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 50}} />}/>
+                        <SignalButton name={"Random signal"} onClick={() => setConfig(setShowRS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 20, fontFamily: '"Roboto", sans-serif'}} />}/>
 
                         <SignalButton name={"Sinus Signal"} onClick={() => setConfig(setShowSS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 50}} />}/>
 
@@ -55,7 +55,7 @@ const SignalScreen = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Stack container spacing={4} direction="column" alignItems="center" justifyContent="center">
-                        <Typography component="div" variant="h5" sx={{ color: purple[900],marginTop:"1vw" }}>
+                        <Typography component="div" sx={{ fontSize: 25, fontWeight: "bold", color: purple[900], marginTop:"1vw" }}>
                             signal configuration
                         </Typography>
                         {showrs ? (<RandomSignal handleChange={(e) => {}} numberformat={value.numberformat}/>)

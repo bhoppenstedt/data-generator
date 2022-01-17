@@ -7,6 +7,7 @@ import { ThemeProvider, makeStyles } from '@mui/styles';
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import {Container, Paper} from "@mui/material";
+import { fontWeight } from "@mui/system";
 
 const theme = {
     background: 'linear-gradient(45deg, #D8E7FB 100%, #BDBFFE 100%)',
@@ -18,7 +19,11 @@ const useStyles = makeStyles((theme) => ({
         color: '#3F0092',
         boxShadow: '0px 3px 6px 0px rgba(0, 0, 0, .16)',
         height: 70,
-    },
+        fontSize: 20,
+        fontFamily: 'Roboto, sans-serif',
+        fontWeight: "normal",
+        textTransform: "inherit"
+    }
 }));
 
 export function SignalButton(props){
