@@ -18,9 +18,7 @@ const commonStyles = {
 export const RandomSignal = (props) => {
     return (
               <Stack container spacing={6} direction="column" alignItems="center" justifyContent="center">
-                  <Typography component="div" variant="h5" sx={{ color: purple[900]}}>
-                    Random Signal 
-                  </Typography>
+                  
                   <TextField 
                     variant="outlined" 
                     sx={{pt: 1, minWidth: 300}}

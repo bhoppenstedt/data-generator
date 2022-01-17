@@ -18,9 +18,6 @@ const commonStyles = {
 export const NormallyDistributed = (props) => {
     return (
       <Stack container spacing={4} direction="column" alignItems="center" justifyContent="center">
-      <Typography component="div" variant="h5" sx={{ color: purple[900]}}>
-                  Normally Distributed Signal
-                  </Typography>
                   <TextField
                     variant="outlined"
                     sx={{pt: 1, minWidth: 300 }}

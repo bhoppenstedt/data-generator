@@ -19,9 +19,6 @@ const commonStyles = {
 export const CosinusSignal = (props) => {
     return (
       <Stack container spacing={6} direction="column" alignItems="center" justifyContent="center">
-      <Typography component="div" variant="h5" sx={{ color: purple[900]}}>
-                  Cosinus Signal
-                  </Typography>
                   <TextField
                     variant="outlined"
                     sx={{ pt: 1, minWidth: 300 }}
