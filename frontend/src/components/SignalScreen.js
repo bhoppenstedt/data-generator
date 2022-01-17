@@ -43,11 +43,11 @@ const SignalScreen = () => {
 
                         <SignalButton name={"Random signal"} onClick={() => setConfig(setShowRS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 20, fontFamily: '"Roboto", sans-serif'}} />}/>
 
-                        <SignalButton name={"Sinus Signal"} onClick={() => setConfig(setShowSS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 50}} />}/>
+                        <SignalButton name={"Sinus signal"} onClick={() => setConfig(setShowSS)} icon={<CasinoOutlinedIcon sx={{ fontSize: 50}} />}/>
 
-                        <SignalButton name={"Cosinus Signal"} onClick={() => setConfig(setShowCS)} icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}}/>}/>
+                        <SignalButton name={"Cosinus signal"} onClick={() => setConfig(setShowCS)} icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}}/>}/>
 
-                        <SignalButton name={"Signal with spikes"} onClick={() => setConfig(setShowSWS)} icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}} />}/>
+                        <SignalButton name={"Spiked signal"} onClick={() => setConfig(setShowSWS)} icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}} />}/>
 
                         <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS)} icon={<TimelineOutlinedIcon sx={{ fontSize: 50}} />}/>
 
