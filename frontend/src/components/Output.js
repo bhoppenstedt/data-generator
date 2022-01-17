@@ -12,7 +12,7 @@ import React from "react";
 
 const Output = () => {
     return (
-            <Card variant="outlined" sx={{bgcolor: 'background.paper', border: 1, borderColor: 'secondary.main', marginLeft: "1vw", marginRight: "8vw", height: "85vh"}}>
+            <Card variant="outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9', marginLeft: "1vw", marginRight: "8vw", height: "85vh", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
                 <Grid container direction="column" wrap="nowrap" justifyContent="center" alignItems="center">
                     <Grid item xs={12}>
                         <Typography component="div" variant="h5" sx={{ color: purple[900], pt:"10px" }}>
