@@ -13,12 +13,14 @@ const Main = (props) => {
             <Grid item xs ={12}>
                 <Header title="Data generator" colorMode={colorMode} theme={theme} />
             </Grid>
-            <Grid item xs ={6} sx={{pt:4}}>
+            <Grid item xs ={1}></Grid>
+            <Grid item xs ={5} sx={{pt:4}}>
                 <SignalScreen/>
             </Grid>
-            <Grid item xs ={6} sx={{pt:4}}>
+            <Grid item xs ={5} sx={{pt:4}}>
                 <Output/>
             </Grid>
+            <Grid item xs ={1}></Grid>
         </Grid>
     )
 }

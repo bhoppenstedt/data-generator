@@ -1,4 +1,4 @@
-import {Card} from "@mui/material";
+import {Card, Divider} from "@mui/material";
 import React from "react"
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
@@ -53,6 +53,7 @@ const SignalScreen = () => {
 
                     </Stack>
                 </Grid>
+                <Divider variant="string"></Divider>
                 <Grid item xs={6}>
                     <Stack container spacing={4} direction="column" alignItems="center" justifyContent="center">
                         <Typography component="div" sx={{ fontSize: 25, fontWeight: "bold", color: purple[900], marginTop:"1vw" }}>
