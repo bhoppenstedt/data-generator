@@ -1,4 +1,5 @@
 # Import installed packages
+import json
 from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from numpy import add
@@ -9,10 +10,10 @@ app = Flask(__name__)
 api = Api(app)
 
 # Create dictionary in which the objects of the created signals are stored
-running_signal_objects = {}
+running_signal_objects = []
 
 # Create dictionary in which the arguments of the created signals are stored
-running_signal_args = {}
+running_signal_args = []
 
 # Add required arguments to each signal via the reqparse module 
 random_arguments = reqparse.RequestParser()
@@ -53,6 +54,7 @@ class HandleSignals(Resource):
         # Add the arguments of the signal to the args dictionary and create the correct producer object 
         if(signal_type == "random"):
             args = random_arguments.parse_args()
+            args["id"] = signal_name
             args["type"] = "random"
             args["running"] = False
 
@@ -91,10 +93,10 @@ class HandleSignals(Resource):
 
 
         # Add the signal object to the objects dictionary 
-        running_signal_objects[signal_name] = producer
+        running_signal_objects.append(producer)
 
         # Add the arguments of the signal to the args dictionary 
-        running_signal_args[signal_name] = args
+        running_signal_args.append(args)
 
         return True
     def patch(self, signal_type,signal_name):
@@ -126,11 +128,15 @@ class HandleSignals(Resource):
 
 
 class GetAllSignals(Resource):
+
+    # Return all existing signals
     def get(self):
         return running_signal_args
 
-
+# Add endpoint for GET requests
 api.add_resource(GetAllSignals, '/api/signals/')
+
+# Add endpoints for PUT, PATCH, DELETE requests
 api.add_resource(HandleSignals,'/api/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
