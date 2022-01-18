@@ -8,41 +8,54 @@ import PlayCircleOutlineOutlinedIcon from "@mui/icons-material/PlayCircleOutline
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
-import React from "react";
+import React, { useEffect } from "react";
+import StreamBoxElem from "./StreamBoxElem";
 
 const Output = () => {
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/signals/')
+        //fetch('https://jsonplaceholder.typicode.com/todos/1')
+        .then(res => {
+            console.log(res);
+            return res.json();
+        })
+        .then(data => {
+            console.log(data);
+            React.createElement('StreamBoxElem');
+        })
+    }, []);
+    
+
     return (
             <Card variant="outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9', marginLeft: "1vw", marginRight: "8vw", height: "85vh", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
                 <Grid container direction="column" wrap="nowrap" justifyContent="center" alignItems="center">
                     <Grid item xs={12}>
-                        <Typography component="div" variant="h5" sx={{ color: purple[900], pt:"10px" }}>
+                        <Typography component="div" sx={{ fontSize: 25, fontWeight: "bold", color: purple[900], marginTop:"0.1vw", marginBottom:"0.5vw" }}>
                             datastreams
                         </Typography>
                     </Grid>
-                    <Divider flexItem />
-                    <Grid item xs={12} sx={{width: "100%", paddingTop: "10px"}}>
+                    
+                    <Grid item xs={12} sx={{width: "100%"}}>
                         <Grid container direction="row" justifyContent="space-evenly" alignItems="center">
-                            <Grid item xs={4} justifyContent="center" alignItems="center">
-                                <Typography component="div" variant="h5" sx={{ color: purple[900] }} align={"center"}>
+                            <Grid item xs={6} justifyContent="left" alignItems="left">
+                                <Typography component="div" variant="h5" sx={{ fontSize: 20, fontWeight: "bold", color: purple[900], margin: "10px" }} align={"left"}>
                                     active streams:
                                 </Typography>
                             </Grid>
-                            <Grid item xs={4}>
-                                <Stack direction="row" spacing={1} justifyContent="center" alignItems="center">
-                                        <Typography component="div" variant="h5" sx={{ color: purple[900] }}>
-                                            Play all:
+                            <Grid item xs={6}>
+                                <Stack direction="row" spacing={0} justifyContent="right" alignItems="center">
+                                        <Typography component="div" variant="h5" sx={{  fontSize: 20, fontWeight: "bold", color: purple[900], marginRight:"0px" }} align={"right"}>
+                                            start all
                                         </Typography>
                                         <IconButton>
                                             <PlayCircleOutlineOutlinedIcon
                                                 sx={{ fontSize: 30, color: purple[900] }}
                                             />
                                         </IconButton>
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Stack direction="row" spacing={1} justifyContent="center" alignItems="center">
-                                        <Typography component="div" variant="h5" sx={{ color:purple[900] }} align={"right"}>
-                                            Stop all:
+                                        
+                                        <Typography component="div" variant="h5" sx={{  fontSize: 20, fontWeight: "bold", color:purple[900], marginRight:"0px" }} align={"right"}>
+                                            stop all
                                         </Typography>
                                         <IconButton>
                                             <StopCircleOutlinedIcon
@@ -53,55 +66,23 @@ const Output = () => {
                             </Grid>
                         </Grid>
                     </Grid>
+                    <Grid item xs={12} sx={{width: "100%"}}>
+                        <Card sx={{height: "85%", width: "95%", overflowY: "scroll"}} >
+                            <StreamBoxElem sx={{height: "100px"}} name={"randomName"}></StreamBoxElem>
+                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
+                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
+                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
+                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
+                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
+                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
+                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
+
+                            
+
+                        </Card>
+                    </Grid>
+
                 </Grid>
-
-                {(
-                    <Card sx={{ minWidth: 15 }}>
-                        <CardContent>
-                            <Typography
-                                sx={{ fontSize: 20, minWidth: 250 }}
-                                color="text.secondary"
-                                gutterBottom
-                            >
-                                Data stream name
-                            </Typography>
-                            <Typography variant="body2">Signal : Name</Typography>
-                            <Typography variant="body2">
-                                Output format: Format
-                            </Typography>
-                            <Typography
-                                sx={{ fontSize: 20 }}
-                                variant="body2"
-                            >
-                                Running........
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                ) }
-
-                {(
-                    <Card sx={{ minWidth: 15 }}>
-                        <CardContent>
-                            <Typography
-                                sx={{fontSize: 20, minWidth: 250 }}
-                                color="text.secondary"
-                                gutterBottom
-                            >
-                                Data stream name
-                            </Typography>
-                            <Typography variant="body2">Signal : Name</Typography>
-                            <Typography variant="body2">
-                                Output format: Format
-                            </Typography>
-                            <Typography
-                                sx={{fontSize: 20 }}
-                                variant="body2"
-                            >
-                                Running........
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                ) }
             </Card>
 
     )

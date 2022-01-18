@@ -23,7 +23,9 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: 'Roboto, sans-serif',
         fontWeight: "normal",
         textTransform: "inherit",
-        justifyContent: "flex-start",
+        justifyContent: "left",
+        width: "95%",
+    
     }
 }));
 

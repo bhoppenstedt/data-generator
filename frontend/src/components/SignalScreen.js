@@ -13,7 +13,7 @@ import {SinusSignal} from "./configurations/SinusSignal";
 import {CosinusSignal} from "./configurations/CosinusSignal";
 import {SpikesSignal} from "./configurations/SpikesSignal";
 import {NormallyDistributed} from "./configurations/NormallyDistributed";
-import { borderLeft } from "@mui/system";
+import { borderLeft, color } from "@mui/system";
 
 const SignalScreen = () => {
     const [showrs, setShowRS] = React.useState(true);
@@ -37,7 +37,7 @@ const SignalScreen = () => {
             <Grid container>
                 <Grid item xs={6}>
                     <Stack container spacing={'15px'} direction="column" alignItems="center" justifyContent="center">
-                        <Typography component="div" sx={{ fontSize: 25, fontWeight: "bold", color: purple[900], marginTop:"1vw" }}>
+                        <Typography component="div" sx={{ fontSize: 25, fontWeight: "bold", color: purple[900], marginTop:"0.1vw", marginBottom:"0.5vw" }}>
                             signal type
                         </Typography>
 
@@ -49,14 +49,16 @@ const SignalScreen = () => {
 
                         <SignalButton name={"Spiked signal"} onClick={() => setConfig(setShowSWS)} icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}} />}/>
 
-                        <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS)} icon={<TimelineOutlinedIcon sx={{ fontSize: 50}} />}/>
+                        <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS)} icon={<TimelineOutlinedIcon sx={{ fontSize: 30}} />}/>
 
                     </Stack>
                 </Grid>
-                <Divider variant="string"></Divider>
+
+                <Divider orientation="vertical" flexItem style={{marginRight:"-1px", marginLeft:"-4px", marginTop: "10px", width: "2px", height: "770px", color: "rgba(161,165,249,1)", opacity: "100%"}} />
+
                 <Grid item xs={6}>
                     <Stack container spacing={4} direction="column" alignItems="center" justifyContent="center">
-                        <Typography component="div" sx={{ fontSize: 25, fontWeight: "bold", color: purple[900], marginTop:"1vw" }}>
+                        <Typography component="div" sx={{ fontSize: 25, fontWeight: "bold", color: purple[900], marginTop:"0.1vw", marginBottom:"0.5vw" }}>
                             signal configuration
                         </Typography>
                         {showrs ? (<RandomSignal handleChange={(e) => {}} numberformat={value.numberformat}/>)
@@ -65,7 +67,7 @@ const SignalScreen = () => {
                                     : showsws ? <SpikesSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
                                         : showns ? <NormallyDistributed handleChange={(e) => {}} numberformat={value.numberformat}/>
                                             : null }
-                        <SignalButton name={"Generate"} onClick={() => console.log("generate")} icon={<></>}/>
+                        <SignalButton name={"Generate"} onClick={() => console.log("generat")} icon={<></>}/>
                     </Stack>
                 </Grid>
             </Grid>

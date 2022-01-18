@@ -4,6 +4,7 @@ from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from numpy import add
 from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
+import json
 
 # Initialize Server and API
 app = Flask(__name__)
@@ -131,7 +132,7 @@ class GetAllSignals(Resource):
 
     # Return all existing signals
     def get(self):
-        return running_signal_args
+        return json.dumps(running_signal_args, 2)
 
 # Add endpoint for GET requests
 api.add_resource(GetAllSignals, '/api/signals/')
