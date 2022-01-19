@@ -4,17 +4,16 @@ from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from numpy import add
 from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
-import json
 
 # Initialize Server and API
 app = Flask(__name__)
 api = Api(app)
 
 # Create dictionary in which the objects of the created signals are stored
-running_signal_objects = []
+running_signal_objects = {}
 
 # Create dictionary in which the arguments of the created signals are stored
-running_signal_args = []
+running_signal_args = {}
 
 # Add required arguments to each signal via the reqparse module 
 random_arguments = reqparse.RequestParser()
@@ -55,11 +54,10 @@ class HandleSignals(Resource):
         # Add the arguments of the signal to the args dictionary and create the correct producer object 
         if(signal_type == "random"):
             args = random_arguments.parse_args()
-            args["id"] = signal_name
             args["type"] = "random"
             args["running"] = False
 
-            producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+            #producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
         elif(signal_type == "sinus"):
             args = sinus_arguments.parse_args()
@@ -94,10 +92,10 @@ class HandleSignals(Resource):
 
 
         # Add the signal object to the objects dictionary 
-        running_signal_objects.append(producer)
+        #running_signal_objects[signal_name] = producer
 
         # Add the arguments of the signal to the args dictionary 
-        running_signal_args.append(args)
+        running_signal_args[signal_name] = args
 
         return True
     def patch(self, signal_type,signal_name):
@@ -132,7 +130,7 @@ class GetAllSignals(Resource):
 
     # Return all existing signals
     def get(self):
-        return json.dumps(running_signal_args, 2)
+        return json.dumps(running_signal_args)
 
 # Add endpoint for GET requests
 api.add_resource(GetAllSignals, '/api/signals/')
@@ -146,4 +144,4 @@ def root():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=80)
+    app.run(debug=True, host="0.0.0.0", port=5000)
