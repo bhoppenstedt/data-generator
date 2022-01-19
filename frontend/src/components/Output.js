@@ -21,8 +21,10 @@ const Output = () => {
             return res.json();
         })
         .then(data => {
-            console.log(data);
-            React.createElement('StreamBoxElem');
+            const obj = JSON.parse(data);
+            console.log(obj);
+            console.log(Object.values(obj));
+            
         })
     }, []);
     
@@ -68,15 +70,7 @@ const Output = () => {
                     </Grid>
                     <Grid item xs={12} sx={{width: "100%"}}>
                         <Card sx={{height: "85%", width: "95%", overflowY: "scroll"}} >
-                            <StreamBoxElem sx={{height: "100px"}} name={"randomName"}></StreamBoxElem>
-                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
-                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
-                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
-                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
-                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
-                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
-                            <StreamBoxElem sx={{height: "100px"}}></StreamBoxElem>
-
+                            
                             
 
                         </Card>
