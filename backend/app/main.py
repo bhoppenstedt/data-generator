@@ -56,6 +56,7 @@ class HandleSignals(Resource):
             args = random_arguments.parse_args()
             args["type"] = "random"
             args["running"] = False
+            args["name"] = signal_name
 
             #producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
@@ -63,6 +64,7 @@ class HandleSignals(Resource):
             args = sinus_arguments.parse_args()
             args["type"] = "sinus"
             args["running"] = False
+            args["name"] = signal_name
 
             producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
 
@@ -70,6 +72,7 @@ class HandleSignals(Resource):
             args = cosinus_arguments.parse_args()
             args["type"] = "cosinus"
             args["running"] = False
+            args["name"] = signal_name
 
             producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
         
@@ -77,6 +80,7 @@ class HandleSignals(Resource):
             args = emphasized_arguments.parse_args()
             args["type"] = "emphasized"
             args["running"] = False
+            args["name"] = signal_name
 
             producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
 
@@ -84,6 +88,7 @@ class HandleSignals(Resource):
             args = spiked_arguments.parse_args()
             args["type"] = "spiked"
             args["running"] = False
+            args["name"] = signal_name
 
             producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
 
