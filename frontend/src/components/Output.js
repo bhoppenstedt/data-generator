@@ -14,7 +14,7 @@ import StreamBoxElem from "./StreamBoxElem";
 const Output = () => {
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/signals/')
+        fetch('/api/signals/')
         //fetch('https://jsonplaceholder.typicode.com/todos/1')
         .then(res => {
             console.log(res);
