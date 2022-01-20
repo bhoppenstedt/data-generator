@@ -24,13 +24,14 @@ const SignalScreen = () => {
     const [showns, setShowNS] = React.useState(true);
     const [value] = React.useState("");
 
-    const setConfig = (current) => {
+    const setConfig = (current, type) => {
         setShowCS(false)
         setShowNS(false)
         setShowRS(false)
         setShowSS(false)
         setShowSWS(false)
         current(true)
+        currentSignalType=type
     }
 
     var dataStreams = [
@@ -72,11 +73,6 @@ const SignalScreen = () => {
 
     }
     
-    function changeCurrentSignal(type){
-        console.log(type)
-        currentSignalType = type
-        console.log(currentSignalType)
-    }
 
     return (
         <Card variant= "outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9',height:"85vh", marginLeft: "8vw", marginRight: "1vw", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
@@ -87,15 +83,15 @@ const SignalScreen = () => {
                             signal type
                         </Typography>
 
-                        <SignalButton name={"Random signal"} onClick={() => setConfig(setShowRS), changeCurrentSignal("random")}  icon={<CasinoOutlinedIcon sx={{ fontSize: 20, fontFamily: '"Roboto", sans-serif'}} />}/>
+                        <SignalButton name={"Random signal"} onClick={() => setConfig(setShowRS, 'random')}  icon={<CasinoOutlinedIcon sx={{ fontSize: 20, fontFamily: '"Roboto", sans-serif'}} />}/>
 
-                        <SignalButton name={"Sinus signal"} onClick={() => setConfig(setShowSS), changeCurrentSignal("sinus")}  icon={<CasinoOutlinedIcon sx={{ fontSize: 50}} />}/>
+                        <SignalButton name={"Sinus signal"} onClick={() => setConfig(setShowSS, 'sinus')}  icon={<CasinoOutlinedIcon sx={{ fontSize: 50}} />}/>
 
-                        <SignalButton name={"Cosinus signal"} onClick={() => setConfig(setShowCS), changeCurrentSignal("cosinus")}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}}/>}/>
+                        <SignalButton name={"Cosinus signal"} onClick={() => setConfig(setShowCS, 'cosinus')}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}}/>}/>
 
-                        <SignalButton name={"Spiked signal"} onClick={() => setConfig(setShowSWS), changeCurrentSignal("spiked")}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}} />}/>
+                        <SignalButton name={"Spiked signal"} onClick={() => setConfig(setShowSWS), 'spiked'}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}} />}/>
 
-                        <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS), changeCurrentSignal("emphasized")}  icon={<TimelineOutlinedIcon sx={{ fontSize: 30}} />}/>
+                        <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS), 'emphasized'}  icon={<TimelineOutlinedIcon sx={{ fontSize: 30}} />}/>
 
                     </Stack>
                 </Grid>
