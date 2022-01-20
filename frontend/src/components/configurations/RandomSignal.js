@@ -22,6 +22,18 @@ export const RandomSignal = (props) => {
                   <TextField 
                     variant="outlined" 
                     sx={{pt: 1, minWidth: 300}}
+                    label="Name"
+                    value={props.numberformat}
+                    onChange={props.handleChange}
+                    name="numberformat"
+                    id="formatted-numberformat-input"
+                    InputProps={{
+                      inputComponent: NumberFormatCustom,
+                    }}
+                  />
+                  <TextField 
+                    variant="outlined" 
+                    sx={{pt: 1, minWidth: 300}}
                     label="Lower boundary"
                     value={props.numberformat}
                     onChange={props.handleChange}
