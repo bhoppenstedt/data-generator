@@ -102,7 +102,8 @@ class HandleSignals(Resource):
         # Add the arguments of the signal to the args dictionary 
         running_signal_args[signal_name] = args
 
-        return True
+        # Return all existing signals
+        return json.dumps(running_signal_args)
     def patch(self, signal_type,signal_name):
 
         #Check if the given signal type is correct
@@ -112,7 +113,9 @@ class HandleSignals(Resource):
         # Start/Stop the signal. Return true if successful 
         running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
         running_signal_objects[signal_name].patch()
-        return True
+
+        # Return all existing signals
+        return json.dumps(running_signal_args)
 
     def delete(self, signal_type, signal_name):
 
@@ -127,8 +130,8 @@ class HandleSignals(Resource):
         del running_signal_objects[signal_name]
         del running_signal_args[signal_name]
 
-        # Return true if successful
-        return True
+        # Return all existing signals
+        return json.dumps(running_signal_args)
 
 
 class GetAllSignals(Resource):
