@@ -33,17 +33,22 @@ const SignalScreen = () => {
         current(true)
     }
 
-    function kevin() {
+    var dataStreams = [
+        "test1","test2","test3","test4","test5","test6"
+    ]
+
+    function kevin(streamName) {
+        
         let _data = {
             lowerBoundary: 5,
-            name: "test99",
+            name: streamName,
             running: false,
             transmissionFrequency: 55,
             type: "random",
             upperBoundary: 50
           }
     
-          fetch('/api/random/test99/', {
+          fetch('/api/random/' + streamName + '/', {
             method: "PUT",
             body: JSON.stringify(_data),
             headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -52,7 +57,6 @@ const SignalScreen = () => {
           .then(json => console.log(json));
     };
     
-
     return (
         <Card variant= "outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9',height:"85vh", marginLeft: "8vw", marginRight: "1vw", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
             <Grid container>
