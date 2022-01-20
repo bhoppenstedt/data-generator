@@ -14,6 +14,7 @@ import {CosinusSignal} from "./configurations/CosinusSignal";
 import {SpikesSignal} from "./configurations/SpikesSignal";
 import {NormallyDistributed} from "./configurations/NormallyDistributed";
 import { borderLeft, color } from "@mui/system";
+import axios from 'axios'
 
 const SignalScreen = () => {
     const [showrs, setShowRS] = React.useState(true);
@@ -31,6 +32,26 @@ const SignalScreen = () => {
         setShowSWS(false)
         current(true)
     }
+
+    function kevin() {
+        let _data = {
+            lowerBoundary: 5,
+            name: "test99",
+            running: false,
+            transmissionFrequency: 55,
+            type: "random",
+            upperBoundary: 50
+          }
+    
+          fetch('/api/random/test99/', {
+            method: "PUT",
+            body: JSON.stringify(_data),
+            headers: {"Content-type": "application/json; charset=UTF-8"}
+          })
+          .then(response => response.json()) 
+          .then(json => console.log(json));
+    };
+    
 
     return (
         <Card variant= "outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9',height:"85vh", marginLeft: "8vw", marginRight: "1vw", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
@@ -67,7 +88,7 @@ const SignalScreen = () => {
                                     : showsws ? <SpikesSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
                                         : showns ? <NormallyDistributed handleChange={(e) => {}} numberformat={value.numberformat}/>
                                             : null }
-                        <SignalButton name={"Generate"} onClick={() => console.log("generat")} icon={<></>}/>
+                        <SignalButton name={"Generate"} onClick={() => kevin()} icon={<></>}/>
                     </Stack>
                 </Grid>
             </Grid>
