@@ -37,20 +37,11 @@ const SignalScreen = () => {
         "test1","test2","test3","test4","test5","test6"
     ]
 
-    function kevin(streamName) {
+    function putReq(streamType, streamName, params) {
         
-        let _data = {
-            lowerBoundary: 5,
-            name: streamName,
-            running: false,
-            transmissionFrequency: 55,
-            type: "random",
-            upperBoundary: 50
-          }
-    
-          fetch('/api/random/' + streamName + '/', {
+          fetch('/api/'+ streamType + '/' + streamName + '/', {
             method: "PUT",
-            body: JSON.stringify(_data),
+            body: JSON.stringify(params),
             headers: {"Content-type": "application/json; charset=UTF-8"}
           })
           .then(response => response.json()) 
@@ -92,7 +83,7 @@ const SignalScreen = () => {
                                     : showsws ? <SpikesSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
                                         : showns ? <NormallyDistributed handleChange={(e) => {}} numberformat={value.numberformat}/>
                                             : null }
-                        <SignalButton name={"Generate"} onClick={() => kevin()} icon={<></>}/>
+                        <SignalButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
                     </Stack>
                 </Grid>
             </Grid>
