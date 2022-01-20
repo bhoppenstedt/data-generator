@@ -89,9 +89,9 @@ const SignalScreen = () => {
 
                         <SignalButton name={"Cosinus signal"} onClick={() => setConfig(setShowCS, 'cosinus')}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}}/>}/>
 
-                        <SignalButton name={"Spiked signal"} onClick={() => setConfig(setShowSWS), 'spiked'}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}} />}/>
+                        <SignalButton name={"Spiked signal"} onClick={() => setConfig(setShowSWS, 'spiked')}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}} />}/>
 
-                        <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS), 'emphasized'}  icon={<TimelineOutlinedIcon sx={{ fontSize: 30}} />}/>
+                        <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS, 'emphasized')}  icon={<TimelineOutlinedIcon sx={{ fontSize: 30}} />}/>
 
                     </Stack>
                 </Grid>
