@@ -9,7 +9,6 @@ import { NumberFormatCustom } from "../NumberFormatCustom";
 import SignalScreen from "../SignalScreen";
 
 
-
 const commonStyles = {
   bgcolor: 'background.paper',
   m: 1,
@@ -18,29 +17,30 @@ const commonStyles = {
   height: '5rem',
 };
 
-    var streamName;
-    var streamLB;
-    var streamUB;
-    var streamTF;
+let streamName;
+var streamLB;
+var streamUB;
+var streamTF;
+
+
+const handleChangeName = e => {
+  streamName = e.target.value;
+  console.log(streamName);
+};
+const handleChangelB = e => {
+  streamLB = e.target.value;
+  console.log(streamLB);
+};
+const handleChangeuB = e => {
+  streamUB = e.target.value;
+  console.log(`Typed => ${e.target.value}`);
+};
+const handleChangetF = e => {
+  streamTF = e.target.value;
+  console.log(`Typed => ${e.target.value}`);
+};
 
 export const RandomSignal = (props) => {
-
-    const handleChangeName = e => {
-      streamName = e.target.value;
-      console.log(streamName);
-    };
-    const handleChangelB = e => {
-      streamLB = e.target.value;
-      console.log(`Typed => ${e.target.value}`);
-    };
-    const handleChangeuB = e => {
-      streamUB = e.target.value;
-      console.log(`Typed => ${e.target.value}`);
-    };
-    const handleChangetF = e => {
-      streamTF = e.target.value;
-      console.log(`Typed => ${e.target.value}`);
-    };
 
     return (
               <Stack container spacing={6} direction="column" alignItems="center" justifyContent="center">
