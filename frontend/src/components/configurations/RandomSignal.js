@@ -6,6 +6,9 @@ import Card from "@mui/material/Card";
 import { lightBlue,purple } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import { NumberFormatCustom } from "../NumberFormatCustom";
+import SignalScreen from "../SignalScreen";
+
+
 
 const commonStyles = {
   bgcolor: 'background.paper',
@@ -15,22 +18,41 @@ const commonStyles = {
   height: '5rem',
 };
 
+    var streamName;
+    var streamLB;
+    var streamUB;
+    var streamTF;
+
 export const RandomSignal = (props) => {
+
+    const handleChangeName = e => {
+      streamName = e.target.value;
+      console.log(streamName);
+    };
+    const handleChangelB = e => {
+      streamLB = e.target.value;
+      console.log(`Typed => ${e.target.value}`);
+    };
+    const handleChangeuB = e => {
+      streamUB = e.target.value;
+      console.log(`Typed => ${e.target.value}`);
+    };
+    const handleChangetF = e => {
+      streamTF = e.target.value;
+      console.log(`Typed => ${e.target.value}`);
+    };
+
     return (
               <Stack container spacing={6} direction="column" alignItems="center" justifyContent="center">
                   
                   <TextField 
-                    variant="outlined" 
-                    sx={{pt: 1, minWidth: 300}}
-                    label="Name"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
-                    name="numberformat"
-                    id="formatted-numberformat-input"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
+                  id="outlined-basic" 
+                  label="Name" 
+                  variant="outlined" 
+                  sx={{pt: 1, minWidth: 300}}
+                  onChange={handleChangeName}
                   />
+
                   <TextField 
                     variant="outlined" 
                     sx={{pt: 1, minWidth: 300}}
@@ -42,6 +64,7 @@ export const RandomSignal = (props) => {
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
+                    onChange={handleChangelB}
                   />
                   <TextField
                     variant="outlined"
@@ -54,6 +77,7 @@ export const RandomSignal = (props) => {
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
+                    onChange={handleChangeuB}
                   />
                   <TextField
                     variant="outlined"
@@ -66,6 +90,7 @@ export const RandomSignal = (props) => {
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
+                    onChange={handleChangetF}
                   />
               </Stack>
     )
