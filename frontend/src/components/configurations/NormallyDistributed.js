@@ -24,9 +24,9 @@ export const NormallyDistributed = (props) => {
                   label="Name" 
                   variant="outlined" 
                   sx={{pt: 1, minWidth: 300}}
-                  onChange={handleChangeName}
+                  //onChange={handleChangeName}
                   />
-                  
+
                   <TextField
                     variant="outlined"
                     sx={{pt: 1, minWidth: 300 }}
@@ -43,18 +43,6 @@ export const NormallyDistributed = (props) => {
                     variant="outlined"
                     sx={{pt: 1, minWidth: 300 }}
                     label="Standard Deviation"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
-                    name="numberformat"
-                    id="formatted-numberformat-input"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                  />
-                  <TextField
-                    variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Size"
                     value={props.numberformat}
                     onChange={props.handleChange}
                     name="numberformat"
