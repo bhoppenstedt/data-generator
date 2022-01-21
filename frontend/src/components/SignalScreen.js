@@ -14,7 +14,6 @@ import {CosinusSignal} from "./configurations/CosinusSignal";
 import {SpikesSignal} from "./configurations/SpikesSignal";
 import {NormallyDistributed} from "./configurations/NormallyDistributed";
 import { borderLeft, color } from "@mui/system";
-import axios from 'axios'
 
 const SignalScreen = () => {
     const [showrs, setShowRS] = React.useState(true);
