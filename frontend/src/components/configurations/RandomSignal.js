@@ -7,7 +7,7 @@ import { lightBlue,purple } from "@mui/material/colors";
 import Typography from "@mui/material/Typography";
 import { NumberFormatCustom } from "../NumberFormatCustom";
 import SignalScreen from "../SignalScreen";
-
+import {SignalButton} from "../SignalButton";
 
 const commonStyles = {
   bgcolor: 'background.paper',
@@ -17,36 +17,32 @@ const commonStyles = {
   height: '5rem',
 };
 
-let streamName;
-var streamLB;
-var streamUB;
-var streamTF;
-
-
-const handleChangeName = e => {
-  streamName = e.target.value;
-  console.log(streamName);
-};
-const handleChangelB = e => {
-  streamLB = e.target.value;
-  console.log(streamLB);
-};
-const handleChangeuB = e => {
-  streamUB = e.target.value;
-  console.log(`Typed => ${e.target.value}`);
-};
-const handleChangetF = e => {
-  streamTF = e.target.value;
-  console.log(`Typed => ${e.target.value}`);
-};
 
 export const RandomSignal = (props) => {
 
-    return (
+  const handleChangeName = e => {
+    setSignalName(e.target.value)
+  };
+
+  function putReq(params) {
+    fetch('/api/random/' + signalName + '/', {
+        method: "PUT",
+        body: JSON.stringify(params),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+    .then(response => response.json()) 
+    .then(json => console.log(json));
+  };
+  
+  const [signalName, setSignalName] = useState('')
+  const [lowerBoundary, setLowerBoundary] = useState(0)
+  const [upperBoundary, setUpperBoundary] = useState(1)
+  const [transmissionFrequency, setTransmissionFrequency] = useState(1)
+
+      return (
               <Stack container spacing={6} direction="column" alignItems="center" justifyContent="center">
-                  
                   <TextField 
-                  id="outlined-basic" 
+                  id="name" 
                   label="Name" 
                   variant="outlined" 
                   sx={{pt: 1, minWidth: 300}}
@@ -60,11 +56,11 @@ export const RandomSignal = (props) => {
                     value={props.numberformat}
                     onChange={props.handleChange}
                     name="numberformat"
-                    id="formatted-numberformat-input"
+                    id="lowerBoundary"
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
-                    onChange={handleChangelB}
+                    //onChange={handleChangelB}
                   />
                   <TextField
                     variant="outlined"
@@ -77,7 +73,7 @@ export const RandomSignal = (props) => {
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
-                    onChange={handleChangeuB}
+                    //onChange={handleChangeuB}
                   />
                   <TextField
                     variant="outlined"
@@ -90,8 +86,9 @@ export const RandomSignal = (props) => {
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
-                    onChange={handleChangetF}
+                   // onChange={handleChangetF}
                   />
+                  <SignalButton name={"Generate"} onClick={() => putReq({lowerBoundary:1, upperBoundary:10, transmissionFrequency:1})} icon={<></>}/>
               </Stack>
     )
 }

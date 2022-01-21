@@ -14,35 +14,38 @@ import {CosinusSignal} from "./configurations/CosinusSignal";
 import {SpikesSignal} from "./configurations/SpikesSignal";
 import {NormallyDistributed} from "./configurations/NormallyDistributed";
 import { borderLeft, color } from "@mui/system";
+import { useState } from "react";
 
 const SignalScreen = () => {
-    const [showrs, setShowRS] = React.useState(true);
-    const [showss, setShowSS] = React.useState(true);
-    const [showcs, setShowCS] = React.useState(true);
-    const [showsws, setShowSWS] = React.useState(true);
-    const [showns, setShowNS] = React.useState(true);
-    const [value] = React.useState("");
+    const [currentSignalType, setCurrentSignalType] = useState('random')
+    const [currentSignalName, setCurrentSignalName] = useState('fdsf')
 
-    const setConfig = (current, type) => {
-        setShowCS(false)
-        setShowNS(false)
-        setShowRS(false)
-        setShowSS(false)
-        setShowSWS(false)
-        current(true)
-        currentSignalType=type
-        console.log(currentSignalType)
-    }
+    const [randomSignal, setRandomSignal] = useState({
+        lowerBoundary:0,
+        upperBoundary:10,
+        transmissionFrequency:1
+    });
 
-    var dataStreams = [
-        "test1","test2","test3","test4","test5","test6"
-    ]
+    const [sinusSignal, setSinusSignal] = useState({
+        frequency:0,
+        amplitude:0,
+        transmissionFrequency:1
+    });
 
-    var currentSignalType;
+    const [cosinusSignal, setCosinusSignal] = useState({
+        frequency:0,
+        amplitude:0,
+        transmissionFrequency:1
+    });
 
-    function putReq(streamType, streamName, params) {
-        console.log(streamName)
-        fetch('/api/'+ streamType + '/' + streamName + '/', {
+    const [showsws, setShowSWS] = useState(true);
+    const [showns, setShowNS] = useState(true);
+    const [value] = useState("");
+
+
+    function putReq(params) {
+
+        fetch('/api/'+ currentSignalType + '/' + currentSignalName + '/', {
             method: "PUT",
             body: JSON.stringify(params),
             headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -79,15 +82,15 @@ const SignalScreen = () => {
                             signal type
                         </Typography>
 
-                        <SignalButton name={"Random signal"} onClick={() => setConfig(setShowRS, 'random')}  icon={<CasinoOutlinedIcon sx={{ fontSize: 20, fontFamily: '"Roboto", sans-serif'}} />}/>
+                        <SignalButton name={"Random signal"} onClick={() => setCurrentSignalType('random')}  icon={<CasinoOutlinedIcon sx={{ fontSize: 20, fontFamily: '"Roboto", sans-serif'}} />}/>
 
-                        <SignalButton name={"Sinus signal"} onClick={() => setConfig(setShowSS, 'sinus')}  icon={<CasinoOutlinedIcon sx={{ fontSize: 50}} />}/>
+                        <SignalButton name={"Sinus signal"} onClick={() => setCurrentSignalType('sinus')}  icon={<CasinoOutlinedIcon sx={{ fontSize: 50}} />}/>
 
-                        <SignalButton name={"Cosinus signal"} onClick={() => setConfig(setShowCS, 'cosinus')}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}}/>}/>
+                        <SignalButton name={"Cosinus signal"} onClick={() => setCurrentSignalType('cosinus')}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}}/>}/>
 
-                        <SignalButton name={"Spiked signal"} onClick={() => setConfig(setShowSWS, 'spiked')}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}} />}/>
+                        <SignalButton name={"Spiked signal"} onClick={() => setCurrentSignalType('spiked')}  icon={<AutoGraphOutlinedIcon sx={{ fontSize: 50}} />}/>
 
-                        <SignalButton name={"Normally distributed signal"} onClick={() => setConfig(setShowNS, 'emphasized')}  icon={<TimelineOutlinedIcon sx={{ fontSize: 30}} />}/>
+                        <SignalButton name={"Normally distributed signal"} onClick={() => setCurrentSignalType('emphasized')}  icon={<TimelineOutlinedIcon sx={{ fontSize: 30}} />}/>
 
                     </Stack>
                 </Grid>
@@ -99,13 +102,12 @@ const SignalScreen = () => {
                         <Typography component="div" sx={{ fontSize: 25, fontWeight: "bold", color: purple[900], marginTop:"0.1vw", marginBottom:"0.5vw" }}>
                             signal configuration
                         </Typography>
-                        {showrs ? (<RandomSignal handleChange={(e) => {}} numberformat={value.numberformat}/>)
-                            : showss ? <SinusSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
-                                : showcs ? <CosinusSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
-                                    : showsws ? <SpikesSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
-                                        : showns ? <NormallyDistributed handleChange={(e) => {}} numberformat={value.numberformat}/>
+                        {currentSignalType == 'random' ? (<RandomSignal handleChange={(e) => {}} numberformat={value.numberformat}/>)
+                            : currentSignalType == 'sinus' ? <SinusSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
+                                : currentSignalType == 'cosinus' ? <CosinusSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
+                                    : currentSignalType == 'spiked' ? <SpikesSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
+                                        : currentSignalType == 'emphasized' ? <NormallyDistributed handleChange={(e) => {}} numberformat={value.numberformat}/>
                                             : null }
-                        <SignalButton name={"Generate"} onClick={() => putReq(currentSignalType,RandomSignal.streamName,{lowerBoundary:1, upperBoundary:10, transmissionFrequency:1})} icon={<></>}/>
                     </Stack>
                 </Grid>
             </Grid>
