@@ -31,45 +31,42 @@ const SignalScreen = () => {
         setShowSWS(false)
         current(true)
         currentSignalType=type
+        console.log(currentSignalType)
     }
 
     var dataStreams = [
         "test1","test2","test3","test4","test5","test6"
     ]
 
-    var currentSignalType
+    var currentSignalType;
 
     function putReq(streamType, streamName, params) {
-        
-          fetch('/api/'+ streamType + '/' + streamName + '/', {
+        console.log(streamName)
+        fetch('/api/'+ streamType + '/' + streamName + '/', {
             method: "PUT",
             body: JSON.stringify(params),
             headers: {"Content-type": "application/json; charset=UTF-8"}
-          })
-          .then(response => response.json()) 
-          .then(json => console.log(json));
+        })
+        .then(response => response.json()) 
+        .then(json => console.log(json));
     };
     
     function patchReq(streamType, streamName) {
-
         fetch('/api/'+ streamType + '/' + streamName + '/', {
             method: "PATCH",
             headers: {"Content-type": "application/json; charset=UTF-8"}
-          })
-          .then(response => response.json()) 
-          .then(json => console.log(json));
-
+        })
+        .then(response => response.json()) 
+        .then(json => console.log(json));
     }
 
     function deleteReq(streamType, streamName) {
-
         fetch('/api/'+ streamType + '/' + streamName + '/', {
             method: "DELETE",
             headers: {"Content-type": "application/json; charset=UTF-8"}
-          })
-          .then(response => response.json()) 
-          .then(json => console.log(json));
-
+        })
+        .then(response => response.json()) 
+        .then(json => console.log(json));
     }
     
 
@@ -108,7 +105,7 @@ const SignalScreen = () => {
                                     : showsws ? <SpikesSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
                                         : showns ? <NormallyDistributed handleChange={(e) => {}} numberformat={value.numberformat}/>
                                             : null }
-                        <SignalButton name={"Generate"} onClick={() => putReq(currentSignalType,"kevin",{lowerBoundary:1, upperBoundary:10, transmissionFrequency:1})} icon={<></>}/>
+                        <SignalButton name={"Generate"} onClick={() => putReq(currentSignalType,RandomSignal.streamName,{lowerBoundary:1, upperBoundary:10, transmissionFrequency:1})} icon={<></>}/>
                     </Stack>
                 </Grid>
             </Grid>
