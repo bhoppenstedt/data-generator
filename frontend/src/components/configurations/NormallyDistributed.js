@@ -18,6 +18,15 @@ const commonStyles = {
 export const NormallyDistributed = (props) => {
     return (
       <Stack container spacing={4} direction="column" alignItems="center" justifyContent="center">
+
+                  <TextField 
+                  id="outlined-basic" 
+                  label="Name" 
+                  variant="outlined" 
+                  sx={{pt: 1, minWidth: 300}}
+                  onChange={handleChangeName}
+                  />
+                  
                   <TextField
                     variant="outlined"
                     sx={{pt: 1, minWidth: 300 }}
