@@ -23,7 +23,7 @@ export const SpikesSignal = (props) => {
                   label="Name" 
                   variant="outlined" 
                   sx={{pt: 1, minWidth: 300}}
-                  onChange={handleChangeName}
+                  //onChange={handleChangeName}
                   />
                   
                   <TextField
