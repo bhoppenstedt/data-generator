@@ -18,41 +18,7 @@ import { useState } from "react";
 
 const SignalScreen = () => {
     const [currentSignalType, setCurrentSignalType] = useState('random')
-    const [currentSignalName, setCurrentSignalName] = useState('fdsf')
-
-    const [randomSignal, setRandomSignal] = useState({
-        lowerBoundary:0,
-        upperBoundary:10,
-        transmissionFrequency:1
-    });
-
-    const [sinusSignal, setSinusSignal] = useState({
-        frequency:0,
-        amplitude:0,
-        transmissionFrequency:1
-    });
-
-    const [cosinusSignal, setCosinusSignal] = useState({
-        frequency:0,
-        amplitude:0,
-        transmissionFrequency:1
-    });
-
-    const [showsws, setShowSWS] = useState(true);
-    const [showns, setShowNS] = useState(true);
     const [value] = useState("");
-
-
-    function putReq(params) {
-
-        fetch('/api/'+ currentSignalType + '/' + currentSignalName + '/', {
-            method: "PUT",
-            body: JSON.stringify(params),
-            headers: {"Content-type": "application/json; charset=UTF-8"}
-        })
-        .then(response => response.json()) 
-        .then(json => console.log(json));
-    };
     
     function patchReq(streamType, streamName) {
         fetch('/api/'+ streamType + '/' + streamName + '/', {
