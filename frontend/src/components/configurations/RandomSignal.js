@@ -20,11 +20,22 @@ const commonStyles = {
 
 export const RandomSignal = (props) => {
 
-  const handleChangeName = e => {
+  const handleNameChange = e => {
     setSignalName(e.target.value)
   };
+  const handleLBChange = e => {
+    setLowerBoundary(e.target.value)
+  };
+  const handleUBChange = e => {
+    setUpperBoundary(e.target.value)
+  };
+  const handleTFChange = e => {
+    setTransmissionFrequency(e.target.value)
+  };
 
-  function putReq(params) {
+  function putReq() {
+    
+    var params={lowerBoundary,upperBoundary,transmissionFrequency}
     fetch('/api/random/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
@@ -46,7 +57,7 @@ export const RandomSignal = (props) => {
                   label="Name" 
                   variant="outlined" 
                   sx={{pt: 1, minWidth: 300}}
-                  onChange={handleChangeName}
+                  onChange={handleNameChange}
                   />
 
                   <TextField 
@@ -60,7 +71,7 @@ export const RandomSignal = (props) => {
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
-                    //onChange={handleChangelB}
+                    onChange={handleLBChange}
                   />
                   <TextField
                     variant="outlined"
@@ -73,7 +84,7 @@ export const RandomSignal = (props) => {
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
-                    //onChange={handleChangeuB}
+                    onChange={handleUBChange}
                   />
                   <TextField
                     variant="outlined"
@@ -86,9 +97,9 @@ export const RandomSignal = (props) => {
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
-                   // onChange={handleChangetF}
+                   onChange={handleTFChange}
                   />
-                  <SignalButton name={"Generate"} onClick={() => putReq({lowerBoundary:1, upperBoundary:10, transmissionFrequency:1})} icon={<></>}/>
+                  <SignalButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
               </Stack>
     )
 }
