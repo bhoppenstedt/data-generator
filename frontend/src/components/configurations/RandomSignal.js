@@ -1,21 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import {Grid, Stack} from "@mui/material";
-import Card from "@mui/material/Card";
-import { lightBlue,purple } from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
+import React, { useState } from "react";
 import { NumberFormatCustom } from "../NumberFormatCustom";
-import SignalScreen from "../SignalScreen";
-import {SignalButton} from "../SignalButton";
-
-const commonStyles = {
-  bgcolor: 'background.paper',
-  m: 1,
-  border: 1,
-  width: '5rem',
-  height: '5rem',
-};
+import { GenerateButton } from "../GenerateButton.js";
 
 
 export const RandomSignal = (props) => {
@@ -51,19 +38,19 @@ export const RandomSignal = (props) => {
   const [transmissionFrequency, setTransmissionFrequency] = useState(1)
 
       return (
-              <Stack container spacing={6} direction="column" alignItems="center" justifyContent="center">
+              <Stack container spacing={'15px'} direction="column" alignItems="center" justifyContent="center" sx={{width: '95%'}}>
                   <TextField 
                   id="name" 
-                  label="Name" 
-                  variant="outlined" 
-                  sx={{pt: 1, minWidth: 300}}
+                  label="name" 
+                  variant="outlined"
+                  size="normal"
                   onChange={handleNameChange}
+                  sx={{outlineColor: "#9496F5", marginTop: "5px"}}
                   />
 
                   <TextField 
-                    variant="outlined" 
-                    sx={{pt: 1, minWidth: 300}}
-                    label="Lower boundary"
+                    variant="outlined"
+                    label="lower boundary"
                     value={props.numberformat}
                     onChange={props.handleChange}
                     name="numberformat"
@@ -75,31 +62,30 @@ export const RandomSignal = (props) => {
                   />
                   <TextField
                     variant="outlined"
-                    sx={{ pt: 1, minWidth: 300 }}
-                    label="Upper boundary"
+                    label="upper boundary"
                     value={props.numberformat}
                     onChange={props.handleChange}
                     name="numberformat"
-                    id="formatted-numberformat-input"
+                    id="upperBoundary"
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
                     onChange={handleUBChange}
                   />
+
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Transmission frequency"
+                    label="transmission frequency"
                     value={props.numberformat}
                     onChange={props.handleChange}
                     name="numberformat"
-                    id="formatted-numberformat-input"
+                    id="transmissionFrequency"
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
                    onChange={handleTFChange}
                   />
-                  <SignalButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
+                  <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
               </Stack>
     )
 }

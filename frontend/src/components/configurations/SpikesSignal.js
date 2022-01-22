@@ -1,18 +1,7 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import { Grid, Stack, Card } from "@mui/material";
-import { lightBlue, purple} from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
+import {Stack} from "@mui/material";
 import { NumberFormatCustom } from "../NumberFormatCustom";
-
-const commonStyles = {
-  bgcolor: 'background.paper',
-  m: 1,
-  border: 1,
-  width: '5rem',
-  height: '5rem',
-};
 
 export const SpikesSignal = (props) => {
     return (

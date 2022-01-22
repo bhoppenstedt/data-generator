@@ -1,30 +1,28 @@
 import React from "react";
-import Card from "@mui/material/Card";
-import { deepPurple, lightBlue } from "@mui/material/colors";
-import CasinoOutlinedIcon from "@mui/icons-material/CasinoOutlined";
 import Button from "@mui/material/Button";
 import { ThemeProvider, makeStyles } from '@mui/styles';
-import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import {Container, Paper} from "@mui/material";
-import { fontWeight } from "@mui/system";
+import { ToggleButton } from "@mui/material";
+
 
 const theme = {
     background: 'linear-gradient(45deg, #D8E7FB 100%, #BDBFFE 100%)',
   };
 
+var selected = false;
+
 const useStyles = makeStyles((theme) => ({
     root: {
-        background: 'linear-gradient( to bottom, rgba(216,231,251,1), rgba(189,191,254,1))',
+        background: selected ?'linear-gradient( to bottom, rgba(216,231,251,1), rgba(189,191,254,1))' : 'linear-gradient( to bottom, rgba(255,255,255,1), rgba(232,232,232,1))' ,
         color: '#3F0092',
         boxShadow: '0px 3px 6px 0px rgba(0, 0, 0, .16)',
         height: 70,
         fontSize: 20,
-        fontFamily: 'Roboto, sans-serif',
-        fontWeight: "normal",
+        fontFamily: 'Open Sans, sans-serif',
+        fontWeight: "600",
         textTransform: "inherit",
         justifyContent: "left",
-        width: "95%",
+        width: "90%",
     
     }
 }));

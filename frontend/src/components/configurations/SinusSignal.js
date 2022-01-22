@@ -1,32 +1,25 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import { Stack } from "@mui/material";
-import Card from "@mui/material/Card";
-import {lightBlue,purple } from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
+import { Stack, Grid } from "@mui/material";
 import { NumberFormatCustom } from "../NumberFormatCustom";
-
-const commonStyles = {
-  bgcolor: 'background.paper',
-  m: 1,
-  border: 1,
-  width: '5rem',
-  height: '5rem',
-};
+import { SignalButton } from "../SignalButton";
 
 export const SinusSignal = (props) => {
     return (
-      <Stack container spacing={6} direction="column" alignItems="center" justifyContent="center">
-      
+      <Grid container item xs={12} alignContent={"center"} alignItems={"center"} justifyContent={"center"}>
+                  
+        
+
+                  <Grid item xs={12}>
                   <TextField 
                   id="outlined-basic" 
                   label="Name" 
                   variant="outlined" 
-                  sx={{pt: 1, minWidth: 300}}
+                  
                   //onChange={handleChangeName}
                   />
-
+</Grid>
+<Grid item xs={12}>
                   <TextField
                     variant="outlined"
                     sx={{pt: 1, minWidth: 300 }}
@@ -39,6 +32,8 @@ export const SinusSignal = (props) => {
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+</Grid>
+<Grid item xs={12}>
                   <TextField
                     variant="outlined"
                     sx={{pt: 1, minWidth: 300 }}
@@ -51,6 +46,8 @@ export const SinusSignal = (props) => {
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+</Grid>
+<Grid item xs={12}>
                   <TextField
                     variant="outlined"
                     sx={{pt: 1, minWidth: 300 }}
@@ -63,7 +60,9 @@ export const SinusSignal = (props) => {
                       inputComponent: NumberFormatCustom,
                     }}
                   />
-                </Stack>
+                  </Grid>
+                  
+                </Grid>
         
     )
 }

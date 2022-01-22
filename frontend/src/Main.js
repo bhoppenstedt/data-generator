@@ -9,9 +9,9 @@ const Main = (props) => {
     const theme = useTheme();
     const colorMode = React.useContext(props.ColorModeContext);
     return (
-        <Grid container>
+        <Grid container={true}>
             <Grid item xs ={12}>
-                <Header title="Data generator" colorMode={colorMode} theme={theme} />
+                <Header title="Data generator" colorMode={colorMode} theme={theme}/>
             </Grid>
             <Grid item xs ={1}></Grid>
             <Grid item xs ={5} sx={{pt:4}}>
