@@ -12,7 +12,11 @@ import React, { useEffect, useState } from "react";
 import StreamBoxElem from "./StreamBoxElem.js"
 
 var array = [];
-const streamsServer = JSON.stringify(fetch('/api/signals/').then(res => res.json()).then(dataJSON => JSON.parse(dataJSON)).then(data => array = Array.from(data)).then(() => console.log(array)))
+const streamsServer = JSON.stringify(fetch('/api/signals/')
+                        .then(res => res.json())
+                        .then(dataJSON => JSON.parse(dataJSON))
+                        .then(data => array = Array.from(data))
+                        .then(() => console.log(array)));
 
 
 const streams2= [
