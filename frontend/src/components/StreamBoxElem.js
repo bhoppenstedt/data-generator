@@ -14,7 +14,7 @@ import { color } from "@mui/system";
 
 const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningState}) => {
     return (
-    <Card sx={{ height: "100px", background: 'linear-gradient( to bottom, rgba(255,255,255,1), rgba(232,232,232,1))', boxShadow: '0px 3px 6px 0px rgba(0, 0, 0, .16)', marginBottom: "10px"}}>
+    <Card sx={{ height: "100px", background: 'linear-gradient( to bottom, rgba(255,255,255,0.5), rgba(232,232,232,1))', boxShadow: '0px 3px 6px 0px rgba(0, 0, 0, .16)', marginBottom: "10px"}}>
         <CardContent>
             <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 20, fontWeight: "600" }} color="rgba(1,1,1,1)" gutterBottom>
                 {name}
@@ -40,7 +40,7 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningStat
                     </Typography>
                 </Grid>
                 <Grid item xs={4} align={"right"}>
-                    <Typography sx={{ fontSize: 15, color: runningState ? "#5FA500" : "#FF0000", align: "left", lineHeight: "normal"}}>
+                    <Typography sx={{ fontSize: 15,fontWeight: "600",  color: runningState ? "#5FA500" : "#9D9D9D", align: "left", lineHeight: "normal"}}>
                         {runningState ? "Running..." : "Stopped"}
                     </Typography>
                 </Grid>
