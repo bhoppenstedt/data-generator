@@ -27,16 +27,16 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningStat
                     </Typography>
 
                     <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
-                        Argument1: {argument1}
+                        Argument 1: {argument1}
                     </Typography>
                 </Grid>
                 <Grid item xs={4}>
                     <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
-                        Argument2: {argument2}
+                        Argument 2: {argument2}
                     </Typography>
 
                     <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
-                        Argument3: {argument3}
+                        Argument 3: {argument3}
                     </Typography>
                 </Grid>
                 <Grid item xs={4} align={"right"}>

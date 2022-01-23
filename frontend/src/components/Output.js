@@ -19,20 +19,20 @@ const streamsServer = JSON.stringify(fetch('/api/signals/')
                         .then(() => console.log(array)));
 
 
-const streams2= [
+const empty= [
     {
-        "lowerBoundary": 2,
-        "upperBoundary": 55,
-        "transmissionFrequency": 6.0,
-        "type": "random",
-        "running": true,
-        "name": "test1"
+        "lowerBoundary": "-",
+        "upperBoundary": "-",
+        "transmissionFrequency": "-",
+        "type": "-",
+        "running": false,
+        "name": "no signal running"
     }
 ]
 
 const Output = () => {
     
-    const [streams, setStreams] = useState([{}]);
+    const [streams, setStreams] = useState(empty);
 
     const streamElements = streams.map((stream) => 
     <StreamBoxElem name={stream.name} type={stream.type} argument1={stream.lowerBoundary} argument2={stream.upperBoundary} argument3={stream.transmissionFrequency} runningState={stream.running}/>);
@@ -50,7 +50,7 @@ const Output = () => {
 
                             <Grid item xs={6} justifyContent="left" alignItems="left">
                                 <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900], margin: "10px" }} align={"left"}>
-                                    active streams:
+                                    active streams: {(streams.filter(green => streams.running == true)).length} / {streams.length}
                                 </Typography>
                             </Grid>
 
