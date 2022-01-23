@@ -10,10 +10,10 @@ app = Flask(__name__)
 api = Api(app)
 
 # Create dictionary in which the objects of the created signals are stored
-running_signal_objects = {}
+running_signal_objects = []
 
 # Create dictionary in which the arguments of the created signals are stored
-running_signal_args = {}
+running_signal_args = []
 
 # Add required arguments to each signal via the reqparse module 
 random_arguments = reqparse.RequestParser()
@@ -58,7 +58,7 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            #producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+            producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
         elif(signal_type == "sinus"):
             args = sinus_arguments.parse_args()
@@ -97,13 +97,14 @@ class HandleSignals(Resource):
 
 
         # Add the signal object to the objects dictionary 
-        #running_signal_objects[signal_name] = producer
+        running_signal_objects.append(producer)
 
         # Add the arguments of the signal to the args dictionary 
-        running_signal_args[signal_name] = args
+        running_signal_args.append(args)
 
         # Return all existing signals
-        return json.dumps(running_signal_args)
+        return running_signal_args
+
     def patch(self, signal_type,signal_name):
 
         #Check if the given signal type is correct
@@ -115,7 +116,7 @@ class HandleSignals(Resource):
         running_signal_objects[signal_name].patch()
 
         # Return all existing signals
-        return json.dumps(running_signal_args)
+        return running_signal_args
 
     def delete(self, signal_type, signal_name):
 
@@ -131,7 +132,7 @@ class HandleSignals(Resource):
         del running_signal_args[signal_name]
 
         # Return all existing signals
-        return json.dumps(running_signal_args)
+        return running_signal_args
 
 
 class GetAllSignals(Resource):
