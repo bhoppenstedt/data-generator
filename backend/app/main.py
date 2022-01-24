@@ -160,7 +160,7 @@ class GetAllSignals(Resource):
 
     # Return all existing signals
     def get(self):
-        return running_signal_args
+        return json.dumps(running_signal_args)
 
 # Add endpoint for GET requests
 api.add_resource(GetAllSignals, '/api/signals/')
