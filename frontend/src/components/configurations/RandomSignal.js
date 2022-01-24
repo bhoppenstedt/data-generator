@@ -24,7 +24,7 @@ export const RandomSignal = (props) => {
   function putReq() {
     
     var params={lowerBoundary,upperBoundary,transmissionFrequency}
-    fetch('/api/random/' + signalName + '/', {
+    fetch('http://localhost:5000/api/random/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}

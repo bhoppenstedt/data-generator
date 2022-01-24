@@ -3,12 +3,14 @@ from cProfile import run
 import json
 from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
+from flask_cors import CORS 
 from numpy import add
 from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
 
 # Initialize Server and API
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Create dictionary in which the objects of the created signals are stored
 running_signal_objects = {}
