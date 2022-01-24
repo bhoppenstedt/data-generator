@@ -6,7 +6,7 @@ import { GenerateButton } from "../GenerateButton.js";
 import { Typography } from "@mui/material";
 
 
-export const RandomSignal = (props) => {
+export function RandomSignal ({streams, setStreams}) {
 
   const handleNameChange = e => {
     setSignalName(e.target.value)
@@ -21,10 +21,17 @@ export const RandomSignal = (props) => {
     setTransmissionFrequency(e.target.value)
   };
 
+  function updateArray() {
+    var fetchArray = JSON.stringify(fetch('/api/signals/')
+                        .then(res => res.json())
+                        .then(dataJSON => JSON.parse(dataJSON))
+                        .then(data => setStreams(Array.from(data))));
+}
+
   function putReq() {
     
     var params={lowerBoundary,upperBoundary,transmissionFrequency}
-    fetch('http://localhost:5000/api/random/' + signalName + '/', {
+    fetch('/api/random/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -32,6 +39,11 @@ export const RandomSignal = (props) => {
     .then(response => response.json()) 
     .then(json => console.log(json));
   };
+
+  function wrapper() {
+    putReq();
+    updateArray();
+  }
   
   const [signalName, setSignalName] = useState('')
   const [lowerBoundary, setLowerBoundary] = useState(0)
@@ -59,8 +71,6 @@ export const RandomSignal = (props) => {
                   <TextField 
                     variant="outlined"
                     label="value"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
                     name="numberformat"
                     id="lowerBoundary"
                     InputProps={{
@@ -74,8 +84,7 @@ export const RandomSignal = (props) => {
                   <TextField
                     variant="outlined"
                     label="value"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
+                   
                     name="numberformat"
                     id="upperBoundary"
                     InputProps={{
@@ -90,8 +99,7 @@ export const RandomSignal = (props) => {
                   <TextField
                     variant="outlined"
                     label="value"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
+                    
                     name="numberformat"
                     id="transmissionFrequency"
                     InputProps={{
@@ -99,7 +107,7 @@ export const RandomSignal = (props) => {
                     }}
                    onChange={handleTFChange}
                   />
-                  <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
+                  <GenerateButton name={"Generate"} onClick={() => wrapper()} icon={<></>}/>
               </Stack>
     )
 }

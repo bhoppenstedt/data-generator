@@ -15,7 +15,7 @@ import { SpikesSignal } from "./configurations/SpikesSignal";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { SignalButton } from "./SignalButton";
 
-const SignalScreen = () => {
+function SignalScreen ({streams, setStreams}) {
     const [currentSignalType, setCurrentSignalType] = useState('random')
     const [value] = useState("");
     
@@ -70,7 +70,7 @@ const SignalScreen = () => {
                             signal configuration
                         </Typography>
                     
-                        {currentSignalType === 'random' ? (<RandomSignal handleChange={(e) => {}} numberformat={value.numberformat}/>)
+                        {currentSignalType === 'random' ? (<RandomSignal streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>)
                             : currentSignalType === 'sinus' ? <SinusSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
                             : currentSignalType === 'cosinus' ? <CosinusSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
                             : currentSignalType === 'spiked' ? <SpikesSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
