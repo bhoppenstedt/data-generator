@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import { NumberFormatCustom } from "../NumberFormatCustom";
 import { GenerateButton } from "../GenerateButton.js";
+import { Typography } from "@mui/material";
 
 
 export const RandomSignal = (props) => {
@@ -38,19 +39,26 @@ export const RandomSignal = (props) => {
   const [transmissionFrequency, setTransmissionFrequency] = useState(1)
 
       return (
-              <Stack container spacing={'15px'} direction="column" alignItems="center" justifyContent="center" sx={{width: '95%'}}>
+              <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
+                
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            signal name:
+                  </Typography>
                   <TextField 
                   id="name" 
                   label="name" 
                   variant="outlined"
                   size="normal"
                   onChange={handleNameChange}
-                  sx={{outlineColor: "#9496F5", marginTop: "5px"}}
+                  sx={{outlineColor: "#9496F5"}}
                   />
 
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            lower boundary:
+                  </Typography>
                   <TextField 
                     variant="outlined"
-                    label="lower boundary"
+                    label="value"
                     value={props.numberformat}
                     onChange={props.handleChange}
                     name="numberformat"
@@ -60,9 +68,12 @@ export const RandomSignal = (props) => {
                     }}
                     onChange={handleLBChange}
                   />
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            upper boundary:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    label="upper boundary"
+                    label="value"
                     value={props.numberformat}
                     onChange={props.handleChange}
                     name="numberformat"
@@ -73,9 +84,12 @@ export const RandomSignal = (props) => {
                     onChange={handleUBChange}
                   />
 
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            transmission frequency:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    label="transmission frequency"
+                    label="value"
                     value={props.numberformat}
                     onChange={props.handleChange}
                     name="numberformat"

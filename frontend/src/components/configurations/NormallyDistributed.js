@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
 import { NumberFormatCustom } from "../NumberFormatCustom";
 import { GenerateButton } from '../GenerateButton';
+import { Typography } from "@mui/material";
 
 export const NormallyDistributed = (props) => {
 
@@ -36,20 +37,23 @@ export const NormallyDistributed = (props) => {
   const [scale, setScale] = useState(15)
   const [transmissionFrequency, setTransmissionFrequency] = useState(1)
     return (
-      <Stack container spacing={4} direction="column" alignItems="center" justifyContent="center">
-
+      <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            signal name:
+                  </Typography>
                   <TextField 
                   id="outlined-basic" 
-                  label="Name" 
-                  variant="outlined" 
-                  sx={{pt: 1, minWidth: 300}}
+                  label="name" 
+                  variant="outlined"
                   onChange={handleNameChange}
                   />
 
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            expected value:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Expected value"
+                    label="value"
                     value={props.numberformat}
                     onChange={handleCEChange}
                     name="numberformat"
@@ -58,10 +62,13 @@ export const NormallyDistributed = (props) => {
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            standard deviation:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Standard Deviation"
+                    label="value"
                     value={props.numberformat}
                     onChange={handleSCChange}
                     name="numberformat"
@@ -71,10 +78,12 @@ export const NormallyDistributed = (props) => {
                     }}
                   />
 
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            transmission frequency:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Transmission frequency"
+                    label="value"
                     value={props.numberformat}
                     onChange={handleTFChange}
                     name="numberformat"
