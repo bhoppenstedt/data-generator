@@ -50,7 +50,7 @@ export const RandomSignal = (props) => {
                   variant="outlined"
                   size="normal"
                   onChange={handleNameChange}
-                  sx={{outlineColor: "#9496F5"}}
+                  sx={{color: "#9496F5"}}
                   />
 
                   <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>

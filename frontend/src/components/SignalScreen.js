@@ -61,7 +61,7 @@ const SignalScreen = () => {
                 </Grid>
 
                 
-                <Divider orientation="vertical" flexItem style={{marginLeft:"-2px",marginLeft:"-2px", marginTop: "10px", width: "2px", height: "770px", color: "rgba(161,165,249,1)", opacity: "100%", align:"center"}} />
+                <Divider fullWodth orientation="vertical" flexItem style={{marginLeft:"-2px",marginLeft:"-2px", marginTop: "10px", width: "2px", height: "770px", color: "rgba(161,165,249,1)", opacity: "100%", align:"center"}} />
                 
 
                 <Grid item xs={6}>
