@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
 import { NumberFormatCustom } from "../NumberFormatCustom";
 import { GenerateButton } from '../GenerateButton';
+import { Typography } from '@mui/material';
 
 export const CosinusSignal = (props) => {
 
@@ -37,20 +38,24 @@ export const CosinusSignal = (props) => {
   const [transmissionFrequency, setTransmissionFrequency] = useState(1)
 
     return (
-      <Stack container spacing={6} direction="column" alignItems="center" justifyContent="center">
+      <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
         
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            signal name:
+                  </Typography>
                   <TextField 
                   id="outlined-basic" 
-                  label="Name" 
+                  label="name" 
                   variant="outlined" 
-                  sx={{pt: 1, minWidth: 300}}
                   onChange={handleNameChange}
                   />
 
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            frequency:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{ pt: 1, minWidth: 300 }}
-                    label="Frequence"
+                    label="value"
                     value={props.numberformat}
                     onChange={handleFRChange}
                     name="numberformat"
@@ -59,10 +64,13 @@ export const CosinusSignal = (props) => {
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            amplitude:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{ pt: 1, minWidth: 300 }}
-                    label="Amplitude"
+                    label="value"
                     value={props.numberformat}
                     onChange={handleAMChange}
                     name="numberformat"
@@ -71,10 +79,13 @@ export const CosinusSignal = (props) => {
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            transmission frequency:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Transmission frequency"
+                    label="value"
                     value={props.numberformat}
                     onChange={handleTFChange}
                     name="numberformat"

@@ -39,7 +39,7 @@ const Output = () => {
 
     return (
             <Card variant="outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9', marginLeft: "1vw", marginRight: "8vw", height: "85vh", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
-                <Grid height="100%" container  justifyContent="center" alignItems="center">
+                <Grid height="87%" container  justifyContent="center" alignItems="center">
                     <Grid item xs={12}>
                         <Typography align="center" component="div" sx={{ fontSize: 25, fontWeight: "bold", color: '#3F0092', marginTop:"0.1vw", marginBottom:"0.5vw" }}>
                             datastreams
@@ -78,7 +78,7 @@ const Output = () => {
                         
                     </Grid>
                     <Grid height="100%" item xs={12} sx={{overflowY:"auto"}}>
-                        <Paper alignItems="center" sx={{paddingLeft:"12px", paddingRight:"12px", paddingBottom:"100px", width: "100%", boxShadow:"0px 0px 0px 0px rgba(0, 0, 0, 0)"}}>
+                        <Paper alignItems="center" sx={{paddingLeft:"12px", paddingRight:"12px", width: "100%", boxShadow:"0px 0px 0px 0px rgba(0, 0, 0, 0)"}}>
                             {streamElements}
                         </Paper>
                     </Grid>
