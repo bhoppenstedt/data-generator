@@ -1,4 +1,5 @@
 # Import installed packages
+from cProfile import run
 import json
 from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
@@ -10,9 +11,9 @@ app = Flask(__name__)
 api = Api(app)
 
 # Create dictionary in which the objects of the created signals are stored
-running_signal_objects = []
+running_signal_objects = {}
 
-# Create dictionary in which the arguments of the created signals are stored
+# Create array in which the arguments of the created signals are stored
 running_signal_args = []
 
 # Add required arguments to each signal via the reqparse module 
@@ -48,8 +49,9 @@ class HandleSignals(Resource):
     def put(self, signal_type, signal_name):
 
         # Check if the the given name is already in use 
-        if signal_name in running_signal_args:
-            return "Signal name already in use"
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                return "Signal name already in use"
 
         # Add the arguments of the signal to the args dictionary and create the correct producer object 
         if(signal_type == "random"):
@@ -97,7 +99,7 @@ class HandleSignals(Resource):
 
 
         # Add the signal object to the objects dictionary 
-        running_signal_objects.append(producer)
+        running_signal_objects[signal_name] = producer 
 
         # Add the arguments of the signal to the args dictionary 
         running_signal_args.append(args)
@@ -106,30 +108,49 @@ class HandleSignals(Resource):
         return running_signal_args
 
     def patch(self, signal_type,signal_name):
+        
+        # Check if a signal with the given name exists 
+        if signal_name not in running_signal_objects: 
+            return 'Signal name doesnt exist'
 
-        #Check if the given signal type is correct
-        if running_signal_args[signal_name]["type"] != signal_type:
-            return "invalid request for this URL"
+        # Check if the given signal type is correct
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                if signal_type != index['type']:
+                    return 'Invalid request for this URL'
 
-        # Start/Stop the signal. Return true if successful 
-        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
+        # Adjust the running flag in args dictionary 
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                index['running'] = not index['running']
+        
+        # Start/Stop the signal
         running_signal_objects[signal_name].patch()
 
         # Return all existing signals
         return running_signal_args
 
     def delete(self, signal_type, signal_name):
-
+        
+        # Check if a signal with the given name exists 
+        if signal_name not in running_signal_objects: 
+            return 'Signal name doesnt exist'
+        
         # Check if the given signal type is correct
-        if running_signal_args[signal_name]["type"] != signal_type:
-            return "invalid request for this URL "
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                if signal_type != index['type']:
+                    return 'Invalid request for this URL'
 
         # Stop signal
         running_signal_objects[signal_name].running = False
 
         # Delete the signal from the dictionaries
         del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
+
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                running_signal_args.remove(index)
 
         # Return all existing signals
         return running_signal_args
