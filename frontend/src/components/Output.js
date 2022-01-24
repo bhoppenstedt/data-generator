@@ -11,20 +11,7 @@ import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
 import StreamBoxElem from "./StreamBoxElem.js"
 
-const empty= [
-    {
-        "lowerBoundary": "-",
-        "upperBoundary": "-",
-        "transmissionFrequency": "-",
-        "type": "-",
-        "running": false,
-        "name": "no signal running"
-    }
-]
-
-const Output = () => {
-    
-    const [streams, setStreams] = useState(empty);
+function Output ({streams, setStreams}) {
 
     function updateArray() {
         var fetchArray = JSON.stringify(fetch('/api/signals/')
