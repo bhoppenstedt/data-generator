@@ -11,14 +11,6 @@ import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
 import StreamBoxElem from "./StreamBoxElem.js"
 
-var array = [];
-const streamsServer = JSON.stringify(fetch('/api/signals/')
-                        .then(res => res.json())
-                        .then(dataJSON => JSON.parse(dataJSON))
-                        .then(data => array = Array.from(data))
-                        .then(() => console.log(array)));
-
-
 const empty= [
     {
         "lowerBoundary": "-",
@@ -33,6 +25,13 @@ const empty= [
 const Output = () => {
     
     const [streams, setStreams] = useState(empty);
+
+    function updateArray() {
+        var fetchArray = JSON.stringify(fetch('/api/signals/')
+                            .then(res => res.json())
+                            .then(dataJSON => JSON.parse(dataJSON))
+                            .then(data => setStreams(Array.from(data))));
+    }
 
     const streamElements = streams.map((stream) => 
     <StreamBoxElem name={stream.name} type={stream.type} argument1={stream.lowerBoundary} argument2={stream.upperBoundary} argument3={stream.transmissionFrequency} runningState={stream.running}/>);
@@ -59,7 +58,7 @@ const Output = () => {
                                         <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900]}} align={"right"}>
                                             start all
                                         </Typography>
-                                        <IconButton onClick={ () => setStreams(array)}>
+                                        <IconButton onClick={ () => updateArray()}>
                                             <PlayCircleOutlineOutlinedIcon
                                                 sx={{ fontSize: 30, color: purple[900] }}
                                             />
