@@ -27,7 +27,7 @@ function Output ({streams, setStreams}) {
             <Card variant="outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9', marginLeft: "1vw", marginRight: "8vw", height: "85vh", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
                 <Grid height="87%" container  justifyContent="center" alignItems="center">
                     <Grid item xs={12}>
-                        <Typography align="center" component="div" sx={{ fontSize: 25, fontWeight: "bold", color: '#3F0092', marginTop:"0.1vw", marginBottom:"0.5vw" }}>
+                        <Typography align="center" component="div" sx={{ fontFamily:'Open Sans, sans-serif', fontSize: 25, fontWeight: "700", color: '#3F0092', marginTop:"0.1vw", marginBottom:"0.5vw" }}>
                             datastreams
                         </Typography>
                     </Grid>

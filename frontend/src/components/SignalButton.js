@@ -13,7 +13,6 @@ var selected = false;
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        background: selected ?'linear-gradient( to bottom, rgba(216,231,251,1), rgba(189,191,254,1))' : 'linear-gradient( to bottom, rgba(255,255,255,1), rgba(232,232,232,1))' ,
         color: '#3F0092',
         boxShadow: '0px 3px 6px 0px rgba(0, 0, 0, .16)',
         height: 70,
@@ -22,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: "600",
         textTransform: "inherit",
         justifyContent: "left",
-        width: "90%",
-    
+        width: "90%",  
+          
     }
 }));
 
@@ -31,7 +30,7 @@ export function SignalButton(props){
     return (
             <Stack direction="row" spacing={1} justifyContent="center" alignItems="center" alignSelf={"center"} sx={{width: '95%'}}>
                 <ThemeProvider theme={theme}>
-                    <Button fullWidth className={useStyles().root} variant="contained" onClick={props.onClick}>
+                    <Button fullWidth disableRipple className={useStyles().root} variant="contained" onClick={props.onClick} sx={{background: props.selected ?'linear-gradient( to bottom, rgba(216,231,251,1), rgba(189,191,254,1))' : 'linear-gradient( to bottom, rgba(255,255,255,1), rgba(232,232,232,1))' }}>
                         {props.name}
                     </Button>
                 </ThemeProvider>
