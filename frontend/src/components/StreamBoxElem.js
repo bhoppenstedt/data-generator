@@ -23,20 +23,20 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningStat
             <Grid container item xs={12} container direction="row">
                 <Grid item xs={4}>
                     <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
-                        Type: {type}
+                        signaltype: {type}
                     </Typography>
 
                     <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
-                        Argument 1: {argument1}
+                        lower boundary: {argument1}
                     </Typography>
                 </Grid>
                 <Grid item xs={4}>
                     <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
-                        Argument 2: {argument2}
+                        upper boundary: {argument2}
                     </Typography>
 
                     <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
-                        Argument 3: {argument3}
+                        transmission frequency: {argument3}
                     </Typography>
                 </Grid>
                 <Grid item xs={4} align={"right"}>
