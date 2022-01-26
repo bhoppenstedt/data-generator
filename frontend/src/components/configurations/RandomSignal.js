@@ -22,7 +22,7 @@ export function RandomSignal ({streams, setStreams}) {
   };
 
   function updateArray() {
-    var fetchArray = JSON.stringify(fetch('/api/signals/')
+    var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
                         .then(res => res.json())
                         .then(dataJSON => JSON.parse(dataJSON))
                         .then(data => setStreams(Array.from(data))));
@@ -31,7 +31,7 @@ export function RandomSignal ({streams, setStreams}) {
   function putReq() {
     
     var params={lowerBoundary,upperBoundary,transmissionFrequency}
-    fetch('/api/random/' + signalName + '/', {
+    fetch('http://localhost:5000/api/random/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}

@@ -14,7 +14,7 @@ import StreamBoxElem from "./StreamBoxElem.js"
 function Output ({streams, setStreams}) {
 
     function updateArray() {
-        var fetchArray = JSON.stringify(fetch('/api/signals/')
+        var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
                             .then(res => res.json())
                             .then(dataJSON => JSON.parse(dataJSON))
                             .then(data => setStreams(Array.from(data))));
