@@ -47,15 +47,15 @@ function SignalScreen ({streams, setStreams}) {
                             signal type
                         </Typography>
 
-                            <SignalButton  name={"RANDOM SIGNAL"} onClick={() => setCurrentSignalType('random')}/>
+                            <SignalButton  name={"RANDOM SIGNAL"} selected={currentSignalType == 'random'} onClick={() => setCurrentSignalType('random')}/>
 
-                            <SignalButton  name={"SINUS SIGNAL"} onClick={() => setCurrentSignalType('sinus')}/>
+                            <SignalButton  name={"SINUS SIGNAL"} selected={currentSignalType == 'sinus'} onClick={() => setCurrentSignalType('sinus')}/>
 
-                            <SignalButton  name={"COSINUS SIGNAL"} onClick={() => setCurrentSignalType('cosinus')}/>
+                            <SignalButton  name={"COSINUS SIGNAL"} selected={currentSignalType == 'cosinus'} onClick={() => setCurrentSignalType('cosinus')}/>
 
-                            <SignalButton  name={"SPIKED SIGNAL"} onClick={() => setCurrentSignalType('spiked')}/>
+                            <SignalButton  name={"SPIKED SIGNAL"} selected={currentSignalType == 'spiked'} onClick={() => setCurrentSignalType('spiked')}/>
 
-                            <SignalButton  name={"NORM. DIST. SIGNAL"} onClick={() => setCurrentSignalType('emphasized')}/>
+                            <SignalButton  name={"NORM. DIST. SIGNAL"} selected={currentSignalType == 'emphasized'} onClick={() => setCurrentSignalType('emphasized')}/>
 
                     </Stack>
                 </Grid>
