@@ -1,56 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, {useState} from "react";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
 import { Stack } from "@mui/material";
-import Card from "@mui/material/Card";
-import { lightBlue,purple } from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
 import { NumberFormatCustom } from "../NumberFormatCustom";
-
-const commonStyles = {
-  bgcolor: 'background.paper',
-  m: 1,
-  border: 1,
-  width: '5rem',
-  height: '5rem',
-};
+import { GenerateButton } from '../GenerateButton';
+import { Typography } from "@mui/material";
 
 export const NormallyDistributed = (props) => {
+
+  const handleNameChange = e => {
+    setSignalName(e.target.value)
+  };
+  const handleCEChange = e => {
+    setCenter(e.target.value)
+  };
+  const handleSCChange = e => {
+    setScale(e.target.value)
+  };
+  const handleTFChange = e => {
+    setTransmissionFrequency(e.target.value)
+  };
+
+  function putReq() {
+    
+    var params={center,scale,transmissionFrequency}
+    fetch('/api/emphasized/' + signalName + '/', {
+        method: "PUT",
+        body: JSON.stringify(params),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+    .then(response => response.json()) 
+    .then(json => console.log(json));
+  };
+  
+  const [signalName, setSignalName] = useState('')
+  const [center , setCenter] = useState(100)
+  const [scale, setScale] = useState(15)
+  const [transmissionFrequency, setTransmissionFrequency] = useState(1)
     return (
-      <Stack container spacing={4} direction="column" alignItems="center" justifyContent="center">
-      <Typography component="div" variant="h5" sx={{ color: purple[900]}}>
-                  Normally Distributed Signal
+      <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            signal name:
+                  </Typography>
+                  <TextField 
+                  id="outlined-basic" 
+                  label="name" 
+                  variant="outlined"
+                  onChange={handleNameChange}
+                  />
+
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            expected value:
                   </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Expected value"
+                    label="value"
                     value={props.numberformat}
-                    onChange={props.handleChange}
-                    name="numberformat"
-                    id="formatted-numberformat-input"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                  />
-                  <TextField
-                    variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Standard Deviation"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
-                    name="numberformat"
-                    id="formatted-numberformat-input"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                  />
-                  <TextField
-                    variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Size"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
+                    onChange={handleCEChange}
                     name="numberformat"
                     id="formatted-numberformat-input"
                     InputProps={{
@@ -58,18 +63,36 @@ export const NormallyDistributed = (props) => {
                     }}
                   />
 
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            standard deviation:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Transmission frequency"
+                    label="value"
                     value={props.numberformat}
-                    onChange={props.handleChange}
+                    onChange={handleSCChange}
                     name="numberformat"
                     id="formatted-numberformat-input"
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            transmission frequency:
+                  </Typography>
+                  <TextField
+                    variant="outlined"
+                    label="value"
+                    value={props.numberformat}
+                    onChange={handleTFChange}
+                    name="numberformat"
+                    id="formatted-numberformat-input"
+                    InputProps={{
+                      inputComponent: NumberFormatCustom,
+                    }}
+                  />
+                  <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
                   </Stack>
                 
     )

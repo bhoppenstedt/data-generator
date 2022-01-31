@@ -1,63 +1,101 @@
-import React from "react";
+import React,{useState} from "react";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import { Stack } from "@mui/material";
-import Card from "@mui/material/Card";
-import {lightBlue,purple } from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
+import { Stack, Grid } from "@mui/material";
 import { NumberFormatCustom } from "../NumberFormatCustom";
-
-const commonStyles = {
-  bgcolor: 'background.paper',
-  m: 1,
-  border: 1,
-  width: '5rem',
-  height: '5rem',
-};
+import { SignalButton } from "../SignalButton";
+import { GenerateButton } from "../GenerateButton.js";
+import { Typography } from "@mui/material";
 
 export const SinusSignal = (props) => {
-    return (
-      <Stack container spacing={6} direction="column" alignItems="center" justifyContent="center">
-      <Typography component="div" variant="h5" sx={{ color: purple[900]}}>
-                  Sinus Signal
-                  </Typography>
-                  <TextField
-                    variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Frequence"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
-                    name="numberformat"
-                    id="formatted-numberformat-input"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                  />
-                  <TextField
-                    variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Amplitude"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
-                    name="numberformat"
-                    id="formatted-numberformat-input"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                  />
-                  <TextField
-                    variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Transmission frequency"
-                    value={props.numberformat}
-                    onChange={props.handleChange}
-                    name="numberformat"
-                    id="formatted-numberformat-input"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                  />
-                </Stack>
-        
-    )
+
+  const handleNameChange = e => {
+    setSignalName(e.target.value)
+  };
+  const handleFRChange = e => {
+    setFrequency(e.target.value)
+  };
+  const handleAMChange = e => {
+    setAmplitude(e.target.value)
+  };
+  const handleTFChange = e => {
+    setTransmissionFrequency(e.target.value)
+  };
+
+  function putReq() {
+    
+    var params={frequency,amplitude,transmissionFrequency}
+    fetch('/api/sinus/' + signalName + '/', {
+        method: "PUT",
+        body: JSON.stringify(params),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+    .then(response => response.json()) 
+    .then(json => console.log(json));
+  };
+  
+  const [signalName, setSignalName] = useState('')
+  const [frequency, setFrequency] = useState(3)
+  const [amplitude, setAmplitude] = useState(50)
+  const [transmissionFrequency, setTransmissionFrequency] = useState(1)
+
+  return (
+    <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
+      
+                <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                          signal name:
+                </Typography>
+                <TextField 
+                id="outlined-basic" 
+                label="name" 
+                variant="outlined" 
+                onChange={handleNameChange}
+                />
+
+                <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                          frequency:
+                </Typography>
+                <TextField
+                  variant="outlined"
+                  label="value"
+                  value={props.numberformat}
+                  onChange={handleFRChange}
+                  name="numberformat"
+                  id="formatted-numberformat-input"
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                  }}
+                />
+
+                <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                          amplitude:
+                </Typography>
+                <TextField
+                  variant="outlined"
+                  label="value"
+                  value={props.numberformat}
+                  onChange={handleAMChange}
+                  name="numberformat"
+                  id="formatted-numberformat-input"
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                  }}
+                />
+
+                <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                          transmission frequency:
+                </Typography>
+                <TextField
+                  variant="outlined"
+                  label="value"
+                  value={props.numberformat}
+                  onChange={handleTFChange}
+                  name="numberformat"
+                  id="formatted-numberformat-input"
+                  InputProps={{
+                    inputComponent: NumberFormatCustom,
+                  }}
+                />
+                <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
+              </Stack>
+  )
 }

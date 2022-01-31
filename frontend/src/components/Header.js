@@ -1,27 +1,14 @@
 import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
 import React from "react";
 
 const Header = (props) => {
-    const bg = props.theme.palette.mode === "dark" ? 'linear-gradient(45deg, #90BDFB 30%, #A1A5F9 90%)' : 'linear-gradient(45deg, #90BDFB 30%, #A1A5F9 90%)'
+    const bg = 'linear-gradient(to bottom, rgba(144,189,251,0.73), rgba(161,165,259,1))'
     return (
-            <AppBar position="static" sx={{background: bg,}}>
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ mx:50,flexGrow: 1 }}>
-                        Datastream Generator
+            <AppBar position="static" sx={{background: bg, height: "80px", boxShadow:'0px 0px 0px 0px rgba(0, 0, 0, 0)'}}>
+                    <Typography component="div" sx={{ alignSelf:"center", fontFamily: 'Open Sans, sans-serif', fontWeight: "700",fontSize: 45, color: '#FFFFFF', marginTop:"0.1vw", marginBottom:"0.5vw" }}>
+                        datastream generator
                     </Typography>
-                    <IconButton sx={{ ml: 20 }} onClick={props.colorMode.toggleColorMode} color="inherit">
-                        {props.theme.palette.mode === "dark" ? (
-                            <Brightness7Icon />
-                        ) : (
-                            <Brightness4Icon />
-                        )}
-                    </IconButton>
-                </Toolbar>
             </AppBar>
     );
 }

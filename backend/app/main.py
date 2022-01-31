@@ -1,18 +1,22 @@
 # Import installed packages
+from cProfile import run
+import json
 from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
+from flask_cors import CORS 
 from numpy import add
 from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
 
 # Initialize Server and API
 app = Flask(__name__)
 api = Api(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Create dictionary in which the objects of the created signals are stored
 running_signal_objects = {}
 
-# Create dictionary in which the arguments of the created signals are stored
-running_signal_args = {}
+# Create array in which the arguments of the created signals are stored
+running_signal_args = []
 
 # Add required arguments to each signal via the reqparse module 
 random_arguments = reqparse.RequestParser()
@@ -47,14 +51,16 @@ class HandleSignals(Resource):
     def put(self, signal_type, signal_name):
 
         # Check if the the given name is already in use 
-        if signal_name in running_signal_args:
-            return "Signal name already in use"
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                return "Signal name already in use"
 
         # Add the arguments of the signal to the args dictionary and create the correct producer object 
         if(signal_type == "random"):
             args = random_arguments.parse_args()
             args["type"] = "random"
             args["running"] = False
+            args["name"] = signal_name
 
             producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
@@ -62,6 +68,7 @@ class HandleSignals(Resource):
             args = sinus_arguments.parse_args()
             args["type"] = "sinus"
             args["running"] = False
+            args["name"] = signal_name
 
             producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
 
@@ -69,6 +76,7 @@ class HandleSignals(Resource):
             args = cosinus_arguments.parse_args()
             args["type"] = "cosinus"
             args["running"] = False
+            args["name"] = signal_name
 
             producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
         
@@ -76,6 +84,7 @@ class HandleSignals(Resource):
             args = emphasized_arguments.parse_args()
             args["type"] = "emphasized"
             args["running"] = False
+            args["name"] = signal_name
 
             producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
 
@@ -83,6 +92,7 @@ class HandleSignals(Resource):
             args = spiked_arguments.parse_args()
             args["type"] = "spiked"
             args["running"] = False
+            args["name"] = signal_name
 
             producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
 
@@ -91,46 +101,73 @@ class HandleSignals(Resource):
 
 
         # Add the signal object to the objects dictionary 
-        running_signal_objects[signal_name] = producer
+        running_signal_objects[signal_name] = producer 
 
         # Add the arguments of the signal to the args dictionary 
-        running_signal_args[signal_name] = args
+        running_signal_args.append(args)
 
-        return True
+        # Return all existing signals
+        return running_signal_args
+
     def patch(self, signal_type,signal_name):
-
-        #Check if the given signal type is correct
-        if running_signal_args[signal_name]["type"] != signal_type:
-            return "invalid request for this URL"
-
-        # Start/Stop the signal. Return true if successful 
-        running_signal_args[signal_name]["running"] = not running_signal_args[signal_name]["running"]
-        running_signal_objects[signal_name].patch()
-        return True
-
-    def delete(self, signal_type, signal_name):
+        
+        # Check if a signal with the given name exists 
+        if signal_name not in running_signal_objects: 
+            return 'Signal name doesnt exist'
 
         # Check if the given signal type is correct
-        if running_signal_args[signal_name]["type"] != signal_type:
-            return "invalid request for this URL "
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                if signal_type != index['type']:
+                    return 'Invalid request for this URL'
+
+        # Adjust the running flag in args dictionary 
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                index['running'] = not index['running']
+        
+        # Start/Stop the signal
+        running_signal_objects[signal_name].patch()
+
+        # Return all existing signals
+        return running_signal_args
+
+    def delete(self, signal_type, signal_name):
+        
+        # Check if a signal with the given name exists 
+        if signal_name not in running_signal_objects: 
+            return 'Signal name doesnt exist'
+        
+        # Check if the given signal type is correct
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                if signal_type != index['type']:
+                    return 'Invalid request for this URL'
 
         # Stop signal
         running_signal_objects[signal_name].running = False
 
         # Delete the signal from the dictionaries
         del running_signal_objects[signal_name]
-        del running_signal_args[signal_name]
 
-        # Return true if successful
-        return True
+        for index in running_signal_args:
+            if signal_name == index['name']:
+                running_signal_args.remove(index)
 
-
-class GetAllSignals(Resource):
-    def get(self):
+        # Return all existing signals
         return running_signal_args
 
 
+class GetAllSignals(Resource):
+
+    # Return all existing signals
+    def get(self):
+        return json.dumps(running_signal_args)
+
+# Add endpoint for GET requests
 api.add_resource(GetAllSignals, '/api/signals/')
+
+# Add endpoints for PUT, PATCH, DELETE requests
 api.add_resource(HandleSignals,'/api/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
@@ -139,4 +176,4 @@ def root():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=80)
+    app.run(debug=True, host="0.0.0.0", port=5000)

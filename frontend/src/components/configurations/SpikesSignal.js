@@ -1,85 +1,136 @@
-import React from "react";
+import React, {useState} from "react";
 import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import { Grid, Stack, Card } from "@mui/material";
-import { lightBlue, purple} from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
+import {Stack} from "@mui/material";
 import { NumberFormatCustom } from "../NumberFormatCustom";
-
-const commonStyles = {
-  bgcolor: 'background.paper',
-  m: 1,
-  border: 1,
-  width: '5rem',
-  height: '5rem',
-};
+import { GenerateButton } from '../GenerateButton';
+import { Typography } from "@mui/material";
 
 export const SpikesSignal = (props) => {
+  const handleNameChange = e => {
+    setSignalName(e.target.value)
+  };
+  const handleBAChange = e => {
+    setBase(e.target.value)
+  };
+  const handleDIChange = e => {
+    setDistance(e.target.value)
+  };
+  const handleSIChange = e => {
+    setSize(e.target.value)
+  };
+  const handlePRChange = e => {
+    setPropability(e.target.value)
+  };
+  const handleTFChange = e => {
+    setTransmissionFrequency(e.target.value)
+  };
+
+  function putReq() {
+    
+    var params={base,distance,size,propability,transmissionFrequency}
+    fetch('/api/spiked/' + signalName + '/', {
+        method: "PUT",
+        body: JSON.stringify(params),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+    })
+    .then(response => response.json()) 
+    .then(json => console.log(json));
+  };
+  
+  const [signalName, setSignalName] = useState('')
+  const [base , setBase] = useState(100)
+  const [distance, setDistance] = useState(3)
+  const [size, setSize] = useState(10)
+  const [propability, setPropability] = useState(0.5)
+  const [transmissionFrequency, setTransmissionFrequency] = useState(1)
     return (
-<Stack container spacing={4} direction="column" alignItems="center" justifyContent="center">
-                  <Typography component="div" variant="h5" sx={{ color: purple[900]}}>
-                  Signal with Spikes
+      <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
+
+<Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            signal name:
+                  </Typography>
+                  <TextField 
+                  id="outlined-basic" 
+                  label="name" 
+                  variant="outlined"
+                  onChange={handleNameChange}
+                  />
+                  
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            base:
                   </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Base"
+                    label="value"
                     value={props.numberformat}
-                    onChange={props.handleChange}
+                    onChange={handleBAChange}
                     name="numberformat"
                     id="formatted-numberformat-input"
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            distance:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Distance"
+                    label="value"
                     value={props.numberformat}
-                    onChange={props.handleChange}
+                    onChange={handleDIChange}
                     name="numberformat"
                     id="formatted-numberformat-input"
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            size:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Size"
+                    label="value"
                     value={props.numberformat}
-                    onChange={props.handleChange}
+                    onChange={handleSIChange}
                     name="numberformat"
                     id="formatted-numberformat-input"
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            probability:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Probability"
+                    label="value"
                     value={props.numberformat}
-                    onChange={props.handleChange}
+                    onChange={handlePRChange}
                     name="numberformat"
                     id="formatted-numberformat-input"
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+
+                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                            transmission frequency:
+                  </Typography>
                   <TextField
                     variant="outlined"
-                    sx={{pt: 1, minWidth: 300 }}
-                    label="Transmission frequency"
+                    label="value"
                     value={props.numberformat}
-                    onChange={props.handleChange}
+                    onChange={handleTFChange}
                     name="numberformat"
                     id="formatted-numberformat-input"
                     InputProps={{
                       inputComponent: NumberFormatCustom,
                     }}
                   />
+                  <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
                 </Stack>
     )
 }
