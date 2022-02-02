@@ -46,8 +46,11 @@ spiked_arguments.add_argument("propability", type=float, required=True)
 spiked_arguments.add_argument("size", type=float, required=True)
 spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
+class HandleMQTTSignals(Resource):
+    def put(self, signal_type, signal_name):
+        return True
 
-class HandleSignals(Resource):
+class HandleKafkaSignals(Resource):
     def put(self, signal_type, signal_name):
 
         # Check if the the given name is already in use 
@@ -168,7 +171,7 @@ class GetAllSignals(Resource):
 api.add_resource(GetAllSignals, '/api/signals/')
 
 # Add endpoints for PUT, PATCH, DELETE requests
-api.add_resource(HandleSignals,'/api/<string:signal_type>/<string:signal_name>/')
+api.add_resource(HandleKafkaSignals,'/api/kafka/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
 def root():
