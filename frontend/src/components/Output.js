@@ -36,7 +36,7 @@ function Output ({streams, setStreams}) {
 
                             <Grid item xs={6} justifyContent="left" alignItems="left">
                                 <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900], margin: "10px" }} align={"left"}>
-                                    active streams: {(streams.filter(green => streams.running == true)).length} / {streams.length}
+                                    active streams: {(streams.filter((stream) => stream.running == true)).length} / {streams.length}
                                 </Typography>
                             </Grid>
 
