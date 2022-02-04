@@ -65,7 +65,17 @@ function Output ({streams, setStreams}) {
                     </Grid>
                     <Grid height="100%" item xs={12} sx={{overflowY:"auto"}}>
                         <Paper alignItems="center" sx={{paddingLeft:"12px", paddingRight:"12px", width: "100%", boxShadow:"0px 0px 0px 0px rgba(0, 0, 0, 0)"}}>
-                            {streamElements}
+                            {streamElements.length == 0 ? 
+                            <Typography component="div" variant="h5" 
+                                sx={{ 
+                                    fontSize: 20,
+                                    fontFamily: 'Open Sans, sans-serif',
+                                    fontWeight: "400",
+                                    fontSize: 20, color: "rgba(0,0,0,.3)",
+                                    paddingTop:"50%"}}
+                                align={"center"}>
+                                No streams created yet.
+                            </Typography> : streamElements}
                         </Paper>
                     </Grid>
                 </Grid>

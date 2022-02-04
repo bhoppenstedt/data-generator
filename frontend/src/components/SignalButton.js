@@ -11,7 +11,7 @@ const theme = {
 
 var selected = false;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     root: {
         color: '#3F0092',
         boxShadow: '0px 3px 6px 0px rgba(0, 0, 0, .16)',
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         width: "90%",  
           
     }
-}));
+});
 
 export function SignalButton(props){
     return (

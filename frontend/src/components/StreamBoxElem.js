@@ -34,25 +34,25 @@ return (
             <Grid item xs={10}>
                 <Grid container item xs={12} container direction="row">
                     <Grid item xs={12}>
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 20, fontWeight: "600" }} color="rgba(1,1,1,1)" gutterBottom>
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 20, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.6)" } gutterBottom>
                             {name}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
                             signaltype: {type}
                         </Typography>
 
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
                             lower boundary: {argument1}
                         </Typography>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
                             upper boundary: {argument2}
                         </Typography>
 
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }}>
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
                             transmission frequency: {argument3}
                         </Typography>
                     </Grid>
@@ -64,7 +64,7 @@ return (
                         {runningState ? "Running" : "Stopped"}
                     </Typography>
                     <IconButton onClick={() => patchReq(type, name)}>
-                        {runningState ? <StopIcon sx={{ fontSize: 25, color:'#3F0092' }}/> : <PlayArrowIcon sx={{ fontSize: 25, color:'#3F0092' }}/>}
+                        {runningState ? <StopIcon sx={{ fontSize: 25, color:'#3F0092' }}/> : <PlayArrowIcon sx={{fontSize: 25, color:'#5FA500' }}/>}
                     </IconButton>
                 </Stack>
             </Grid>
