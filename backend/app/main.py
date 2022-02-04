@@ -1,4 +1,3 @@
-# Import installed packages
 from cProfile import run
 import json
 from flask import Flask, jsonify
@@ -10,6 +9,8 @@ from message_producer import Random_signal_producer, Sinus_signal_producer, Cosi
 # Initialize Server and API
 app = Flask(__name__)
 api = Api(app)
+
+# Allow cross origin REST requests
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # Create dictionary in which the objects of the created signals are stored
