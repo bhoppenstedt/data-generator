@@ -21,14 +21,6 @@ export function RandomSignal ({streams, setStreams}) {
     setTransmissionFrequency(e.target.value)
   };
 
-  function updateArray() {
-    var fetchArray = fetch('http://localhost:5000/api/signals/')
-                      .then(res => res.json())
-                      .then(dataJSON => JSON.parse(dataJSON))
-                      .then(data => setStreams(Array.from(data)));
-    console.log("GET done!")
-}
-
   function putReq() {
     
     var params={lowerBoundary,upperBoundary,transmissionFrequency}

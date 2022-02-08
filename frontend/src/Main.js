@@ -10,8 +10,7 @@ var startArray = [];
 var streamsServer = JSON.stringify(fetch('/api/signals/')
                         .then(res => res.json())
                         .then(dataJSON => JSON.parse(dataJSON))
-                        .then(data => startArray = Array.from(data))
-                        .then(() => console.log(startArray)));
+                        .then(data => startArray = Array.from(data)));
 
 const empty= [
     {

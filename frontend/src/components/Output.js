@@ -10,6 +10,11 @@ import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
 import StreamBoxElem from "./StreamBoxElem.js"
+import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
+import StopCircleIcon from '@mui/icons-material/StopCircle';
+import StopCircleRoundedIcon from '@mui/icons-material/StopCircleRounded';
+import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFilledWhiteRounded';
+
 
 function Output ({streams, setStreams}) {
 
@@ -20,8 +25,10 @@ function Output ({streams, setStreams}) {
                             .then(data => setStreams(Array.from(data))));
     }
 
+    //updateArray();
+
     const streamElements = streams.map((stream) => 
-    <StreamBoxElem name={stream.name} type={stream.type} argument1={stream.lowerBoundary} argument2={stream.upperBoundary} argument3={stream.transmissionFrequency} runningState={stream.running}/>);
+    <StreamBoxElem name={stream.name} type={stream.type} argument1={stream.lowerBoundary} argument2={stream.upperBoundary} argument3={stream.transmissionFrequency} runningState={stream.running} streams={streams} setStreams={setStreams}/>);
 
     return (
             <Card variant="outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9', marginLeft: "1vw", marginRight: "8vw", height: "85vh", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
@@ -41,24 +48,27 @@ function Output ({streams, setStreams}) {
                             </Grid>
 
                             <Grid item xs={6}>
-                                <Stack direction="row" spacing={0} justifyContent="right" alignItems="center">
+                                <Stack direction="row" spacing={1} justifyContent="right" alignItems="center">
+                                <Stack direction="row" spacing={-0.4} justifyContent="right" alignItems="center">
                                         <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900]}} align={"right"}>
                                             start all
                                         </Typography>
-                                        <IconButton onClick={ () => updateArray()}>
-                                            <PlayCircleOutlineOutlinedIcon
+                                        <IconButton size="small" onClick={ () => updateArray()}>
+                                            <PlayCircleFilledWhiteRoundedIcon
                                                 sx={{ fontSize: 30, color: purple[900] }}
                                             />
                                         </IconButton>
-                                        
+                                </Stack>
+                                <Stack direction="row" spacing={-0.4} justifyContent="right" alignItems="center">
                                         <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900]}} align={"right"}>
                                             stop all
                                         </Typography>
-                                        <IconButton>
-                                            <StopCircleOutlinedIcon
+                                        <IconButton size="small">
+                                            <StopCircleRoundedIcon
                                                 sx={{ fontSize: 30, color:purple[900] }}
                                             />
                                         </IconButton>
+                                </Stack>
                                 </Stack>
                             </Grid>
                         

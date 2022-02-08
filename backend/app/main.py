@@ -130,7 +130,7 @@ class HandleSignals(Resource):
         running_signal_objects[signal_name].patch()
 
         # Return all existing signals
-        return running_signal_args
+        return json.dumps(running_signal_args)
 
     def delete(self, signal_type, signal_name):
         
