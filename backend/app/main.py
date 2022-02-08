@@ -62,7 +62,7 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+            #producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
 
         elif(signal_type == "sinus"):
             args = sinus_arguments.parse_args()
@@ -101,13 +101,13 @@ class HandleSignals(Resource):
 
 
         # Add the signal object to the objects dictionary 
-        running_signal_objects[signal_name] = producer 
+        #running_signal_objects[signal_name] = producer 
 
         # Add the arguments of the signal to the args dictionary 
         running_signal_args.append(args)
 
         # Return all existing signals
-        return running_signal_args
+        return json.dumps(running_signal_args)
 
     def patch(self, signal_type,signal_name):
         

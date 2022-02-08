@@ -22,10 +22,11 @@ export function RandomSignal ({streams, setStreams}) {
   };
 
   function updateArray() {
-    var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
-                        .then(res => res.json())
-                        .then(dataJSON => JSON.parse(dataJSON))
-                        .then(data => setStreams(Array.from(data))));
+    var fetchArray = fetch('http://localhost:5000/api/signals/')
+                      .then(res => res.json())
+                      .then(dataJSON => JSON.parse(dataJSON))
+                      .then(data => setStreams(Array.from(data)));
+    console.log("GET done!")
 }
 
   function putReq() {
@@ -36,13 +37,16 @@ export function RandomSignal ({streams, setStreams}) {
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })
-    .then(response => response.json()) 
-    .then(json => console.log(json));
+    .then(res => res.json())
+    .then(dataJSON => JSON.parse(dataJSON))
+    .then(data => setStreams(Array.from(data)));
+
   };
 
   function wrapper() {
     putReq();
-    updateArray();
+    //updateArray();
+    console.log("PUT and GET done!")
   }
   
   const [signalName, setSignalName] = useState('')
