@@ -24,25 +24,26 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningStat
     }
 
     function patchReq(streamType, streamName) {
-        fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
+        JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
             method: "PATCH",
             headers: {"Content-type": "application/json; charset=UTF-8"}
         })
         .then(res => res.json())
         .then(dataJSON => JSON.parse(dataJSON))
-        .then(data => setStreams(Array.from(data)));
+        .then(data => setStreams(Array.from(data))));
+        updateArray()
 
   };
 
     function deleteReq(streamType, streamName) {
-        fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
+        JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
             method: "DELETE",
             headers: {"Content-type": "application/json; charset=UTF-8"}
         })
         .then(res => res.json())
         .then(dataJSON => JSON.parse(dataJSON))
-        .then(data => setStreams(Array.from(data))
-        .then(log => console.log(log)));
+        .then(data => setStreams(Array.from(data))));
+        updateArray()
         
   };
 
