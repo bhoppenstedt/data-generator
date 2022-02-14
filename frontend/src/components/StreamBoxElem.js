@@ -16,13 +16,6 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningState, streams, setStreams}) => {
 
-    function updateArray() {
-        var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
-                            .then(res => res.json())
-                            .then(dataJSON => JSON.parse(dataJSON))
-                            .then(data => setStreams(Array.from(data))));
-    }
-
     function patchReq(streamType, streamName) {
         JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
             method: "PATCH",
@@ -31,7 +24,6 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningStat
         .then(res => res.json())
         .then(dataJSON => JSON.parse(dataJSON))
         .then(data => setStreams(Array.from(data))));
-        updateArray()
 
   };
 
@@ -43,7 +35,6 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningStat
         .then(res => res.json())
         .then(dataJSON => JSON.parse(dataJSON))
         .then(data => setStreams(Array.from(data))));
-        updateArray()
         
   };
 

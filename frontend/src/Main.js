@@ -23,9 +23,8 @@ const empty= [
     }
 ]
 
+
 const Main = (props) => {
-    const theme = useTheme();
-    const colorMode = React.useContext(props.ColorModeContext);
 
     const [streams, setStreams] = useState([]);
 
@@ -35,7 +34,7 @@ const Main = (props) => {
                             .then(dataJSON => JSON.parse(dataJSON))
                             .then(data => setStreams(Array.from(data))));
     }
-    
+
     return (
         <Grid container={true} >
             <Grid item xs ={12}>
