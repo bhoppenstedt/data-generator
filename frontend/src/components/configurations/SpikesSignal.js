@@ -28,13 +28,15 @@ export const SpikesSignal = (props) => {
   function putReq() {
     
     var params={base,distance,size,propability,transmissionFrequency}
-    fetch('/api/spiked/' + signalName + '/', {
+    fetch('http://localhost:5000/api/spujed/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })
-    .then(response => response.json()) 
-    .then(json => console.log(json));
+    .then(res => res.json())
+    .then(dataJSON => JSON.parse(dataJSON))
+    .then(data => props.setStreams(Array.from(data)));
+
   };
   
   const [signalName, setSignalName] = useState('')

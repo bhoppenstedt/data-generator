@@ -23,13 +23,15 @@ export const NormallyDistributed = (props) => {
   function putReq() {
     
     var params={center,scale,transmissionFrequency}
-    fetch('/api/emphasized/' + signalName + '/', {
+    fetch('http://localhost:5000/api/emphasized/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })
-    .then(response => response.json()) 
-    .then(json => console.log(json));
+    .then(res => res.json())
+    .then(dataJSON => JSON.parse(dataJSON))
+    .then(data => props.setStreams(Array.from(data)));
+
   };
   
   const [signalName, setSignalName] = useState('')

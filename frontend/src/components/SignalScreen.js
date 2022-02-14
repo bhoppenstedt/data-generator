@@ -71,10 +71,10 @@ function SignalScreen ({streams, setStreams}) {
                         </Typography>
                     
                         {currentSignalType === 'random' ? (<RandomSignal streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>)
-                            : currentSignalType === 'sinus' ? <SinusSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
-                            : currentSignalType === 'cosinus' ? <CosinusSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
-                            : currentSignalType === 'spiked' ? <SpikesSignal handleChange={(e) => {}} numberformat={value.numberformat}/>
-                            : currentSignalType === 'emphasized' ? <NormallyDistributed handleChange={(e) => {}} numberformat={value.numberformat}/>
+                            : currentSignalType === 'sinus' ? <SinusSignal streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
+                            : currentSignalType === 'cosinus' ? <CosinusSignal streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
+                            : currentSignalType === 'spiked' ? <SpikesSignal streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
+                            : currentSignalType === 'emphasized' ? <NormallyDistributed streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
                             : null }
                         
                     </Stack>
