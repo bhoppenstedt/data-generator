@@ -47,8 +47,7 @@ export const SinusSignal = (props) => {
                           signal name:
                 </Typography>
                 <TextField 
-                id="outlined-basic" 
-                label="name" 
+                id="outlined-basic"
                 variant="outlined" 
                 onChange={handleNameChange}
                 />
@@ -58,7 +57,6 @@ export const SinusSignal = (props) => {
                 </Typography>
                 <TextField
                   variant="outlined"
-                  label="value"
                   value={props.numberformat}
                   onChange={handleFRChange}
                   name="numberformat"
@@ -73,7 +71,6 @@ export const SinusSignal = (props) => {
                 </Typography>
                 <TextField
                   variant="outlined"
-                  label="value"
                   value={props.numberformat}
                   onChange={handleAMChange}
                   name="numberformat"
@@ -88,7 +85,6 @@ export const SinusSignal = (props) => {
                 </Typography>
                 <TextField
                   variant="outlined"
-                  label="value"
                   value={props.numberformat}
                   onChange={handleTFChange}
                   name="numberformat"

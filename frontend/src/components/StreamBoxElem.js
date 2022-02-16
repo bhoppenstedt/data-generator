@@ -14,7 +14,7 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 
 
-const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningState, streams, setStreams}) => {
+const StreamBoxElem = ({name, type, argument1, argument2, argument3, argument4, argument5, runningState, streams, setStreams}) => {
 
     function patchReq(streamType, streamName) {
         JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
@@ -38,6 +38,22 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, runningStat
         
   };
 
+  var params = [];
+
+  if (type == "random") {
+    params = ["signaltype:", "lower boundary:", "upper boundary:", "transmission frequency:"];
+  } else if (type == "sinus") {
+    params = ["signaltype:", "frequency:", "amplitude:", "transmission frequency:"];
+  } else if (type == "cosinus") {
+    params = ["signaltype:", "frequency:", "amplitude:", "transmission frequency:"];
+  } else if (type == "spiked") {
+    params = ["signaltype:", "base:", "distance:", "size:", "probability:", "transmission frequency:"];
+  } else if (type == "emphasized") {
+    params = ["signaltype:", "expected value:", "standard deviation:", "transmission frequency:"];
+  }
+
+  console.log(argument1)
+
 
 return (
 
@@ -46,37 +62,71 @@ return (
         <Grid container item xs={12} container direction="row">
             <Grid item xs={10}>
                 <Grid container item xs={12} container direction="row">
+
+
                     <Grid item xs={12}>
                         <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 20, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.6)" }>
                             {name}
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+
+
+                    <Grid item xs={4}>
                         <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            signaltype: {type}
+                            {params[0]}
                         </Typography>
 
                         <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            lower boundary: {argument1}
+                            {params[1]}
                         </Typography>
 
                         <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            placeholder: {argument1}
+                            {params[2]}
                         </Typography>
                     </Grid>
-                    <Grid item xs={6}>
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            upper boundary: {argument2}
+                    <Grid item xs={2}>
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                            {type}
                         </Typography>
 
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            transmission frequency: {argument3}
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                            {argument1}
                         </Typography>
 
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            placeholder: {argument1}
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                            {argument2}
                         </Typography>
                     </Grid>
+
+
+                    <Grid item xs={5}>
+                    <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
+                            {params[3]}
+                        </Typography>
+
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
+                            {params[4]}
+                        </Typography>
+
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
+                            {params[5]}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                            {argument3}
+                        </Typography>
+
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                            {argument4}
+                        </Typography>
+
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                            {argument5}
+                        </Typography>
+                    </Grid>
+
+
                 </Grid>
             </Grid>
             <Grid item xs={2}>

@@ -53,12 +53,10 @@ export function RandomSignal ({streams, setStreams}) {
                             signal name:
                   </Typography>
                   <TextField 
-                  id="name" 
-                  label="name" 
+                  id="name"  
                   variant="outlined"
                   size="normal"
                   onChange={handleNameChange}
-                  sx={{color: "#9496F5"}}
                   />
 
                   <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
@@ -66,7 +64,6 @@ export function RandomSignal ({streams, setStreams}) {
                   </Typography>
                   <TextField 
                     variant="outlined"
-                    label="value"
                     name="numberformat"
                     id="lowerBoundary"
                     InputProps={{
@@ -79,8 +76,6 @@ export function RandomSignal ({streams, setStreams}) {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
-                   
                     name="numberformat"
                     id="upperBoundary"
                     InputProps={{
@@ -94,8 +89,6 @@ export function RandomSignal ({streams, setStreams}) {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
-                    
                     name="numberformat"
                     id="transmissionFrequency"
                     InputProps={{

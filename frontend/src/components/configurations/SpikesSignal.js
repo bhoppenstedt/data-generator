@@ -28,7 +28,7 @@ export const SpikesSignal = (props) => {
   function putReq() {
     
     var params={base,distance,size,propability,transmissionFrequency}
-    fetch('http://localhost:5000/api/spujed/' + signalName + '/', {
+    fetch('http://localhost:5000/api/spiked/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -52,8 +52,7 @@ export const SpikesSignal = (props) => {
                             signal name:
                   </Typography>
                   <TextField 
-                  id="outlined-basic" 
-                  label="name" 
+                  id="outlined-basic"
                   variant="outlined"
                   onChange={handleNameChange}
                   />
@@ -63,7 +62,6 @@ export const SpikesSignal = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleBAChange}
                     name="numberformat"
@@ -78,7 +76,6 @@ export const SpikesSignal = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleDIChange}
                     name="numberformat"
@@ -93,7 +90,6 @@ export const SpikesSignal = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleSIChange}
                     name="numberformat"
@@ -108,7 +104,6 @@ export const SpikesSignal = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handlePRChange}
                     name="numberformat"
@@ -123,7 +118,6 @@ export const SpikesSignal = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleTFChange}
                     name="numberformat"

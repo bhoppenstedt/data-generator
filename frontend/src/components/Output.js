@@ -10,6 +10,7 @@ import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
 import StreamBoxElem from "./StreamBoxElem.js"
+import StreamBoxElemNew from "./StreamBoxElem.js"
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import StopCircleRoundedIcon from '@mui/icons-material/StopCircleRounded';
@@ -38,7 +39,17 @@ function Output ({streams, setStreams}) {
 }
 
     const streamElements = streams.map((stream) => 
-    <StreamBoxElem name={stream.name} type={stream.type} argument1={stream.lowerBoundary} argument2={stream.upperBoundary} argument3={stream.transmissionFrequency} runningState={stream.running} streams={streams} setStreams={setStreams}/>);
+    <StreamBoxElem 
+        name={stream.name} 
+        type={stream.type} 
+        argument1={stream[(Object.keys(stream)[0])]} 
+        argument2={stream[(Object.keys(stream)[1])]} 
+        argument3={stream[(Object.keys(stream)[2])]}
+        argument4={stream[(Object.keys(stream)[3])]}
+        argument5={stream[(Object.keys(stream)[4])]}
+        runningState={stream.running} 
+        streams={streams} 
+        setStreams={setStreams}/>);
 
     return (
             <Card variant="outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9', marginLeft: "1vw", marginRight: "8vw", height: "85vh", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>

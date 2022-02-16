@@ -44,8 +44,7 @@ export const NormallyDistributed = (props) => {
                             signal name:
                   </Typography>
                   <TextField 
-                  id="outlined-basic" 
-                  label="name" 
+                  id="outlined-basic"
                   variant="outlined"
                   onChange={handleNameChange}
                   />
@@ -55,7 +54,6 @@ export const NormallyDistributed = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleCEChange}
                     name="numberformat"
@@ -70,7 +68,6 @@ export const NormallyDistributed = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleSCChange}
                     name="numberformat"
@@ -85,7 +82,6 @@ export const NormallyDistributed = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleTFChange}
                     name="numberformat"
