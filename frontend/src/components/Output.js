@@ -64,14 +64,9 @@ function Output ({streams, setStreams}) {
                                         </IconButton>
                                 </Stack>
                                 </Grid>      
-                                <Grid item xs={12}>
-                    <Autocomplete
-        id="free-solo-demo"
-        Output
-        options={streams.map((option) => option.name)}
-        renderInput={(params) => <TextField {...params} label="serach datastreams" onChange={(x) => setContent(x.target.value)}/>}
-      />
-                    </Grid>
+                                <Grid item xs={12} sx={{margin: "12px"}}>
+                                    <TextField fullWidth label="serach datastreams" onChange={(x) => setContent(x.target.value)}/>
+                                </Grid>
                         
                     </Grid>
                     <Grid height="100%" item xs={12} sx={{overflowY:"auto"}}>
