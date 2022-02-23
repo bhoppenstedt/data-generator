@@ -16,6 +16,8 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 import StopCircleRoundedIcon from '@mui/icons-material/StopCircleRounded';
 import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFilledWhiteRounded';
 import CachedIcon from '@mui/icons-material/Cached';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 
 function Output ({streams, setStreams}) {
@@ -37,6 +39,8 @@ function Output ({streams, setStreams}) {
                         .then(dataJSON => JSON.parse(dataJSON))
                         .then(data => setStreams(Array.from(data))));
 }
+  const [content, setContent] = useState("")
+
 
     const streamElements = streams.map((stream) => 
     <StreamBoxElem 
@@ -90,7 +94,9 @@ function Output ({streams, setStreams}) {
                                             />
                                         </IconButton>
                                 </Stack>
-                                </Stack>
+                            </Grid>     
+                            <Grid item xs={12} sx={{margin: "12px"}}>
+                                <TextField fullWidth label="serach datastreams" onChange={(x) => setContent(x.target.value)}/>
                             </Grid>
                         
                     </Grid>
@@ -116,6 +122,10 @@ function Output ({streams, setStreams}) {
                                 </Typography> 
                             </Stack>
                             : streamElements}
+                        {streams.filter((x) => x.name.startsWith(content)).map((stream) => 
+                          <StreamBoxElem name={stream.name} type={stream.type} argument1={stream.lowerBoundary} argument2={stream.upperBoundary} argument3={stream.transmissionFrequency} runningState={stream.running}/>
+                        )}
+
                         </Paper>
                     </Grid>
                 </Grid>

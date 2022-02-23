@@ -89,8 +89,8 @@ class Sinus_signal_producer(object):
     def sendSinusSignal(self):
         """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
         """
-        while(self.running):
-            for i in range(0, 360):
+        while(True):
+            for i in range(0, 360) and self.running:
                 periodic_number = self.amplitude * \
                     math.sin(self.frequency * math.radians(i))
                 print(f"Sending number {periodic_number}")
@@ -98,8 +98,6 @@ class Sinus_signal_producer(object):
                     'Sinus-Signal',
                     value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
-                if(not self.running):
-                    break
 
 
 class Cosinus_signal_producer(object):
@@ -138,8 +136,8 @@ class Cosinus_signal_producer(object):
         """A cosinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Cosinus-Signal'.
         """
 
-        while(self.running):
-            for i in range(0, 360):
+        while(True):
+            for i in range(0, 360) and self.running:
                 periodic_number = self.amplitude * \
                     math.cos(self.frequency * math.radians(i))
                 print(f"Sending number {periodic_number}")
@@ -147,8 +145,7 @@ class Cosinus_signal_producer(object):
                     'Cosinus-Signal',
                     value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
-                if(not self.running):
-                    break
+
 
 
 class Emphasized_signal_producer(object):
@@ -184,17 +181,15 @@ class Emphasized_signal_producer(object):
     def sendEmphasizedRandomSignal(self):
         """A normally distributed signal with the parameters of the corresponding object is created and sent to the kafka topic 'Emphasized-Signal'.
         """
-        while(self.running):
+        while(True):
             data = normal(loc=self.center, scale=self.scale, size=200)
-            for i in data:
+            for i in data and self.running:
                 emphasizedNumber = i
                 print(f"Sending number {emphasizedNumber}")
                 self.producer.send(
                     'Emphasized-Signal',
                     value=serialize(emphasizedNumber))
                 sleep(self.transmissionFrequency)
-                if(not self.running):
-                    break
 
 
 class Spiked_signal_producer(object):
