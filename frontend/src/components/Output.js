@@ -10,6 +10,8 @@ import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import Stack from "@mui/material/Stack";
 import React, { useEffect, useState } from "react";
 import StreamBoxElem from "./StreamBoxElem.js"
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
 
 function Output ({streams, setStreams}) {
 
@@ -19,6 +21,7 @@ function Output ({streams, setStreams}) {
                             .then(dataJSON => JSON.parse(dataJSON))
                             .then(data => setStreams(Array.from(data))));
     }
+    const [content, setContent] = useState("")
 
     const streamElements = streams.map((stream) => 
     <StreamBoxElem name={stream.name} type={stream.type} argument1={stream.lowerBoundary} argument2={stream.upperBoundary} argument3={stream.transmissionFrequency} runningState={stream.running}/>);
@@ -60,12 +63,17 @@ function Output ({streams, setStreams}) {
                                             />
                                         </IconButton>
                                 </Stack>
-                            </Grid>
+                                </Grid>      
+                                <Grid item xs={12} sx={{margin: "12px"}}>
+                                    <TextField fullWidth label="serach datastreams" onChange={(x) => setContent(x.target.value)}/>
+                                </Grid>
                         
                     </Grid>
                     <Grid height="100%" item xs={12} sx={{overflowY:"auto"}}>
                         <Paper alignItems="center" sx={{paddingLeft:"12px", paddingRight:"12px", width: "100%", boxShadow:"0px 0px 0px 0px rgba(0, 0, 0, 0)"}}>
-                            {streamElements}
+                        {streams.filter((x) => x.name.startsWith(content)).map((stream) => 
+    <StreamBoxElem name={stream.name} type={stream.type} argument1={stream.lowerBoundary} argument2={stream.upperBoundary} argument3={stream.transmissionFrequency} runningState={stream.running}/>)}
+                        
                         </Paper>
                     </Grid>
                 </Grid>
