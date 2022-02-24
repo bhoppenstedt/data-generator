@@ -23,13 +23,15 @@ export const NormallyDistributed = (props) => {
   function putReq() {
     
     var params={center,scale,transmissionFrequency}
-    fetch('/api/emphasized/' + signalName + '/', {
+    fetch('http://localhost:5000/api/emphasized/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })
-    .then(response => response.json()) 
-    .then(json => console.log(json));
+    .then(res => res.json())
+    .then(dataJSON => JSON.parse(dataJSON))
+    .then(data => props.setStreams(Array.from(data)));
+
   };
   
   const [signalName, setSignalName] = useState('')
@@ -42,8 +44,7 @@ export const NormallyDistributed = (props) => {
                             signal name:
                   </Typography>
                   <TextField 
-                  id="outlined-basic" 
-                  label="name" 
+                  id="outlined-basic"
                   variant="outlined"
                   onChange={handleNameChange}
                   />
@@ -53,7 +54,6 @@ export const NormallyDistributed = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleCEChange}
                     name="numberformat"
@@ -68,7 +68,6 @@ export const NormallyDistributed = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleSCChange}
                     name="numberformat"
@@ -83,7 +82,6 @@ export const NormallyDistributed = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleTFChange}
                     name="numberformat"

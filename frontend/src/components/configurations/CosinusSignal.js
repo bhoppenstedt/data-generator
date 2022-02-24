@@ -23,13 +23,15 @@ export const CosinusSignal = (props) => {
   function putReq() {
     
     var params={frequency,amplitude,transmissionFrequency}
-    fetch('/api/cosinus/' + signalName + '/', {
+    fetch('http://localhost:5000/api/cosinus/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })
-    .then(response => response.json()) 
-    .then(json => console.log(json));
+    .then(res => res.json())
+    .then(dataJSON => JSON.parse(dataJSON))
+    .then(data => props.setStreams(Array.from(data)));
+
   };
   
   const [signalName, setSignalName] = useState('')
@@ -44,8 +46,7 @@ export const CosinusSignal = (props) => {
                             signal name:
                   </Typography>
                   <TextField 
-                  id="outlined-basic" 
-                  label="name" 
+                  id="outlined-basic"
                   variant="outlined" 
                   onChange={handleNameChange}
                   />
@@ -55,7 +56,6 @@ export const CosinusSignal = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleFRChange}
                     name="numberformat"
@@ -70,7 +70,6 @@ export const CosinusSignal = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleAMChange}
                     name="numberformat"
@@ -85,7 +84,6 @@ export const CosinusSignal = (props) => {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
                     value={props.numberformat}
                     onChange={handleTFChange}
                     name="numberformat"

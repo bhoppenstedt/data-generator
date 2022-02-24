@@ -21,13 +21,6 @@ export function RandomSignal ({streams, setStreams}) {
     setTransmissionFrequency(e.target.value)
   };
 
-  function updateArray() {
-    var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
-                        .then(res => res.json())
-                        .then(dataJSON => JSON.parse(dataJSON))
-                        .then(data => setStreams(Array.from(data))));
-}
-
   function putReq() {
     
     var params={lowerBoundary,upperBoundary,transmissionFrequency}
@@ -36,13 +29,16 @@ export function RandomSignal ({streams, setStreams}) {
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })
-    .then(response => response.json()) 
-    .then(json => console.log(json));
+    .then(res => res.json())
+    .then(dataJSON => JSON.parse(dataJSON))
+    .then(data => setStreams(Array.from(data)));
+
   };
 
   function wrapper() {
     putReq();
-    updateArray();
+    //updateArray();
+    console.log("PUT and GET done!")
   }
   
   const [signalName, setSignalName] = useState('')
@@ -57,12 +53,10 @@ export function RandomSignal ({streams, setStreams}) {
                             signal name:
                   </Typography>
                   <TextField 
-                  id="name" 
-                  label="name" 
+                  id="name"  
                   variant="outlined"
                   size="normal"
                   onChange={handleNameChange}
-                  sx={{color: "#9496F5"}}
                   />
 
                   <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
@@ -70,7 +64,6 @@ export function RandomSignal ({streams, setStreams}) {
                   </Typography>
                   <TextField 
                     variant="outlined"
-                    label="value"
                     name="numberformat"
                     id="lowerBoundary"
                     InputProps={{
@@ -83,8 +76,6 @@ export function RandomSignal ({streams, setStreams}) {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
-                   
                     name="numberformat"
                     id="upperBoundary"
                     InputProps={{
@@ -98,8 +89,6 @@ export function RandomSignal ({streams, setStreams}) {
                   </Typography>
                   <TextField
                     variant="outlined"
-                    label="value"
-                    
                     name="numberformat"
                     id="transmissionFrequency"
                     InputProps={{

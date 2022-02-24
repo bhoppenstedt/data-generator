@@ -10,8 +10,7 @@ var startArray = [];
 var streamsServer = JSON.stringify(fetch('/api/signals/')
                         .then(res => res.json())
                         .then(dataJSON => JSON.parse(dataJSON))
-                        .then(data => startArray = Array.from(data))
-                        .then(() => console.log(startArray)));
+                        .then(data => startArray = Array.from(data)));
 
 const empty= [
     {
@@ -24,25 +23,31 @@ const empty= [
     }
 ]
 
-const Main = (props) => {
-    const theme = useTheme();
-    const colorMode = React.useContext(props.ColorModeContext);
 
-    const [streams, setStreams] = useState(empty);
+const Main = (props) => {
+
+    const [streams, setStreams] = useState([]);
+
+    function updateArray() {
+        var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
+                            .then(res => res.json())
+                            .then(dataJSON => JSON.parse(dataJSON))
+                            .then(data => setStreams(Array.from(data))));
+    }
 
     return (
-        <Grid container={true}>
+        <Grid container={true} >
             <Grid item xs ={12}>
-                <Header title="Data generator" colorMode={colorMode} theme={theme}/>
+                <Header title="Data generator"/>
             </Grid>
-            <Grid item xs ={1}></Grid>
-            <Grid item xs ={5} sx={{pt:4}}>
+            <Grid item xs ={1}/>
+            <Grid item xs ={5} sx={{pt:"26px"}}>
                 <SignalScreen streams={streams} setStreams={setStreams}/>
             </Grid>
-            <Grid item xs ={5} sx={{pt:4}}>
+            <Grid item xs ={5} sx={{pt:"26px"}}>
                 <Output streams={streams} setStreams={setStreams}/>
             </Grid>
-            <Grid item xs ={1}></Grid>
+            <Grid item xs ={1}/>
         </Grid>
     )
 }
