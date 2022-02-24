@@ -42,7 +42,7 @@ function Output ({streams, setStreams}) {
   const [content, setContent] = useState("")
 
 
-    const streamElements = streams.map((stream) => 
+    const streamElements = streams.filter((x) => x.name.startsWith(content)).map((stream) => 
     <StreamBoxElem 
         name={stream.name} 
         type={stream.type} 
@@ -57,7 +57,7 @@ function Output ({streams, setStreams}) {
 
     return (
             <Card variant="outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9', marginLeft: "1vw", marginRight: "8vw", height: "85vh", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
-                <Grid height="87%" container  justifyContent="center" alignItems="center">
+                <Grid height="80%" container  justifyContent="center" alignItems="center">
                     <Grid item xs={12}>
                         <Typography align="center" component="div" sx={{ fontFamily:'Open Sans, sans-serif', fontSize: 25, fontWeight: "700", color: '#3F0092', marginTop:"0.1vw", marginBottom:"0.5vw" }}>
                             datastreams
@@ -94,9 +94,16 @@ function Output ({streams, setStreams}) {
                                             />
                                         </IconButton>
                                 </Stack>
+                                </Stack>
                             </Grid>     
-                            <Grid item xs={12} sx={{margin: "12px"}}>
-                                <TextField fullWidth label="serach datastreams" onChange={(x) => setContent(x.target.value)}/>
+                            <Grid item xs={12}>
+                                <TextField 
+                                    size="small" 
+                                    sx={{paddingX:"12px", paddingBottom:"4px"}} 
+                                    fullWidth 
+                                    label="serach datastreams" 
+                                    onChange={(x) => setContent(x.target.value)}
+                                />
                             </Grid>
                         
                     </Grid>
@@ -122,10 +129,6 @@ function Output ({streams, setStreams}) {
                                 </Typography> 
                             </Stack>
                             : streamElements}
-                        {streams.filter((x) => x.name.startsWith(content)).map((stream) => 
-                          <StreamBoxElem name={stream.name} type={stream.type} argument1={stream.lowerBoundary} argument2={stream.upperBoundary} argument3={stream.transmissionFrequency} runningState={stream.running}/>
-                        )}
-
                         </Paper>
                     </Grid>
                 </Grid>
