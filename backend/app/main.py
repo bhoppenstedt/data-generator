@@ -1,23 +1,53 @@
 from cProfile import run
 import json
+import random
+import celery
 from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS 
 from numpy import add
+from celery import Celery
 from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
-
-# Initialize Server and API
-app = Flask(__name__)
-api = Api(app)
-
-# Allow cross origin REST requests
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+import tasks
 
 # Create dictionary in which the objects of the created signals are stored
 running_signal_objects = {}
 
 # Create array in which the arguments of the created signals are stored
 running_signal_args = []
+
+# Initialize Server and API
+app = Flask(__name__)
+app.config.update(
+    CELERY_BROKER_URL='amqp://localhost:5672',
+)
+celery = tasks.make_celery(app)
+
+@celery.task()
+def patch_signal(signal_name):
+    running_signal_objects[signal_name].patch()
+
+@celery.task()
+def create_signal(signal_name, signal_type, args):
+    if signal_type == 'random':
+        producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+    elif signal_type == 'sinus':
+        producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+    elif signal_type == 'cosinus':
+        producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+    elif signal_type == 'emphasized':
+        producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
+    else:
+        producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
+
+    running_signal_objects[signal_name] = producer 
+    
+
+api = Api(app)
+
+# Allow cross origin REST requests
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
 # Add required arguments to each signal via the reqparse module 
 random_arguments = reqparse.RequestParser()
@@ -63,7 +93,7 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+            create_signal.delay(signal_name, signal_type, args)
 
         elif(signal_type == "sinus"):
             args = sinus_arguments.parse_args()
@@ -71,7 +101,7 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+            create_signal.delay(signal_name, signal_type, args)
 
         elif(signal_type=="cosinus"):
             args = cosinus_arguments.parse_args()
@@ -79,7 +109,7 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+            create_signal.delay(signal_name, signal_type, args)
         
         elif(signal_type=="emphasized"):
             args = emphasized_arguments.parse_args()
@@ -87,7 +117,7 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
+            create_signal.delay(signal_name, signal_type, args)
 
         elif(signal_type=="spiked"):
             args = spiked_arguments.parse_args()
@@ -95,14 +125,12 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
+            create_signal.delay(signal_name, signal_type, args)
 
         else:
             return "Invalid signal type"
 
 
-        # Add the signal object to the objects dictionary 
-        running_signal_objects[signal_name] = producer 
 
         # Add the arguments of the signal to the args dictionary 
         running_signal_args.append(args)
@@ -113,8 +141,8 @@ class HandleSignals(Resource):
     def patch(self, signal_type,signal_name):
         
         # Check if a signal with the given name exists 
-        if signal_name not in running_signal_objects: 
-            return 'Signal name doesnt exist'
+        #if signal_name not in running_signal_objects: 
+            #return 'Signal name doesnt exist'
 
         # Check if the given signal type is correct
         for index in running_signal_args:
@@ -128,7 +156,8 @@ class HandleSignals(Resource):
                 index['running'] = not index['running']
         
         # Start/Stop the signal
-        running_signal_objects[signal_name].patch()
+        patch_signal.delay(signal_name)
+
 
         # Return all existing signals
         return json.dumps(running_signal_args)

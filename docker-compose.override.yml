@@ -44,3 +44,11 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: "Random-Signal:1:1,Sinus-Signal:1:1,Cosinus-Signal:1:1,Emphasized-Signal:1:1,Spiked-Signal:1:1"
+
+##########################################################################################
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
