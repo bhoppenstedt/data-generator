@@ -74,7 +74,7 @@ return (
                     <Grid item xs={6}>
                         <Stack direction={"horizontal"}> 
                             <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                                {params[0]}
+                                signal type:
                             </Typography>
                             <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
                                 {type}
