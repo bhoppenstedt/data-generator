@@ -5,10 +5,27 @@ from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS 
 from numpy import add
 from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
+from flask_swagger_ui import get_swaggerui_blueprint
 
 # Initialize Server and API
 app = Flask(__name__)
 api = Api(app)
+
+
+# Swagger Configuration
+
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config = {
+        'app_name': "datastream generator"
+    }
+)
+
+app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
+
 
 # Allow cross origin REST requests
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
