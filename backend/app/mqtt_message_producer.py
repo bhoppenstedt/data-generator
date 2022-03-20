@@ -6,7 +6,7 @@ import time
 from paho.mqtt import client as mqtt_client
 
 
-broker = 'localhost'
+broker = 'broker.emqx.io'
 port=1883
 topic = "python/mqtt"
 # generate client ID with pub prefix randomly
@@ -15,6 +15,7 @@ client_id = f'python-mqtt-{random.randint(0, 1000)}'
 # password = 'public'
 
 def connect_mqtt():
+    print("reached")
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
             print("Connected to MQTT Broker!")
