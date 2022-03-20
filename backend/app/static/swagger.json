@@ -1,0 +1,8 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "datagenerator",
+      "version": "1.0.0",
+      "title": "datastream generator"
+    }
+}
