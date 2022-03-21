@@ -11,7 +11,7 @@ def serialize(signal):
     return json.dumps(signal).encode(('utf-8'))
 
 
-class Random_signal_producer(object):
+class Random_kafka_signal_producer(object):
 
     def __init__(self, lowerBoundary, upperBoundary, transmissionFrequency):
         """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
@@ -44,15 +44,9 @@ class Random_signal_producer(object):
         """A random signal with the parameters of the corresponding signal is created and sent to the kafka topic 'Random-Signal'.
         """
         while(self.running):
-            random_number = int(
-                random.randint(
-                    self.lowerBoundary,
-                    self.upperBoundary))
+            random_number = int(random.randint(self.lowerBoundary,self.upperBoundary))
             print(f"Sending number {random_number}")
-            self.producer.send(
-                'Random-Signal',
-                value=serialize(
-                    (random_number)))
+            self.producer.send('Random-Signal',value=serialize((random_number)))
             sleep(self.transmissionFrequency)
 
 
@@ -91,12 +85,9 @@ class Sinus_signal_producer(object):
         """
         while(True):
             for i in range(0, 360) and self.running:
-                periodic_number = self.amplitude * \
-                    math.sin(self.frequency * math.radians(i))
+                periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
                 print(f"Sending number {periodic_number}")
-                self.producer.send(
-                    'Sinus-Signal',
-                    value=serialize(periodic_number))
+                self.producer.send('Sinus-Signal',value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
 
 
@@ -138,12 +129,9 @@ class Cosinus_signal_producer(object):
 
         while(True):
             for i in range(0, 360) and self.running:
-                periodic_number = self.amplitude * \
-                    math.cos(self.frequency * math.radians(i))
+                periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
                 print(f"Sending number {periodic_number}")
-                self.producer.send(
-                    'Cosinus-Signal',
-                    value=serialize(periodic_number))
+                self.producer.send('Cosinus-Signal',value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
 
 

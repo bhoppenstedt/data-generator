@@ -4,7 +4,8 @@ from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS 
 from numpy import add
-from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
+from message_producer import Random_kafka_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
+from mqtt_message_producer import Random_signal_producer
 
 # Initialize Server and API
 app = Flask(__name__)
@@ -49,7 +50,7 @@ spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 
 class HandleSignals(Resource):
-    def put(self, publisher , signal_type, signal_name):
+    def put(self, publisher, signal_type, signal_name):
 
         # Check if the the given name is already in use 
         for index in running_signal_args:
@@ -64,7 +65,9 @@ class HandleSignals(Resource):
             args["name"] = signal_name
 
             if publisher == "kafka":
-                producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+                producer = Random_kafka_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+            elif publisher == 'mqtt':
+                producer = Random_signal_producer(name=signal_name, args=args, type='random')
             
 
         elif(signal_type == "sinus"):
@@ -112,7 +115,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def patch(self, signal_type,signal_name):
+    def patch(self,publisher, signal_type,signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
