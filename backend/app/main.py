@@ -47,12 +47,9 @@ spiked_arguments.add_argument("propability", type=float, required=True)
 spiked_arguments.add_argument("size", type=float, required=True)
 spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
-class HandleMQTTSignals(Resource):
-    def put(self, signal_type, signal_name):
-        return True
 
-class HandleKafkaSignals(Resource):
-    def put(self, signal_type, signal_name):
+class HandleSignals(Resource):
+    def put(self, publisher , signal_type, signal_name):
 
         # Check if the the given name is already in use 
         for index in running_signal_args:
@@ -66,7 +63,9 @@ class HandleKafkaSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+            if publisher == "kafka":
+                producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
+            
 
         elif(signal_type == "sinus"):
             args = sinus_arguments.parse_args()
@@ -172,7 +171,7 @@ class GetAllSignals(Resource):
 api.add_resource(GetAllSignals, '/api/signals/')
 
 # Add endpoints for PUT, PATCH, DELETE requests
-api.add_resource(HandleKafkaSignals,'/api/kafka/<string:signal_type>/<string:signal_name>/')
+api.add_resource(HandleSignals,'/api/<string:publisher>/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
 def root():
