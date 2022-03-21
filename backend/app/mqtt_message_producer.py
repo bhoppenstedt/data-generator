@@ -4,7 +4,7 @@ from paho.mqtt import client as mqtt_client
 
 broker = 'broker.emqx.io'
 port=1883
-topic = "python/mqtt"
+#topic = "python/mqtt"
 # generate client ID with pub prefix randomly
 #client_id = f'python-mqtt-{random.randint(0, 1000)}'
 # username = 'emqx'
@@ -29,6 +29,7 @@ class Random_signal_producer(object):
             transmissionFrequency(float): The pause in between ticks of the signal
         """
         self.client = mqtt_client.Client(name)
+        self.topic = f"random/{name}"
         self.client.on_connect = on_connect
 
         self.running = False
@@ -53,14 +54,12 @@ class Random_signal_producer(object):
         """
         while(self.running):
             random_number = int(random.randint(self.lowerBoundary,self.upperBoundary))
-            #print(f"Sending number {random_number}")
-            result = self.client.publish(topic, random_number)
-            # result: [0, 1]
+            result = self.client.publish(self.topic, random_number)
             status = result[0]
             if status == 0:
-                print(f"Send `{random_number}` to topic `{topic}`")
+                print(f"Send `{random_number}` to topic `{self.topic}`")
             else:
-                print(f"Failed to send message to topic {topic}")
+                print(f"Failed to send message to topic {self.topic}")
             sleep(self.transmissionFrequency)
 
 
