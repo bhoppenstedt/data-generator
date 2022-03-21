@@ -174,9 +174,7 @@ class Emphasized_signal_producer(object):
             for i in data and self.running:
                 emphasizedNumber = i
                 print(f"Sending number {emphasizedNumber}")
-                self.producer.send(
-                    'Emphasized-Signal',
-                    value=serialize(emphasizedNumber))
+                self.producer.send('Emphasized-Signal',value=serialize(emphasizedNumber))
                 sleep(self.transmissionFrequency)
 
 

@@ -1,8 +1,9 @@
 import random, math 
 from time import sleep 
 from paho.mqtt import client as mqtt_client
+from numpy.random import normal
 
-broker = 'broker.emqx.io'
+broker = 'localhost'
 port=1883
 #topic = "python/mqtt"
 # generate client ID with pub prefix randomly
@@ -12,12 +13,16 @@ port=1883
 
 
 def on_connect(client, userdata, flags, rc):
-    if rc == 0:
-        print("Connected to MQTT Broker!")
-    else:
-        print("Failed to connect, return code %d\n", rc)
+    print("Connected with result code "+str(rc))
 
-class Random_signal_producer(object):
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
+    client.subscribe("$SYS/#")
+
+def on_message(client, userdata, msg):
+    print(msg.topic+" "+str(msg.payload))
+
+class MQTT_Signal_producer(object):
     
     def __init__(self,type,name,args):
        
@@ -45,25 +50,25 @@ class Random_signal_producer(object):
         self.transmissionFrequency = random_args["transmissionFrequency"]
 
     def sinus_constructor(self,sinus_args):
-        self.lowerBoundary = sinus_args["frequency"]
-        self.upperBoundary = sinus_args["amplitude"]
+        self.frequency = sinus_args["frequency"]
+        self.amplitude = sinus_args["amplitude"]
         self.transmissionFrequency = sinus_args["transmissionFrequency"]
 
     def cosinus_constructor(self,cosinus_args):
-        self.lowerBoundary = cosinus_args["frequency"]
-        self.upperBoundary = cosinus_args["amplitude"]
+        self.frequency = cosinus_args["frequency"]
+        self.amplitude = cosinus_args["amplitude"]
         self.transmissionFrequency = cosinus_args["transmissionFrequency"]
 
     def spiked_constructor(self,spiked_args):
-        self.lowerBoundary = spiked_args["base"]
-        self.upperBoundary = spiked_args["distance"]
-        self.upperBoundary = spiked_args["propability"]
-        self.upperBoundary = spiked_args["size"]
+        self.base = spiked_args["base"]
+        self.distance = spiked_args["distance"]
+        self.propability = spiked_args["propability"]
+        self.size = spiked_args["size"]
         self.transmissionFrequency = spiked_args["transmissionFrequency"]
 
     def emphaiszed_constructor(self,emphasized_args):
-        self.lowerBoundary = emphasized_args["center"]
-        self.upperBoundary = emphasized_args["scale"]
+        self.center = emphasized_args["center"]
+        self.scale = emphasized_args["scale"]
         self.transmissionFrequency = emphasized_args["transmissionFrequency"]
 
 
@@ -75,12 +80,19 @@ class Random_signal_producer(object):
             [Bool]: [Returns true if successful. Note there's no Return when starting a signal]
         """
         self.running = not self.running
+        
         if self.running:
             self.client.connect(broker,port)
             if self.type == 'random':
                 self.sendRandomSignal()
             elif self.type =='sinus':
-                self.send
+                self.sendSinusSignal()
+            elif self.type == 'cosinus':
+                self.sendCosinusSignal()
+            elif self.type == 'emphasized':
+                self.sendEmphasizedRandomSignal()
+            else:
+                self.sendSpikedSignal()
 
         return True
 
@@ -100,7 +112,7 @@ class Random_signal_producer(object):
     def sendSinusSignal(self):
         """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
         """
-        while(True):
+        while(self.running):
             for i in range(0, 360) and self.running:
                 periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
                 result = self.client.publish(self.topic, periodic_number)
@@ -114,8 +126,8 @@ class Random_signal_producer(object):
     def sendCosinusSignal(self):
         """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
         """
-        while(True):
-            for i in range(0, 360) and self.running:
+        while(self.running):
+            for i in range(0, 360):
                 periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
                 result = self.client.publish(self.topic, periodic_number)
                 status = result[0]
@@ -125,10 +137,47 @@ class Random_signal_producer(object):
                     print(f"Failed to send message to topic {self.topic}")
                 sleep(self.transmissionFrequency)
 
+    def sendEmphasizedRandomSignal(self):
+        """A normally distributed signal with the parameters of the corresponding object is created and sent to the kafka topic 'Emphasized-Signal'.
+        """
+        while(self.running):
+            data = normal(loc=self.center, scale=self.scale, size=200)
+            for i in data:
+                emphasized_number = i
+                result = self.client.publish(self.topic, emphasized_number)
+                status = result[0]
+                if status == 0:
+                    print(f"Send `{emphasized_number}` to topic `{self.topic}`")
+                else:
+                    print(f"Failed to send message to topic {self.topic}")
+                sleep(self.transmissionFrequency)
+
+    def sendSpikedSignal(self):
+        """A spiked signal with the parameters of the corresponding object is created and sent to the kafka topic 'Spiked-Signal'.
+        """
+        i = 0
+        while(self.running):
+            if i % self.distance == 0 and random.random() <= self.propability:
+                spiked_number = self.base + self.size
+            else:
+                spiked_number = self.base
+            result = self.client.publish(self.topic, spiked_number)
+            status = result[0]
+            if status == 0:
+                print(f"Send `{spiked_number}` to topic `{self.topic}`")
+            else:
+                print(f"Failed to send message to topic {self.topic}")
+            sleep(self.transmissionFrequency)
+            i = i + 1
+
 
 
 
 
         
-#test = Random_signal_producer("fsdfsd",1,10,1)
-#test.patch()
+client = mqtt_client.Client()
+client.on_connect = on_connect
+client.on_message = on_message
+client.connect('localhost', 1883, 60)
+client.loop_forever()
+client.publish('fdsfds', random.randint(10,20))

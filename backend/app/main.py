@@ -5,7 +5,7 @@ from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS 
 from numpy import add
 from message_producer import Random_kafka_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
-from mqtt_message_producer import Random_signal_producer
+from mqtt_message_producer import MQTT_Signal_producer
 
 # Initialize Server and API
 app = Flask(__name__)
@@ -67,7 +67,7 @@ class HandleSignals(Resource):
             if publisher == "kafka":
                 producer = Random_kafka_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
             elif publisher == 'mqtt':
-                producer = Random_signal_producer(name=signal_name, args=args, type='random')
+                producer = MQTT_Signal_producer(name=signal_name, args=args, type='random')
             
 
         elif(signal_type == "sinus"):
@@ -76,7 +76,10 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+            if publisher == 'kafka':
+                producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+            elif publisher == 'mqtt':
+                producer = MQTT_Signal_producer(type = 'sinus', name = signal_name, args = args)
 
         elif(signal_type=="cosinus"):
             args = cosinus_arguments.parse_args()
@@ -84,7 +87,10 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+            if publisher == 'kafka':
+                producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
+            elif publisher == 'mqtt':
+                producer = MQTT_Signal_producer(type = 'cosinus', name = signal_name, args = args)
         
         elif(signal_type=="emphasized"):
             args = emphasized_arguments.parse_args()
@@ -92,7 +98,10 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
+            if publisher == 'kafka':
+                producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
+            elif publisher == 'mqtt':
+                producer = MQTT_Signal_producer(type = 'emphhasized', name = signal_name, args = args)
 
         elif(signal_type=="spiked"):
             args = spiked_arguments.parse_args()
@@ -100,7 +109,10 @@ class HandleSignals(Resource):
             args["running"] = False
             args["name"] = signal_name
 
-            producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
+            if publisher == 'kafka':
+                producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
+            elif publisher == 'mqtt':
+                producer = MQTT_Signal_producer(type = 'spiked', name = signal_name, args = args)
 
         else:
             return "Invalid signal type"
@@ -115,7 +127,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def patch(self,publisher, signal_type,signal_name):
+    def patch(self, publisher, signal_type,signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
