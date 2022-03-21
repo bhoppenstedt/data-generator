@@ -48,6 +48,76 @@
             "type": "float"
           }
         }
+      },
+      "sinus signal": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "float"
+          },
+          "amplitude": {
+            "type": "float"
+          },
+          "transmissionFrequency": {
+            "type": "float"
+          }
+        }
+      },
+      "cosinus signal": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "float"
+          },
+          "amplitude": {
+            "type": "float"
+          },
+          "transmissionFrequency": {
+            "type": "float"
+          }
+        }
+      },
+      "emphasized signal": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "center": {
+            "type": "float"
+          },
+          "scale": {
+            "type": "float"
+          },
+          "transmissionFrequency": {
+            "type": "float"
+          }
+        }
+      },
+      "spiked signal": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "base": {
+            "type": "float"
+          },
+          "distance": {
+            "type": "float"
+          },
+          "probability": {
+            "type": "float"
+          },
+          "size": {
+            "type": "float"
+          },
+          "transmissionFrequency": {
+            "type": "float"
+          }
+        }
       }
     }
   }
