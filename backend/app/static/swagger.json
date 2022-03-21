@@ -1,8 +1,54 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "description": "datagenerator",
-      "version": "1.0.0",
-      "title": "datastream generator"
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Datastream Generator as a web application for generating different datastreams.",
+    "version": "1.0.0",
+    "title": "Datastream Generator"
+  },
+  "servers": [
+    {
+      "url": "/"
     }
+  ],
+  "tags": [
+    {
+      "name": "Signal Request",
+      "description": "Example for requesting, creating and deleting signals with parameters"
+    }
+  ],
+  "paths": {
+    "/api/signals": {
+      "get": {
+        "tags": [
+          "Signals Request"
+        ],
+        "summary": "Returns all created signals in Python Dictionary",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "random signal": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "lowerBoundary": {
+            "type": "int"
+          },
+          "upperBoundary": {
+            "type": "int"
+          },
+          "transmissionFrequency": {
+            "type": "float"
+          }
+        }
+      }
+    }
+  }
 }
