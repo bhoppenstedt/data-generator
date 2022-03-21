@@ -6,8 +6,6 @@ from time import sleep
 from kafka import KafkaProducer
 
 
-producer = KafkaProducer(bootstrap_servers=['kafka:9092'])
-
 def serialize(signal):
     """Serializing the signal."""
     return json.dumps(signal).encode(('utf-8'))
@@ -24,7 +22,9 @@ class Random_signal_producer(object):
             upperBoundary (int): The upper boundary of the random signal
             transmissionFrequency(float): The pause in between ticks of the signal
         """
-        
+        self.producer = KafkaProducer(
+            bootstrap_servers=['kafka:9092']
+        )
         self.running = False
         self.lowerBoundary = lowerBoundary
         self.upperBoundary = upperBoundary
@@ -49,7 +49,10 @@ class Random_signal_producer(object):
                     self.lowerBoundary,
                     self.upperBoundary))
             print(f"Sending number {random_number}")
-            producer.send('Random-Signal',value=serialize((random_number)))
+            self.producer.send(
+                'Random-Signal',
+                value=serialize(
+                    (random_number)))
             sleep(self.transmissionFrequency)
 
 
@@ -65,7 +68,9 @@ class Sinus_signal_producer(object):
             amplitude (float): The amplitude of the sinus signal.
             transmissionFrequency(float): The pause in between ticks of the signal
         """
-
+        self.producer = KafkaProducer(
+            bootstrap_servers=['kafka:9092']
+        )
         self.running = False
         self.frequency = frequency
         self.amplitude = amplitude
@@ -89,7 +94,9 @@ class Sinus_signal_producer(object):
                 periodic_number = self.amplitude * \
                     math.sin(self.frequency * math.radians(i))
                 print(f"Sending number {periodic_number}")
-                producer.send('Sinus-Signal',value=serialize(periodic_number))
+                self.producer.send(
+                    'Sinus-Signal',
+                    value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
 
 
@@ -106,7 +113,9 @@ class Cosinus_signal_producer(object):
             transmissionFrequency(float): The pause in between ticks of the signal
         """
 
-
+        self.producer = KafkaProducer(
+            bootstrap_servers=['kafka:9092']
+        )
         self.running = False
         self.frequency = frequency
         self.amplitude = amplitude
@@ -132,7 +141,9 @@ class Cosinus_signal_producer(object):
                 periodic_number = self.amplitude * \
                     math.cos(self.frequency * math.radians(i))
                 print(f"Sending number {periodic_number}")
-                producer.send('Cosinus-Signal',value=serialize(periodic_number))
+                self.producer.send(
+                    'Cosinus-Signal',
+                    value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
 
 
@@ -149,6 +160,9 @@ class Emphasized_signal_producer(object):
             scale (float): The standard deviation of the normal distribution
             transmissionFrequency(float): The pause in between ticks of the signal
         """
+        self.producer = KafkaProducer(
+            bootstrap_servers=['kafka:9092']
+        )
         self.running = False
         self.center = center
         self.scale = scale
@@ -172,7 +186,9 @@ class Emphasized_signal_producer(object):
             for i in data and self.running:
                 emphasizedNumber = i
                 print(f"Sending number {emphasizedNumber}")
-                producer.send('Emphasized-Signal',value=serialize(emphasizedNumber))
+                self.producer.send(
+                    'Emphasized-Signal',
+                    value=serialize(emphasizedNumber))
                 sleep(self.transmissionFrequency)
 
 
@@ -190,7 +206,9 @@ class Spiked_signal_producer(object):
             size (float): The size of the spikes
             transmissionFrequency(float): The pause in between ticks of the signal
         """
-
+        self.producer = KafkaProducer(
+            bootstrap_servers=['kafka:9092']
+        )
         self.running = False
         self.base = base
         self.distance = distance
@@ -219,6 +237,6 @@ class Spiked_signal_producer(object):
             else:
                 spiked_number = self.base
                 print(f"Sending number {spiked_number}")
-            producer.send('Spiked-Signal', value=serialize(spiked_number))
+            self.producer.send('Spiked-Signal', value=serialize(spiked_number))
             sleep(self.transmissionFrequency)
             i = i + 1
