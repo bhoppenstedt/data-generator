@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/api/signals": {
+    "/api/signals/": {
       "get": {
         "tags": [
           "Signals Request"
@@ -29,93 +29,189 @@
           }
         }
       }
+    },
+    "/api/random/{signalname}/": {
+      "put": {
+        "summary": "create a new random signal",
+        "tags": [
+          "Signals Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "Signal name for random signal",
+            "lowerBoundary": 0,
+            "upperBoundary": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/RandomSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RandomSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/RandomSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+    "delete": {
+      "tags": [
+        "Signals Request"
+      ],
+      "summary": "Delete a Random Signal",
+      "description": "Delete a Random Signal by name",
+      
+      "produces": [
+        "application/json",
+        "application/xml"
+      ],
+      "parameters": [
+        {
+          "name": "signalname",
+          "in": "path",
+          "description": "The name that needs to be deleted",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "400": {
+          "description": "Invalid name supplied"
+        },
+        "404": {
+          "description": "Signal not found"
+        }
+      }
     }
-  },
+  }
+},
   "components": {
     "schemas": {
-      "random signal": {
+      "RandomSignal": {
         "properties": {
-          "name": {
+          "signalname": {
             "type": "string"
           },
           "lowerBoundary": {
-            "type": "int"
+            "type": "integer",
+            "format": "int32"
           },
           "upperBoundary": {
-            "type": "int"
+            "type": "integer",
+            "format": "int32"
           },
           "transmissionFrequency": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           }
         }
       },
-      "sinus signal": {
+      "SinusSignal": {
         "properties": {
-          "name": {
+          "signalname": {
             "type": "string"
           },
           "frequency": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "amplitude": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "transmissionFrequency": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           }
         }
       },
-      "cosinus signal": {
+      "CosinusSignal": {
         "properties": {
-          "name": {
+          "signalname": {
             "type": "string"
           },
           "frequency": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "amplitude": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "transmissionFrequency": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           }
         }
       },
-      "emphasized signal": {
+      "EmphasizedSignal": {
         "properties": {
-          "name": {
+          "signalname": {
             "type": "string"
           },
           "center": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "scale": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "transmissionFrequency": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           }
         }
       },
-      "spiked signal": {
+      "SpikedSignal": {
         "properties": {
-          "name": {
+          "signalname": {
             "type": "string"
           },
           "base": {
             "type": "float"
           },
           "distance": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "probability": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "size": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "transmissionFrequency": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           }
         }
       }
