@@ -22,7 +22,7 @@
         "tags": [
           "Signals Request"
         ],
-        "summary": "Returns all created signals in Python Dictionary",
+        "summary": "Returns all created signals in Python Dictionary.",
         "responses": {
           "200": {
             "description": "OK"
@@ -32,7 +32,7 @@
     },
     "/api/random/{signalname}/": {
       "put": {
-        "summary": "create a new random signal",
+        "summary": "Create a new Random Signal.",
         "tags": [
           "Signals Request"
         ],
@@ -48,7 +48,7 @@
             "name": "signalname",
             "required": true,
             "in": "path",
-            "description": "Signal name for random signal",
+            "description": "Signal name for Random Signal",
             "lowerBoundary": 0,
             "upperBoundary": 0,
             "transmissionFrequency": 0.0,
@@ -80,37 +80,354 @@
           }
         }
       },
-    "delete": {
-      "tags": [
-        "Signals Request"
-      ],
-      "summary": "Delete a Random Signal",
-      "description": "Delete a Random Signal by name",
-      
-      "produces": [
-        "application/json",
-        "application/xml"
-      ],
-      "parameters": [
-        {
-          "name": "signalname",
-          "in": "path",
-          "description": "The name that needs to be deleted",
-          "required": true,
-          "type": "string"
-        }
-      ],
-      "responses": {
-        "400": {
-          "description": "Invalid name supplied"
-        },
-        "404": {
-          "description": "Signal not found"
+      "delete": {
+        "tags": [
+          "Signals Request"
+        ],
+        "summary": "Delete a Random Signal.",
+        "description": "Delete a Random Signal by name",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Random Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
         }
       }
-    }
-  }
-},
+    },
+    "/api/sinus/{signalname}/": {
+      "put": {
+        "summary": "Create a new Sinus Signal.",
+        "tags": [
+          "Signals Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "Signal name for Sinus Signal",
+            "frequency": 0,
+            "amplitude": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/SinusSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SinusSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/SinusSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Signals Request"
+        ],
+        "summary": "Delete a Sinus Signal.",
+        "description": "Delete a Sinus Signal by name",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Sinus Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      }
+    },
+    "/api/cosinus/{signalname}/": {
+      "put": {
+        "summary": "Create a new Cosinus Signal.",
+        "tags": [
+          "Signals Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "Signal name for Cosinus Signal",
+            "frequency": 0,
+            "amplitude": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/CosinusSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CosinusSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/CosinusSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Signals Request"
+        ],
+        "summary": "Delete a Cosinus Signal.",
+        "description": "Delete a Cosinus Signal by name",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Cosinus Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      }
+    },
+    "/api/emphasized/{signalname}/": {
+      "put": {
+        "summary": "Create a new Emphasized Signal.",
+        "tags": [
+          "Signals Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "Signal name for Emphasized Signal",
+            "center": 0,
+            "scale": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/EmphasizedSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmphasizedSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/EmphasizedSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Signals Request"
+        ],
+        "summary": "Delete an Emphasized Signal.",
+        "description": "Delete an Emphasized Signal by name",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Emphasized Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      }
+    },
+    "/api/spiked/{signalname}/": {
+        "put": {
+          "summary": "Create a new Spiked Signal.",
+          "tags": [
+            "Signals Request"
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json",
+            "application/xml"
+          ],
+          "parameters": [
+            {
+              "name": "signalname",
+              "required": true,
+              "in": "path",
+              "description": "Signal name for Spiked Signal",
+              "base": 0,
+              "distance": 0,
+              "probability": 0,
+              "size": 0,
+              "transmissionFrequency": 0.0,
+              "schema": {
+                "$ref": "#/components/schemas/SpikedSignal"
+              }
+            }
+          ],
+          "requestBody": {
+            "description": "Signal Request",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpikedSignal"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/SpikedSignal"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "Signals Request"
+          ],
+          "summary": "Delete a Spiked Signal.",
+          "description": "Delete a Spiked Signal by name",
+          "produces": [
+            "application/json",
+            "application/xml"
+          ],
+          "parameters": [
+            {
+              "name": "signalname",
+              "in": "path",
+              "description": "The name of the Spiked Signal that needs to be deleted",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "400": {
+              "description": "Invalid name supplied"
+            },
+            "404": {
+              "description": "Signal not found"
+            }
+          }
+        }
+      }
+    },
   "components": {
     "schemas": {
       "RandomSignal": {
