@@ -56,66 +56,30 @@ class HandleSignals(Resource):
         for index in running_signal_args:
             if signal_name == index['name']:
                 return "Signal name already in use"
-
-        # Add the arguments of the signal to the args dictionary and create the correct producer object 
-        if(signal_type == "random"):
-            args = random_arguments.parse_args()
-            args["type"] = "random"
-            args["running"] = False
-            args["name"] = signal_name
-
-            if publisher == "kafka":
-                producer = Random_kafka_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
-            elif publisher == 'mqtt':
-                producer = MQTT_Signal_producer(name=signal_name, args=args, type='random')
-            
-
-        elif(signal_type == "sinus"):
-            args = sinus_arguments.parse_args()
-            args["type"] = "sinus"
-            args["running"] = False
-            args["name"] = signal_name
-
-            if publisher == 'kafka':
-                producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
-            elif publisher == 'mqtt':
-                producer = MQTT_Signal_producer(type = 'sinus', name = signal_name, args = args)
-
-        elif(signal_type=="cosinus"):
-            args = cosinus_arguments.parse_args()
-            args["type"] = "cosinus"
-            args["running"] = False
-            args["name"] = signal_name
-
-            if publisher == 'kafka':
-                producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
-            elif publisher == 'mqtt':
-                producer = MQTT_Signal_producer(type = 'cosinus', name = signal_name, args = args)
         
-        elif(signal_type=="emphasized"):
-            args = emphasized_arguments.parse_args()
-            args["type"] = "emphasized"
-            args["running"] = False
-            args["name"] = signal_name
-
-            if publisher == 'kafka':
-                producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
-            elif publisher == 'mqtt':
-                producer = MQTT_Signal_producer(type = 'emphhasized', name = signal_name, args = args)
-
-        elif(signal_type=="spiked"):
+        args["type"] = signal_type
+        args["name"]  = signal_name
+        args["running"] = False
+        
+        if(signal_type == 'random'):
+            args = random_arguments.parse_args()
+        elif(signal_type == 'sinus'):
+            args = sinus_arguments.parse_args()
+        elif(signal_type == 'cosinus'):
+            args = cosinus_arguments.parse_args()
+        elif(signal_type == 'emphasized'):
+            args = emphasized_arguments.parse_args()        
+        elif(signal_type == 'spiked'):
             args = spiked_arguments.parse_args()
-            args["type"] = "spiked"
-            args["running"] = False
-            args["name"] = signal_name
-
-            if publisher == 'kafka':
-                producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
-            elif publisher == 'mqtt':
-                producer = MQTT_Signal_producer(type = 'spiked', name = signal_name, args = args)
-
         else:
-            return "Invalid signal type"
+            return "Invalid signal type "
+
+        if publisher == "kafka":
+                producer = Random_kafka_signal_producer(name=signal_name, args=args, type=signal_type)
+        elif publisher == 'mqtt':
+                producer = MQTT_Signal_producer(name=signal_name, args=args, type=signal_type)
+        else:
+            return "Invalid Publisher"
 
 
         # Add the signal object to the objects dictionary 
