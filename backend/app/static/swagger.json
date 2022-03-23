@@ -34,7 +34,7 @@
       "put": {
         "summary": "Create a new Random Signal.",
         "tags": [
-          "Signals Request"
+          "Random Signal Request"
         ],
         "consumes": [
           "application/json"
@@ -82,7 +82,7 @@
       },
       "delete": {
         "tags": [
-          "Signals Request"
+          "Random Signal Request"
         ],
         "summary": "Delete a Random Signal.",
         "description": "Delete a Random Signal by name",
@@ -107,13 +107,46 @@
             "description": "Signal not found"
           }
         }
+      },
+      "patch": {
+        "summary": "Update running status of Random Signal.",
+        "tags": [
+          "Random Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RandomSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
       }
     },
     "/api/sinus/{signalname}/": {
       "put": {
         "summary": "Create a new Sinus Signal.",
         "tags": [
-          "Signals Request"
+          "Sinus Signal Request"
         ],
         "consumes": [
           "application/json"
@@ -161,7 +194,7 @@
       },
       "delete": {
         "tags": [
-          "Signals Request"
+          "Sinus Signal Request"
         ],
         "summary": "Delete a Sinus Signal.",
         "description": "Delete a Sinus Signal by name",
@@ -186,13 +219,46 @@
             "description": "Signal not found"
           }
         }
+      },
+      "patch": {
+        "summary": "Update running status of Sinus Signal.",
+        "tags": [
+          "Sinus Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SinusSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
       }
     },
     "/api/cosinus/{signalname}/": {
       "put": {
         "summary": "Create a new Cosinus Signal.",
         "tags": [
-          "Signals Request"
+          "Cosinus Signal Request"
         ],
         "consumes": [
           "application/json"
@@ -240,7 +306,7 @@
       },
       "delete": {
         "tags": [
-          "Signals Request"
+          "Cosinus Signal Request"
         ],
         "summary": "Delete a Cosinus Signal.",
         "description": "Delete a Cosinus Signal by name",
@@ -265,13 +331,46 @@
             "description": "Signal not found"
           }
         }
+      },
+      "patch": {
+        "summary": "Update running status of Cosinus Signal.",
+        "tags": [
+          "Cosinus Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CosinusSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
       }
     },
     "/api/emphasized/{signalname}/": {
       "put": {
         "summary": "Create a new Emphasized Signal.",
         "tags": [
-          "Signals Request"
+          "Emphasized Signal Request"
         ],
         "consumes": [
           "application/json"
@@ -319,7 +418,7 @@
       },
       "delete": {
         "tags": [
-          "Signals Request"
+          "Emphasized Signal Request"
         ],
         "summary": "Delete an Emphasized Signal.",
         "description": "Delete an Emphasized Signal by name",
@@ -344,90 +443,156 @@
             "description": "Signal not found"
           }
         }
-      }
-    },
-    "/api/spiked/{signalname}/": {
-        "put": {
-          "summary": "Create a new Spiked Signal.",
-          "tags": [
-            "Signals Request"
-          ],
-          "consumes": [
-            "application/json"
-          ],
-          "produces": [
-            "application/json",
-            "application/xml"
-          ],
-          "parameters": [
-            {
-              "name": "signalname",
-              "required": true,
-              "in": "path",
-              "description": "Signal name for Spiked Signal",
-              "base": 0,
-              "distance": 0,
-              "probability": 0,
-              "size": 0,
-              "transmissionFrequency": 0.0,
-              "schema": {
-                "$ref": "#/components/schemas/SpikedSignal"
-              }
-            }
-          ],
-          "requestBody": {
-            "description": "Signal Request",
+      },
+      "patch": {
+        "summary": "Update running status of Emphasized Signal.",
+        "tags": [
+          "Emphasized Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
             "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SpikedSignal"
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "OK",
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SpikedSignal"
+                "$ref": "#/components/schemas/EmphasizedSignal"
               }
-            },
-            "400": {
-              "description": "Failed. Bad post data."
             }
           }
         },
-        "delete": {
-          "tags": [
-            "Signals Request"
-          ],
-          "summary": "Delete a Spiked Signal.",
-          "description": "Delete a Spiked Signal by name",
-          "produces": [
-            "application/json",
-            "application/xml"
-          ],
-          "parameters": [
-            {
-              "name": "signalname",
-              "in": "path",
-              "description": "The name of the Spiked Signal that needs to be deleted",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "400": {
-              "description": "Invalid name supplied"
-            },
-            "404": {
-              "description": "Signal not found"
-            }
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
           }
         }
       }
     },
+    "/api/spiked/{signalname}/": {
+      "put": {
+        "summary": "Create a new Spiked Signal.",
+        "tags": [
+          "Spiked Signal Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "Signal name for Spiked Signal",
+            "base": 0,
+            "distance": 0,
+            "probability": 0,
+            "size": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/SpikedSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpikedSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/SpikedSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Spiked Signal Request"
+        ],
+        "summary": "Delete a Spiked Signal.",
+        "description": "Delete a Spiked Signal by name",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Spiked Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update running status of Spiked Signal.",
+        "tags": [
+          "Spiked Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpikedSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      }
+    }
+  },
   "components": {
     "schemas": {
       "RandomSignal": {
@@ -512,13 +677,14 @@
             "type": "string"
           },
           "base": {
-            "type": "float"
+            "type": "number",
+            "format": "float"
           },
           "distance": {
             "type": "number",
             "format": "float"
           },
-          "probability": {
+          "propability": {
             "type": "number",
             "format": "float"
           },
