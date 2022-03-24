@@ -22,7 +22,7 @@
         "tags": [
           "Signals Request"
         ],
-        "summary": "Returns all created signals in Python Dictionary.",
+        "summary": "Returns all created signals in Python Dictionary (empty if no signals have been created).",
         "responses": {
           "200": {
             "description": "OK"
@@ -48,7 +48,7 @@
             "name": "signalname",
             "required": true,
             "in": "path",
-            "description": "Signal name for Random Signal",
+            "description": "The name of the Random Signal",
             "lowerBoundary": 0,
             "upperBoundary": 0,
             "transmissionFrequency": 0.0,
@@ -85,7 +85,7 @@
           "Random Signal Request"
         ],
         "summary": "Delete a Random Signal.",
-        "description": "Delete a Random Signal by name",
+        "description": "Delete a Random Signal by providing its name.",
         "produces": [
           "application/json",
           "application/xml"
@@ -110,6 +110,7 @@
       },
       "patch": {
         "summary": "Update running status of Random Signal.",
+        "description": "Pause or unpause a Random Signal by providing its name.",
         "tags": [
           "Random Signal Request"
         ],
@@ -160,7 +161,7 @@
             "name": "signalname",
             "required": true,
             "in": "path",
-            "description": "Signal name for Sinus Signal",
+            "description": "The name of the Sinus Signal",
             "frequency": 0,
             "amplitude": 0,
             "transmissionFrequency": 0.0,
@@ -197,7 +198,7 @@
           "Sinus Signal Request"
         ],
         "summary": "Delete a Sinus Signal.",
-        "description": "Delete a Sinus Signal by name",
+        "description": "Delete a Sinus Signal by providing its name.",
         "produces": [
           "application/json",
           "application/xml"
@@ -222,6 +223,7 @@
       },
       "patch": {
         "summary": "Update running status of Sinus Signal.",
+        "description": "Pause or unpause a Sinus Signal by providing its name.",
         "tags": [
           "Sinus Signal Request"
         ],
@@ -272,7 +274,7 @@
             "name": "signalname",
             "required": true,
             "in": "path",
-            "description": "Signal name for Cosinus Signal",
+            "description": "The name of the Cosinus Signal",
             "frequency": 0,
             "amplitude": 0,
             "transmissionFrequency": 0.0,
@@ -309,7 +311,7 @@
           "Cosinus Signal Request"
         ],
         "summary": "Delete a Cosinus Signal.",
-        "description": "Delete a Cosinus Signal by name",
+        "description": "Delete a Cosinus Signal by providing its name.",
         "produces": [
           "application/json",
           "application/xml"
@@ -334,6 +336,7 @@
       },
       "patch": {
         "summary": "Update running status of Cosinus Signal.",
+        "description": "Pause or unpause a Cosinus Signal by providing its name.",
         "tags": [
           "Cosinus Signal Request"
         ],
@@ -384,7 +387,7 @@
             "name": "signalname",
             "required": true,
             "in": "path",
-            "description": "Signal name for Emphasized Signal",
+            "description": "The name of the Emphasized Signal",
             "center": 0,
             "scale": 0,
             "transmissionFrequency": 0.0,
@@ -421,7 +424,7 @@
           "Emphasized Signal Request"
         ],
         "summary": "Delete an Emphasized Signal.",
-        "description": "Delete an Emphasized Signal by name",
+        "description": "Delete a Emphasized Signal by providing its name.",
         "produces": [
           "application/json",
           "application/xml"
@@ -446,6 +449,7 @@
       },
       "patch": {
         "summary": "Update running status of Emphasized Signal.",
+        "description": "Pause or unpause an Emphasized Signal by providing its name.",
         "tags": [
           "Emphasized Signal Request"
         ],
@@ -496,7 +500,7 @@
             "name": "signalname",
             "required": true,
             "in": "path",
-            "description": "Signal name for Spiked Signal",
+            "description": "The name of the Spiked Signal",
             "base": 0,
             "distance": 0,
             "probability": 0,
@@ -535,7 +539,7 @@
           "Spiked Signal Request"
         ],
         "summary": "Delete a Spiked Signal.",
-        "description": "Delete a Spiked Signal by name",
+        "description": "Delete a Spiked Signal by providing its name.",
         "produces": [
           "application/json",
           "application/xml"
@@ -560,6 +564,7 @@
       },
       "patch": {
         "summary": "Update running status of Spiked Signal.",
+        "description": "Pause or unpause a Spiked Signal by providing its name.",
         "tags": [
           "Spiked Signal Request"
         ],
