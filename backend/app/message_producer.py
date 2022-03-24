@@ -1,6 +1,4 @@
-import json
-import random
-import math
+import json, random , math 
 from numpy.random import normal
 from time import sleep
 from kafka import KafkaProducer
