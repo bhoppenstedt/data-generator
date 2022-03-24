@@ -34,12 +34,6 @@ export function RandomSignal ({streams, setStreams}) {
     .then(data => setStreams(Array.from(data)));
 
   };
-
-  function wrapper() {
-    putReq();
-    //updateArray();
-    console.log("PUT and GET done!")
-  }
   
   const [signalName, setSignalName] = useState('')
   const [lowerBoundary, setLowerBoundary] = useState(0)
@@ -96,7 +90,7 @@ export function RandomSignal ({streams, setStreams}) {
                     }}
                    onChange={handleTFChange}
                   />
-                  <GenerateButton name={"Generate"} onClick={() => wrapper()} icon={<></>}/>
+                  <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
               </Stack>
     )
 }

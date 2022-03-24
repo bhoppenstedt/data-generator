@@ -39,10 +39,17 @@ export const CosinusSignal = (props) => {
   const [amplitude, setAmplitude] = useState(50)
   const [transmissionFrequency, setTransmissionFrequency] = useState(1)
 
+  var styleTypo = {
+    fontFamily: 'Open Sans, sans-serif', 
+    fontWeight: "400",
+    fontSize: 15, 
+    color: '#3F0092',
+  }
+
     return (
       <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
         
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                  <Typography component="div" style={styleTypo}>
                             signal name:
                   </Typography>
                   <TextField 
@@ -51,7 +58,7 @@ export const CosinusSignal = (props) => {
                   onChange={handleNameChange}
                   />
 
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                  <Typography component="div" style={styleTypo}>
                             frequency:
                   </Typography>
                   <TextField
@@ -65,7 +72,7 @@ export const CosinusSignal = (props) => {
                     }}
                   />
 
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                  <Typography component="div" style={styleTypo}>
                             amplitude:
                   </Typography>
                   <TextField
@@ -79,7 +86,7 @@ export const CosinusSignal = (props) => {
                     }}
                   />
 
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                  <Typography component="div" style={styleTypo}>
                             transmission frequency:
                   </Typography>
                   <TextField

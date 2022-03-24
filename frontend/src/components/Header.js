@@ -8,10 +8,14 @@ import { Stack } from "@mui/material";
 
 
 const Header = (props) => {
+
     const bg = 'linear-gradient(to bottom, rgba(144,189,251,0.73), rgba(161,165,259,1))'
+
     return (
             <AppBar position="static" sx={{background: bg, height: "90px", boxShadow:'0px 0px 0px 0px rgba(0, 0, 0, 0)'}}>
+
                 <Stack direction={"row"} justifyContent="center" alignItems="center">
+
                     <Typography component="div" sx={{ alignSelf:"center", fontFamily: 'Open Sans, sans-serif', fontWeight: "700",fontSize: 45, color: '#FFFFFF', marginTop:"0.1vw", marginBottom:"0.5vw" }}>
                         datastream generator
                     </Typography>
@@ -35,7 +39,9 @@ const Header = (props) => {
                         <circle id="Ellipse_9" data-name="Ellipse 9" class="cls-1" cx="5.5" cy="5.5" r="5.5" transform="translate(68 15)"/>
                         </svg>
                     </SvgIcon>
+
                 </Stack>
+                
             </AppBar>
     );
 }
