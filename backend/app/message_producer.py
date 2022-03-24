@@ -6,14 +6,16 @@ from time import sleep
 from kafka import KafkaProducer
 
 
+bootstrap_servers=['kafka:9092']
+
 def serialize(signal):
     """Serializing the signal."""
     return json.dumps(signal).encode(('utf-8'))
 
 
-class Random_kafka_signal_producer(object):
+class Kafka_signal_producer(object):
 
-    def __init__(self, lowerBoundary, upperBoundary, transmissionFrequency):
+    def __init__(self, type, name , args):
         """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
         is not intially running and has to be patched once at the start.
 
@@ -22,13 +24,47 @@ class Random_kafka_signal_producer(object):
             upperBoundary (int): The upper boundary of the random signal
             transmissionFrequency(float): The pause in between ticks of the signal
         """
-        self.producer = KafkaProducer(
-            bootstrap_servers=['kafka:9092']
-        )
+        self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
         self.running = False
-        self.lowerBoundary = lowerBoundary
-        self.upperBoundary = upperBoundary
-        self.transmissionFrequency = transmissionFrequency
+        
+        if type == "random":
+            self.random_constructor(args)
+        elif type == "sinus":
+            self.sinus_constructor(args)
+        elif type == "cosinus":
+            self.cosinus_constructor(args)
+        elif type == "emphasized":
+            self.emphasized_constructor(args)
+        elif type == "spiked":
+            self.spiked_constructor(args)
+
+    def random_constructor(self,random_args):
+        self.lowerBoundary = random_args["lowerBoundary"]
+        self.upperBoundary = random_args["upperBoundary"]
+        self.transmissionFrequency = random_args["transmissionFrequency"]
+
+    def sinus_constructor(self,sinus_args):
+        self.frequency = sinus_args["frequency"]
+        self.amplitude = sinus_args["amplitude"]
+        self.transmissionFrequency = sinus_args["transmissionFrequency"]
+
+    def cosinus_constructor(self,cosinus_args):
+        self.frequency = cosinus_args["frequency"]
+        self.amplitude = cosinus_args["amplitude"]
+        self.transmissionFrequency = cosinus_args["transmissionFrequency"]
+
+    def spiked_constructor(self,spiked_args):
+        self.base = spiked_args["base"]
+        self.distance = spiked_args["distance"]
+        self.propability = spiked_args["propability"]
+        self.size = spiked_args["size"]
+        self.transmissionFrequency = spiked_args["transmissionFrequency"]
+
+    def emphaiszed_constructor(self,emphasized_args):
+        self.center = emphasized_args["center"]
+        self.scale = emphasized_args["scale"]
+        self.transmissionFrequency = emphasized_args["transmissionFrequency"]
+
 
     def patch(self):
         """[Start/Pause the signal]
@@ -37,8 +73,18 @@ class Random_kafka_signal_producer(object):
             [Bool]: [Returns true if successful. Note there's no Return when starting a signal]
         """
         self.running = not self.running
-        self.sendRandomSignal()
-        return True
+        
+        if self.running:
+            if self.type == 'random':
+                self.sendRandomSignal()
+            elif self.type =='sinus':
+                self.sendSinusSignal()
+            elif self.type == 'cosinus':
+                self.sendCosinusSignal()
+            elif self.type == 'emphasized':
+                self.sendEmphasizedRandomSignal()
+            elif self.type == 'spiked':
+                self.sendSpikedSignal()
 
     def sendRandomSignal(self):
         """A random signal with the parameters of the corresponding signal is created and sent to the kafka topic 'Random-Signal'.
@@ -49,37 +95,6 @@ class Random_kafka_signal_producer(object):
             self.producer.send('Random-Signal',value=serialize((random_number)))
             sleep(self.transmissionFrequency)
 
-
-class Sinus_signal_producer(object):
-
-    def __init__(self, frequency, amplitude, transmissionFrequency):
-        """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
-        is not intially running and has to be patched once at the start.
-
-
-        Args:
-            frequency (float): The frequency of the sinus signal.
-            amplitude (float): The amplitude of the sinus signal.
-            transmissionFrequency(float): The pause in between ticks of the signal
-        """
-        self.producer = KafkaProducer(
-            bootstrap_servers=['kafka:9092']
-        )
-        self.running = False
-        self.frequency = frequency
-        self.amplitude = amplitude
-        self.transmissionFrequency = transmissionFrequency
-
-    def patch(self):
-        """[Start/Pause the signal]
-
-        Returns:
-            [Bool]: [Returns true if successful. Note there's no Return when starting a signal]
-        """
-        self.running = not self.running
-        self.sendSinusSignal()
-        return True
-
     def sendSinusSignal(self):
         """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
         """
@@ -89,39 +104,6 @@ class Sinus_signal_producer(object):
                 print(f"Sending number {periodic_number}")
                 self.producer.send('Sinus-Signal',value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
-
-
-class Cosinus_signal_producer(object):
-
-    def __init__(self, frequency, amplitude, transmissionFrequency):
-        """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
-        is not intially running and has to be patched once at the start.
-
-
-        Args:
-            frequency (float): The frequency of the sinus signal.
-            amplitude (float): The amplitude of the sinus signal.
-            transmissionFrequency(float): The pause in between ticks of the signal
-        """
-
-        self.producer = KafkaProducer(
-            bootstrap_servers=['kafka:9092']
-        )
-        self.running = False
-        self.frequency = frequency
-        self.amplitude = amplitude
-        self.transmissionFrequency = transmissionFrequency
-
-    def patch(self):
-        """[Start/Pause the signal]
-
-        Returns:
-            [Bool]: [Returns true if successful. Note there's no Return when starting a signal]
-        """
-
-        self.running = not self.running
-        self.sendCosinusSignal()
-        return True
 
     def sendCosinusSignal(self):
         """A cosinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Cosinus-Signal'.
@@ -134,38 +116,6 @@ class Cosinus_signal_producer(object):
                 self.producer.send('Cosinus-Signal',value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
 
-
-
-class Emphasized_signal_producer(object):
-
-    def __init__(self, center, scale, transmissionFrequency):
-        """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
-        is not intially running and has to be patched once at the start.
-
-
-        Args:
-            center (float): The expected value of the normal distribution
-            scale (float): The standard deviation of the normal distribution
-            transmissionFrequency(float): The pause in between ticks of the signal
-        """
-        self.producer = KafkaProducer(
-            bootstrap_servers=['kafka:9092']
-        )
-        self.running = False
-        self.center = center
-        self.scale = scale
-        self.transmissionFrequency = transmissionFrequency
-
-    def patch(self):
-        """[Start/Pause the signal]
-
-        Returns:
-            [Bool]: [Returns true if successful. Note there's no Return when starting a signal]
-        """
-        self.running = not self.running
-        self.sendEmphasizedRandomSignal()
-        return True
-
     def sendEmphasizedRandomSignal(self):
         """A normally distributed signal with the parameters of the corresponding object is created and sent to the kafka topic 'Emphasized-Signal'.
         """
@@ -176,42 +126,7 @@ class Emphasized_signal_producer(object):
                 print(f"Sending number {emphasizedNumber}")
                 self.producer.send('Emphasized-Signal',value=serialize(emphasizedNumber))
                 sleep(self.transmissionFrequency)
-
-
-class Spiked_signal_producer(object):
-
-    def __init__(self,base,distance,propability,size,transmissionFrequency):
-        """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
-        is not intially running and has to be patched once at the start.
-
-
-        Args:
-            base (float): The signals base
-            distance (float): The distance between potential spikes
-            propability (float): The propability of a spike occuring
-            size (float): The size of the spikes
-            transmissionFrequency(float): The pause in between ticks of the signal
-        """
-        self.producer = KafkaProducer(
-            bootstrap_servers=['kafka:9092']
-        )
-        self.running = False
-        self.base = base
-        self.distance = distance
-        self.propability = propability
-        self.size = size
-        self.transmissionFrequency = transmissionFrequency
-
-    def patch(self):
-        """[Start/Pause the signal]
-
-        Returns:
-            [Bool]: [Returns true if successful. Note there's no Return when starting a signal]
-        """
-        self.running = not self.running
-        self.sendSpikedSignal()
-        return True
-
+    
     def sendSpikedSignal(self):
         """A spiked signal with the parameters of the corresponding object is created and sent to the kafka topic 'Spiked-Signal'.
         """
@@ -226,3 +141,4 @@ class Spiked_signal_producer(object):
             self.producer.send('Spiked-Signal', value=serialize(spiked_number))
             sleep(self.transmissionFrequency)
             i = i + 1
+

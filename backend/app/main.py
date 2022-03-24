@@ -4,7 +4,7 @@ from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS 
 from numpy import add
-from message_producer import Random_kafka_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
+from message_producer import Kafka_signal_producer
 from mqtt_message_producer import MQTT_Signal_producer
 
 # Initialize Server and API
@@ -75,7 +75,7 @@ class HandleSignals(Resource):
             return "Invalid signal type "
 
         if publisher == "kafka":
-                producer = Random_kafka_signal_producer(name=signal_name, args=args, type=signal_type)
+                producer = Kafka_signal_producer(name=signal_name, args=args, type=signal_type)
         elif publisher == 'mqtt':
                 producer = MQTT_Signal_producer(name=signal_name, args=args, type=signal_type)
         else:
