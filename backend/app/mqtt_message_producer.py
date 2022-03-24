@@ -175,9 +175,9 @@ class MQTT_Signal_producer(object):
 
 
         
-client = mqtt_client.Client()
-client.on_connect = on_connect
-client.on_message = on_message
-client.connect('localhost', 1883, 60)
-client.loop_forever()
-client.publish('fdsfds', random.randint(10,20))
+#client = mqtt_client.Client()
+#client.on_connect = on_connect
+#client.on_message = on_message
+#client.connect('localhost', 1883, 60)
+#client.loop_forever()
+#client.publish('fdsfds', random.randint(10,20))

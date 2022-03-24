@@ -56,11 +56,9 @@ class HandleSignals(Resource):
         for index in running_signal_args:
             if signal_name == index['name']:
                 return "Signal name already in use"
+
         
-        args["type"] = signal_type
-        args["name"]  = signal_name
-        args["running"] = False
-        
+        # Create args dictionary corresponding to the type 
         if(signal_type == 'random'):
             args = random_arguments.parse_args()
         elif(signal_type == 'sinus'):
@@ -73,6 +71,11 @@ class HandleSignals(Resource):
             args = spiked_arguments.parse_args()
         else:
             return "Invalid signal type "
+
+        # Add type, name and running flag to args dictionary
+        args["type"] = signal_type
+        args["name"]  = signal_name
+        args["running"] = False
 
         if publisher == "kafka":
                 producer = Kafka_signal_producer(name=signal_name, args=args, type=signal_type)
@@ -114,7 +117,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def delete(self, signal_type, signal_name):
+    def delete(self, publisher, signal_type, signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 

@@ -24,6 +24,7 @@ class Kafka_signal_producer(object):
         """
         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
         self.running = False
+        self.type = type 
         
         if type == "random":
             self.random_constructor(args)
@@ -58,7 +59,7 @@ class Kafka_signal_producer(object):
         self.size = spiked_args["size"]
         self.transmissionFrequency = spiked_args["transmissionFrequency"]
 
-    def emphaiszed_constructor(self,emphasized_args):
+    def emphasized_constructor(self,emphasized_args):
         self.center = emphasized_args["center"]
         self.scale = emphasized_args["scale"]
         self.transmissionFrequency = emphasized_args["transmissionFrequency"]
