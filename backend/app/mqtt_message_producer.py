@@ -5,6 +5,7 @@ from numpy.random import normal
 
 broker = 'localhost'
 port=1883
+qos=0 
 #topic = "python/mqtt"
 # generate client ID with pub prefix randomly
 #client_id = f'python-mqtt-{random.randint(0, 1000)}'
@@ -17,10 +18,13 @@ def on_connect(client, userdata, flags, rc):
 
     # Subscribing in on_connect() means that if we lose the connection and
     # reconnect then subscriptions will be renewed.
-    client.subscribe("$SYS/#")
+    #client.subscribe("$SYS/#")
 
-def on_message(client, userdata, msg):
-    print(msg.topic+" "+str(msg.payload))
+def on_message(client, userdata, message):
+    print("message received " ,str(message.payload.decode("utf-8")))
+    print("message topic=",message.topic)
+    print("message qos=",message.qos)
+    print("message retain flag=",message.retain)
 
 class MQTT_Signal_producer(object):
     
@@ -28,6 +32,7 @@ class MQTT_Signal_producer(object):
        
         self.client = mqtt_client.Client(name)
         self.client.on_connect = on_connect
+        self.client.on_message = on_message
         self.topic = f"mqtt/{name}"
         self.running = False
         self.type = type
@@ -83,6 +88,8 @@ class MQTT_Signal_producer(object):
         
         if self.running:
             self.client.connect(broker,port)
+            #self.client.loop_start()
+            #self.client.subscribe(topic = 'mqtt/test')
             if self.type == 'random':
                 self.sendRandomSignal()
             elif self.type =='sinus':
@@ -93,7 +100,6 @@ class MQTT_Signal_producer(object):
                 self.sendEmphasizedRandomSignal()
             else:
                 self.sendSpikedSignal()
-
         return True
 
     def sendRandomSignal(self):
@@ -101,7 +107,7 @@ class MQTT_Signal_producer(object):
         """
         while(self.running):
             random_number = int(random.randint(self.lowerBoundary,self.upperBoundary))
-            result = self.client.publish(self.topic, random_number)
+            result = self.client.publish(topic = self.topic, payload = random_number, qos=qos)
             status = result[0]
             if status == 0:
                 print(f"Send `{random_number}` to topic `{self.topic}`")
@@ -115,7 +121,7 @@ class MQTT_Signal_producer(object):
         while(self.running):
             for i in range(0, 360) and self.running:
                 periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
-                result = self.client.publish(self.topic, periodic_number)
+                result = self.client.publish(self.topic, periodic_number, qos=qos)
                 status = result[0]
                 if status == 0:
                     print(f"Send `{periodic_number}` to topic `{self.topic}`")
@@ -129,7 +135,7 @@ class MQTT_Signal_producer(object):
         while(self.running):
             for i in range(0, 360):
                 periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
-                result = self.client.publish(self.topic, periodic_number)
+                result = self.client.publish(self.topic, periodic_number, qos=qos)
                 status = result[0]
                 if status == 0:
                     print(f"Send `{periodic_number}` to topic `{self.topic}`")
@@ -144,7 +150,7 @@ class MQTT_Signal_producer(object):
             data = normal(loc=self.center, scale=self.scale, size=200)
             for i in data:
                 emphasized_number = i
-                result = self.client.publish(self.topic, emphasized_number)
+                result = self.client.publish(self.topic, emphasized_number, qos=qos)
                 status = result[0]
                 if status == 0:
                     print(f"Send `{emphasized_number}` to topic `{self.topic}`")
@@ -161,7 +167,7 @@ class MQTT_Signal_producer(object):
                 spiked_number = self.base + self.size
             else:
                 spiked_number = self.base
-            result = self.client.publish(self.topic, spiked_number)
+            result = self.client.publish(self.topic, spiked_number, qos=qos)
             status = result[0]
             if status == 0:
                 print(f"Send `{spiked_number}` to topic `{self.topic}`")
