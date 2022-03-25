@@ -42,7 +42,7 @@ function Output ({streams, setStreams}) {
   const [content, setContent] = useState("")
 
 
-    const streamElements = streams.filter((x) => x.name.startsWith(content)).map((stream) => 
+    const streamElements = streams.filter((x) => x.name.toLowerCase().startsWith(content.toLowerCase())).map((stream) => 
     <StreamBoxElem 
         name={stream.name} 
         type={stream.type} 
