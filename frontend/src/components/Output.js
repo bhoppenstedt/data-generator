@@ -29,7 +29,10 @@ function Output ({streams, setStreams}) {
         })
         .then(res => res.json())
         .then(dataJSON => JSON.parse(dataJSON))
-        .then(data => setStreams(Array.from(data))));
+        .then(data => setStreams(Array.from(data)))
+        .catch(function() {
+            console.log("Failed to patch signal(s)!");
+        }));
 
     };
 
@@ -37,7 +40,10 @@ function Output ({streams, setStreams}) {
         var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
                             .then(res => res.json())
                             .then(dataJSON => JSON.parse(dataJSON))
-                            .then(data => setStreams(Array.from(data))));
+                            .then(data => setStreams(Array.from(data)))
+                            .catch(function() {
+                                console.log("Failed to get signal(s)!");
+                            }));
     }
 
     const [content, setContent] = useState("")
@@ -89,9 +95,7 @@ function Output ({streams, setStreams}) {
 
                                             <IconButton size="small" onClick={ () => (streams.filter((stream) => stream.running == false)).map((streamsRunning) => patchReq(streamsRunning.type, streamsRunning.name))}>
 
-                                                <PlayCircleFilledWhiteRoundedIcon
-                                                    sx={{ fontSize: 30, color: purple[900] }}
-                                                />
+                                                <PlayCircleFilledWhiteRoundedIcon sx={{ fontSize: 30, color: purple[900] }}/>
 
                                             </IconButton>
 
@@ -105,9 +109,7 @@ function Output ({streams, setStreams}) {
 
                                             <IconButton size="small" onClick={ () => (streams.filter((stream) => stream.running == true)).map((streamsRunning) => patchReq(streamsRunning.type, streamsRunning.name))}>
                                                 
-                                                <StopCircleRoundedIcon
-                                                    sx={{ fontSize: 30, color:purple[900] }}
-                                                />
+                                                <StopCircleRoundedIcon sx={{ fontSize: 30, color:purple[900] }}/>
 
                                             </IconButton>
 

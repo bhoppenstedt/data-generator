@@ -31,7 +31,10 @@ export function RandomSignal ({streams, setStreams}) {
     })
     .then(res => res.json())
     .then(dataJSON => JSON.parse(dataJSON))
-    .then(data => setStreams(Array.from(data)));
+    .then(data => setStreams(Array.from(data)))
+    .catch(function() {
+      console.log("Failed to create random signal!");
+    });
 
   };
   
