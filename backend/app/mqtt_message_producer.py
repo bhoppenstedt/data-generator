@@ -1,41 +1,53 @@
-import json, random , math 
+import random, math 
+from time import sleep 
+from paho.mqtt import client as mqtt_client
 from numpy.random import normal
-from time import sleep
-from kafka import KafkaProducer
+
+broker = 'localhost'
+port=1883
+qos=0 
+#topic = "python/mqtt"
+# generate client ID with pub prefix randomly
+#client_id = f'python-mqtt-{random.randint(0, 1000)}'
+# username = 'emqx'
+# password = 'public'
 
 
-bootstrap_servers=['kafka:9092']
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code "+str(rc))
 
-def serialize(signal):
-    """Serializing the signal."""
-    return json.dumps(signal).encode(('utf-8'))
+    # Subscribing in on_connect() means that if we lose the connection and
+    # reconnect then subscriptions will be renewed.
+    #client.subscribe("$SYS/#")
 
+def on_message(client, userdata, message):
+    print("message received " ,str(message.payload.decode("utf-8")))
+    print("message topic=",message.topic)
+    print("message qos=",message.qos)
+    print("message retain flag=",message.retain)
 
-class Kafka_signal_producer(object):
-
-    def __init__(self, type, name , args):
-        """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
-        is not intially running and has to be patched once at the start.
-
-        Args:
-            lowerBoundary (int): The lower boundary of the random signal
-            upperBoundary (int): The upper boundary of the random signal
-            transmissionFrequency(float): The pause in between ticks of the signal
-        """
-        self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
+class MQTT_Signal_producer(object):
+    
+    def __init__(self,type,name,args):
+       
+        self.client = mqtt_client.Client(name)
+        self.client.on_connect = on_connect
+        self.client.on_message = on_message
+        self.topic = f"mqtt/{name}"
         self.running = False
-        self.type = type 
-        
-        if type == "random":
+        self.type = type
+
+        if type == 'random':
             self.random_constructor(args)
-        elif type == "sinus":
+        elif type == 'sinus':
             self.sinus_constructor(args)
-        elif type == "cosinus":
+        elif type == 'cosinus':
             self.cosinus_constructor(args)
-        elif type == "emphasized":
-            self.emphasized_constructor(args)
-        elif type == "spiked":
+        elif type == 'spiked':
             self.spiked_constructor(args)
+        else:
+            self.emphaiszed_constructor(args)
+
 
     def random_constructor(self,random_args):
         self.lowerBoundary = random_args["lowerBoundary"]
@@ -59,10 +71,11 @@ class Kafka_signal_producer(object):
         self.size = spiked_args["size"]
         self.transmissionFrequency = spiked_args["transmissionFrequency"]
 
-    def emphasized_constructor(self,emphasized_args):
+    def emphaiszed_constructor(self,emphasized_args):
         self.center = emphasized_args["center"]
         self.scale = emphasized_args["scale"]
         self.transmissionFrequency = emphasized_args["transmissionFrequency"]
+
 
 
     def patch(self):
@@ -74,6 +87,9 @@ class Kafka_signal_producer(object):
         self.running = not self.running
         
         if self.running:
+            self.client.connect(broker,port)
+            #self.client.loop_start()
+            #self.client.subscribe(topic = 'mqtt/test')
             if self.type == 'random':
                 self.sendRandomSignal()
             elif self.type =='sinus':
@@ -82,50 +98,66 @@ class Kafka_signal_producer(object):
                 self.sendCosinusSignal()
             elif self.type == 'emphasized':
                 self.sendEmphasizedRandomSignal()
-            elif self.type == 'spiked':
+            else:
                 self.sendSpikedSignal()
+        return True
 
     def sendRandomSignal(self):
         """A random signal with the parameters of the corresponding signal is created and sent to the kafka topic 'Random-Signal'.
         """
         while(self.running):
             random_number = int(random.randint(self.lowerBoundary,self.upperBoundary))
-            print(f"Sending number {random_number}")
-            self.producer.send('Random-Signal',value=serialize((random_number)))
+            result = self.client.publish(topic = self.topic, payload = random_number, qos=qos)
+            status = result[0]
+            if status == 0:
+                print(f"Send `{random_number}` to topic `{self.topic}`")
+            else:
+                print(f"Failed to send message to topic {self.topic}")
             sleep(self.transmissionFrequency)
 
     def sendSinusSignal(self):
         """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
         """
-        while(True):
+        while(self.running):
             for i in range(0, 360) and self.running:
                 periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
-                print(f"Sending number {periodic_number}")
-                self.producer.send('Sinus-Signal',value=serialize(periodic_number))
+                result = self.client.publish(self.topic, periodic_number, qos=qos)
+                status = result[0]
+                if status == 0:
+                    print(f"Send `{periodic_number}` to topic `{self.topic}`")
+                else:
+                    print(f"Failed to send message to topic {self.topic}")
                 sleep(self.transmissionFrequency)
-
+    
     def sendCosinusSignal(self):
-        """A cosinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Cosinus-Signal'.
+        """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
         """
-
-        while(True):
-            for i in range(0, 360) and self.running:
+        while(self.running):
+            for i in range(0, 360):
                 periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
-                print(f"Sending number {periodic_number}")
-                self.producer.send('Cosinus-Signal',value=serialize(periodic_number))
+                result = self.client.publish(self.topic, periodic_number, qos=qos)
+                status = result[0]
+                if status == 0:
+                    print(f"Send `{periodic_number}` to topic `{self.topic}`")
+                else:
+                    print(f"Failed to send message to topic {self.topic}")
                 sleep(self.transmissionFrequency)
 
     def sendEmphasizedRandomSignal(self):
         """A normally distributed signal with the parameters of the corresponding object is created and sent to the kafka topic 'Emphasized-Signal'.
         """
-        while(True):
+        while(self.running):
             data = normal(loc=self.center, scale=self.scale, size=200)
-            for i in data and self.running:
-                emphasizedNumber = i
-                print(f"Sending number {emphasizedNumber}")
-                self.producer.send('Emphasized-Signal',value=serialize(emphasizedNumber))
+            for i in data:
+                emphasized_number = i
+                result = self.client.publish(self.topic, emphasized_number, qos=qos)
+                status = result[0]
+                if status == 0:
+                    print(f"Send `{emphasized_number}` to topic `{self.topic}`")
+                else:
+                    print(f"Failed to send message to topic {self.topic}")
                 sleep(self.transmissionFrequency)
-    
+
     def sendSpikedSignal(self):
         """A spiked signal with the parameters of the corresponding object is created and sent to the kafka topic 'Spiked-Signal'.
         """
@@ -133,11 +165,25 @@ class Kafka_signal_producer(object):
         while(self.running):
             if i % self.distance == 0 and random.random() <= self.propability:
                 spiked_number = self.base + self.size
-                print(f"Sending number {spiked_number}")
             else:
                 spiked_number = self.base
-                print(f"Sending number {spiked_number}")
-            self.producer.send('Spiked-Signal', value=serialize(spiked_number))
+            result = self.client.publish(self.topic, spiked_number, qos=qos)
+            status = result[0]
+            if status == 0:
+                print(f"Send `{spiked_number}` to topic `{self.topic}`")
+            else:
+                print(f"Failed to send message to topic {self.topic}")
             sleep(self.transmissionFrequency)
             i = i + 1
 
+
+
+
+
+        
+#client = mqtt_client.Client()
+#client.on_connect = on_connect
+#client.on_message = on_message
+#client.connect('localhost', 1883, 60)
+#client.loop_forever()
+#client.publish('fdsfds', random.randint(10,20))
