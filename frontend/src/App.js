@@ -1,9 +1,9 @@
 import React from 'react'
-import ColorThemeWrap from "./ColorThemeWrap";
+import Main from "./Main";
 
 const App = () => {
     return (
-       <ColorThemeWrap/>
+       <Main/>
     )
 }
 

@@ -75,7 +75,7 @@ function Output ({streams, setStreams}) {
                             <Grid item xs={6}>
                                 <Stack direction="row" spacing={1} justifyContent="right" alignItems="center">
                                 <Stack direction="row" spacing={-0.4} justifyContent="right" alignItems="center">
-                                        <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900]}} align={"right"}>
+                                        <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900], paddingRight: "5px"}} align={"right"}>
                                             start all
                                         </Typography>
                                         <IconButton size="small" onClick={ () => (streams.filter((stream) => stream.running == false)).map((streamsRunning) => patchReq(streamsRunning.type, streamsRunning.name))}>
@@ -85,7 +85,7 @@ function Output ({streams, setStreams}) {
                                         </IconButton>
                                 </Stack>
                                 <Stack direction="row" spacing={-0.4} justifyContent="right" alignItems="center">
-                                        <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900]}} align={"right"}>
+                                        <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900], paddingRight: "5px"}} align={"right"}>
                                             stop all
                                         </Typography>
                                         <IconButton size="small" onClick={ () => (streams.filter((stream) => stream.running == true)).map((streamsRunning) => patchReq(streamsRunning.type, streamsRunning.name))}>

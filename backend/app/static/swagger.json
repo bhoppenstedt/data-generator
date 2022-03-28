@@ -1,0 +1,708 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Datastream Generator as a web application for generating different datastreams.",
+    "version": "1.0.0",
+    "title": "Datastream Generator"
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Signal Request",
+      "description": "Example for requesting, creating and deleting signals with parameters"
+    }
+  ],
+  "paths": {
+    "/api/signals/": {
+      "get": {
+        "tags": [
+          "Signals Request"
+        ],
+        "summary": "Returns all created signals in Python Dictionary (empty if no signals have been created).",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/random/{signalname}/": {
+      "put": {
+        "summary": "Create a new Random Signal.",
+        "tags": [
+          "Random Signal Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "The name of the Random Signal",
+            "lowerBoundary": 0,
+            "upperBoundary": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/RandomSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RandomSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/RandomSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Random Signal Request"
+        ],
+        "summary": "Delete a Random Signal.",
+        "description": "Delete a Random Signal by providing its name.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Random Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update running status of Random Signal.",
+        "description": "Pause or unpause a Random Signal by providing its name.",
+        "tags": [
+          "Random Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RandomSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      }
+    },
+    "/api/sinus/{signalname}/": {
+      "put": {
+        "summary": "Create a new Sinus Signal.",
+        "tags": [
+          "Sinus Signal Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "The name of the Sinus Signal",
+            "frequency": 0,
+            "amplitude": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/SinusSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SinusSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/SinusSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Sinus Signal Request"
+        ],
+        "summary": "Delete a Sinus Signal.",
+        "description": "Delete a Sinus Signal by providing its name.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Sinus Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update running status of Sinus Signal.",
+        "description": "Pause or unpause a Sinus Signal by providing its name.",
+        "tags": [
+          "Sinus Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SinusSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      }
+    },
+    "/api/cosinus/{signalname}/": {
+      "put": {
+        "summary": "Create a new Cosinus Signal.",
+        "tags": [
+          "Cosinus Signal Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "The name of the Cosinus Signal",
+            "frequency": 0,
+            "amplitude": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/CosinusSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CosinusSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/CosinusSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cosinus Signal Request"
+        ],
+        "summary": "Delete a Cosinus Signal.",
+        "description": "Delete a Cosinus Signal by providing its name.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Cosinus Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update running status of Cosinus Signal.",
+        "description": "Pause or unpause a Cosinus Signal by providing its name.",
+        "tags": [
+          "Cosinus Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CosinusSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      }
+    },
+    "/api/emphasized/{signalname}/": {
+      "put": {
+        "summary": "Create a new Emphasized Signal.",
+        "tags": [
+          "Emphasized Signal Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "The name of the Emphasized Signal",
+            "center": 0,
+            "scale": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/EmphasizedSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmphasizedSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/EmphasizedSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Emphasized Signal Request"
+        ],
+        "summary": "Delete an Emphasized Signal.",
+        "description": "Delete a Emphasized Signal by providing its name.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Emphasized Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update running status of Emphasized Signal.",
+        "description": "Pause or unpause an Emphasized Signal by providing its name.",
+        "tags": [
+          "Emphasized Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmphasizedSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      }
+    },
+    "/api/spiked/{signalname}/": {
+      "put": {
+        "summary": "Create a new Spiked Signal.",
+        "tags": [
+          "Spiked Signal Request"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "required": true,
+            "in": "path",
+            "description": "The name of the Spiked Signal",
+            "base": 0,
+            "distance": 0,
+            "probability": 0,
+            "size": 0,
+            "transmissionFrequency": 0.0,
+            "schema": {
+              "$ref": "#/components/schemas/SpikedSignal"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpikedSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/components/schemas/SpikedSignal"
+            }
+          },
+          "400": {
+            "description": "Failed. Bad post data."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Spiked Signal Request"
+        ],
+        "summary": "Delete a Spiked Signal.",
+        "description": "Delete a Spiked Signal by providing its name.",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "description": "The name of the Spiked Signal that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update running status of Spiked Signal.",
+        "description": "Pause or unpause a Spiked Signal by providing its name.",
+        "tags": [
+          "Spiked Signal Request"
+        ],
+        "parameters": [
+          {
+            "name": "signalname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "requestBody": {
+          "description": "Signal Request",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpikedSignal"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Invalid name supplied"
+          },
+          "404": {
+            "description": "Signal not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RandomSignal": {
+        "properties": {
+          "signalname": {
+            "type": "string"
+          },
+          "lowerBoundary": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "upperBoundary": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "transmissionFrequency": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "SinusSignal": {
+        "properties": {
+          "signalname": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "number",
+            "format": "float"
+          },
+          "amplitude": {
+            "type": "number",
+            "format": "float"
+          },
+          "transmissionFrequency": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "CosinusSignal": {
+        "properties": {
+          "signalname": {
+            "type": "string"
+          },
+          "frequency": {
+            "type": "number",
+            "format": "float"
+          },
+          "amplitude": {
+            "type": "number",
+            "format": "float"
+          },
+          "transmissionFrequency": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "EmphasizedSignal": {
+        "properties": {
+          "signalname": {
+            "type": "string"
+          },
+          "center": {
+            "type": "number",
+            "format": "float"
+          },
+          "scale": {
+            "type": "number",
+            "format": "float"
+          },
+          "transmissionFrequency": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "SpikedSignal": {
+        "properties": {
+          "signalname": {
+            "type": "string"
+          },
+          "base": {
+            "type": "number",
+            "format": "float"
+          },
+          "distance": {
+            "type": "number",
+            "format": "float"
+          },
+          "propability": {
+            "type": "number",
+            "format": "float"
+          },
+          "size": {
+            "type": "number",
+            "format": "float"
+          },
+          "transmissionFrequency": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      }
+    }
+  }
+}

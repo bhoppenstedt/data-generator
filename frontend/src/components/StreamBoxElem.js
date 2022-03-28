@@ -71,61 +71,64 @@ return (
                     </Grid>
 
 
-                    <Grid item xs={4}>
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            {params[0]}
-                        </Typography>
+                    <Grid item xs={6}>
+                        <Stack direction={"horizontal"}> 
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
+                                signal type:
+                            </Typography>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                                {type}
+                            </Typography>
+                        </Stack>
 
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            {params[1]}
-                        </Typography>
+                        <Stack direction={"horizontal"}>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
+                                {params[1]}
+                            </Typography>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                                {argument1}
+                            </Typography>
+                        </Stack>
 
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            {params[2]}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
-                            {type}
-                        </Typography>
+                        <Stack direction={"horizontal"}>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
+                                {params[2]}
+                            </Typography>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                                {argument2}
+                            </Typography>
+                        </Stack>
 
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
-                            {argument1}
-                        </Typography>
-
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
-                            {argument2}
-                        </Typography>
-                    </Grid>
-
-
-                    <Grid item xs={5}>
-                    <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            {params[3]}
-                        </Typography>
-
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            {params[4]}
-                        </Typography>
-
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
-                            {params[5]}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={1}>
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
-                            {argument3}
-                        </Typography>
-
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
-                            {argument4}
-                        </Typography>
-
-                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
-                            {argument5}
-                        </Typography>
                     </Grid>
 
+                    <Grid item xs={6}>
+                        <Stack direction={"horizontal"}> 
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
+                                {params[3]}
+                            </Typography>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                                {argument3}
+                            </Typography>
+                        </Stack>
+
+                        <Stack direction={"horizontal"}>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
+                                {params[4]}
+                            </Typography>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                                {argument4}
+                            </Typography>
+                        </Stack>
+
+                        <Stack direction={"horizontal"}>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)" }>
+                                {params[5]}
+                            </Typography>
+                            <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600", paddingRight: "10px" }} color={runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)" }>
+                                {argument5}
+                            </Typography>
+                        </Stack>
+                    </Grid>
 
                 </Grid>
             </Grid>
