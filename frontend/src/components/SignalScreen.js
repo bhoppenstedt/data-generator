@@ -15,10 +15,10 @@ import { SpikesSignal } from "./configurations/SpikesSignal";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { SignalButton } from "./SignalButton";
 
-function SignalScreen ({streams, setStreams}) {
+function SignalScreen ({streams, setStreams, format, setFormat}) {
     const [currentSignalType, setCurrentSignalType] = useState('random')
     const [value] = useState("");
-    
+
     function patchReq(streamType, streamName) {
         fetch('/api/'+ streamType + '/' + streamName + '/', {
             method: "PATCH",
@@ -70,11 +70,11 @@ function SignalScreen ({streams, setStreams}) {
                             signal configuration
                         </Typography>
                     
-                        {currentSignalType === 'random' ? (<RandomSignal streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>)
-                            : currentSignalType === 'sinus' ? <SinusSignal streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
-                            : currentSignalType === 'cosinus' ? <CosinusSignal streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
-                            : currentSignalType === 'spiked' ? <SpikesSignal streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
-                            : currentSignalType === 'emphasized' ? <NormallyDistributed streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
+                        {currentSignalType === 'random' ? (<RandomSignal format ={format} setFormat = {setFormat} streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>)
+                            : currentSignalType === 'sinus' ? <SinusSignal format ={format} setFormat = {setFormat} streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
+                            : currentSignalType === 'cosinus' ? <CosinusSignal format ={format} setFormat = {setFormat} streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
+                            : currentSignalType === 'spiked' ? <SpikesSignal format ={format} setFormat = {setFormat} streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
+                            : currentSignalType === 'emphasized' ? <NormallyDistributed format ={format} setFormat = {setFormat} streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
                             : null }
                         
                     </Stack>

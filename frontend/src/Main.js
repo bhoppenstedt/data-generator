@@ -28,6 +28,7 @@ const empty= [
 const Main = (props) => {
 
     const [streams, setStreams] = useState([]);
+    const [format , setFormat] = useState('MQTT');
 
     function updateArray() {
         var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
@@ -43,7 +44,7 @@ const Main = (props) => {
             </Grid>
             <Grid item xs ={1}/>
             <Grid item xs ={5} sx={{pt:"26px"}}>
-                <SignalScreen streams={streams} setStreams={setStreams}/>
+                <SignalScreen streams={streams} setStreams={setStreams} format ={format} setFormat = {setFormat}/>
             </Grid>
             <Grid item xs ={5} sx={{pt:"26px"}}>
                 <Output streams={streams} setStreams={setStreams}/>

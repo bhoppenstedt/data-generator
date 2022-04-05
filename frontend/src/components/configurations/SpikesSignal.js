@@ -28,7 +28,7 @@ export const SpikesSignal = (props) => {
   function putReq() {
     
     var params={base,distance,size,propability,transmissionFrequency}
-    fetch('http://localhost:5000/api/spiked/' + signalName + '/', {
+    fetch('http://localhost:5000/api/' + props.format + '/spiked/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -38,7 +38,6 @@ export const SpikesSignal = (props) => {
     .then(data => props.setStreams(Array.from(data)));
 
   };
-  
   const [signalName, setSignalName] = useState('')
   const [base , setBase] = useState(100)
   const [distance, setDistance] = useState(3)
@@ -126,7 +125,7 @@ export const SpikesSignal = (props) => {
                       inputComponent: NumberFormatCustom,
                     }}
                   />
-                  <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
+                  <GenerateButton name={"Generate"} format ={props.format} setFormat = {props.setFormat} onClick={() => putReq()} icon={<></>}/>
                 </Stack>
     )
 }

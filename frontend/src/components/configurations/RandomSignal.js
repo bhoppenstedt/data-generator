@@ -6,7 +6,8 @@ import { GenerateButton } from "../GenerateButton.js";
 import { Typography } from "@mui/material";
 
 
-export function RandomSignal ({streams, setStreams}) {
+export function RandomSignal ({streams, setStreams, format, setFormat}) {
+  
 
   const handleNameChange = e => {
     setSignalName(e.target.value)
@@ -21,10 +22,11 @@ export function RandomSignal ({streams, setStreams}) {
     setTransmissionFrequency(e.target.value)
   };
 
+  //
   function putReq() {
     
     var params={lowerBoundary,upperBoundary,transmissionFrequency}
-    fetch('http://localhost:5000/api/random/' + signalName + '/', {
+    fetch('http://localhost:5000/api/' + format + '/random/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -40,6 +42,7 @@ export function RandomSignal ({streams, setStreams}) {
     //updateArray();
     console.log("PUT and GET done!")
   }
+  // update the states of each inputgit 
   
   const [signalName, setSignalName] = useState('')
   const [lowerBoundary, setLowerBoundary] = useState(0)
@@ -98,7 +101,7 @@ export function RandomSignal ({streams, setStreams}) {
                     }}
                    onChange={handleTFChange}
                   />
-                  <GenerateButton name={"Generate"} onClick={() => wrapper()} icon={<></>}/>
+                  <GenerateButton name={"Generate"} format ={format} setFormat = {setFormat} onClick={() => wrapper()} icon={<></>}/>
               </Stack>
     )
 }
