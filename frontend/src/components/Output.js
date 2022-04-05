@@ -20,10 +20,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 
 
-function Output ({streams, setStreams}) {
+function Output ({format, streams, setStreams}) {
 
-    function patchReq(streamType, streamName) {
-        JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
+    function patchReq(format, streamType, streamName) {
+        JSON.stringify(fetch('http://localhost:5000/api/' + format + '/' + streamType + '/' + streamName + '/', {
             method: "PATCH",
             headers: {"Content-type": "application/json; charset=UTF-8"}
         })

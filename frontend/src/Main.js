@@ -6,6 +6,7 @@ import Output from "./components/Output";
 import SignalScreen from "./components/SignalScreen";
 import { useState } from 'react';
 
+
 var startArray = [];
 var streamsServer = JSON.stringify(fetch('/api/signals/')
                         .then(res => res.json())
