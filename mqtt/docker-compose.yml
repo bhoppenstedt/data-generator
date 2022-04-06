@@ -4,7 +4,6 @@ services:
     image: eclipse-mosquitto
     container_name: mqtt
     network_mode: host
-    restart: always
     volumes:
       - /config:/config
       - /data:/data

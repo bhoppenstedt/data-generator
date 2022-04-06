@@ -4,7 +4,7 @@ from time import sleep
 from kafka import KafkaProducer
 
 
-bootstrap_servers=['kafka:9092']
+bootstrap_servers=['localhost:9092']
 
 def serialize(signal):
     """Serializing the signal."""
@@ -22,6 +22,7 @@ class Kafka_signal_producer(object):
             upperBoundary (int): The upper boundary of the random signal
             transmissionFrequency(float): The pause in between ticks of the signal
         """
+        print('reached3')
         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
         self.running = False
         self.type = type 
