@@ -9,7 +9,7 @@ from mqtt_message_producer import MQTT_Signal_producer
 from flask_swagger_ui import get_swaggerui_blueprint
 from flask_socketio import SocketIO
 from test_client import SocketIOTestClient
-from websocket_message_producer import Websockets_message_producer
+from websockets_messenger import Websockets_message_producer
 
 
 # Initialize Server and API
@@ -120,7 +120,7 @@ class HandleSignals(Resource):
         elif publisher == 'mqtt':
             producer = MQTT_Signal_producer(name=signal_name, args=args, type=signal_type)
         elif publisher == "websocket":
-            producer = Websockets_message_producer()
+            producer = Websockets_message_producer(name=signal_name, args=args, type=signal_type, socketio = socketio)
         else:
             return "Invalid Publisher"
         print("reached2")
