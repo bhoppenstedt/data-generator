@@ -64,12 +64,7 @@ class Websockets_message_producer(object):
     def sendRandomSignal(self):
         while(self.running):
             random_number = int(random.randint(self.lowerBoundary,self.upperBoundary))
-            result = self.socketio(socketio = self.socketio, payload = random_number, qos=qos)
-            status = result[0]
-            if status == 0:
-                print(f"Send `{random_number}` to socketio `{self.socketio}`")
-            else:
-                print(f"Failed to send the message {self.socketio}")
+            socketio.emit('test_event', {'data': random_number})
             sleep(self.transmissionFrequency)
 
     def sendSinusSignal(self):
