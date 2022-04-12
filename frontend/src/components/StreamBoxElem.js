@@ -16,14 +16,40 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 const StreamBoxElem = ({name, type, argument1, argument2, argument3, argument4, argument5, runningState, streams, setStreams}) => {
 
+    function updateArray() {
+        var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
+                            .then(res => res.json())
+                            .then(dataJSON => JSON.parse(dataJSON))
+                            .then(data => setStreams(Array.from(data)))
+                            .catch(function() {
+                                console.log("Failed to get signal(s)!");
+                            }));
+    }
+
+
+    const controller = new AbortController();
+    const { signal } = controller;
+
+    function patchAbort() {
+        controller.abort();
+        updateArray();
+
+    }
+
     function patchReq(streamType, streamName) {
         JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
             method: "PATCH",
-            headers: {"Content-type": "application/json; charset=UTF-8"}
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+            signal: controller.signal
         })
         .then(res => res.json())
         .then(dataJSON => JSON.parse(dataJSON))
-        .then(data => setStreams(Array.from(data))));
+        .then(data => setStreams(Array.from(data)))
+        .catch(function() {
+            console.log("Failed to patch signal!");
+        }));
+
+        setTimeout(patchAbort, 1000);
 
   };
 
@@ -51,8 +77,6 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, argument4, 
   } else if (type == "emphasized") {
     params = ["signaltype:", "expected value:", "standard deviation:", "transmission frequency:"];
   }
-
-  console.log(argument1)
 
   var style = {
     fontFamily: "Open Sans, sans-serif",

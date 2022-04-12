@@ -18,14 +18,20 @@ import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFill
 import CachedIcon from '@mui/icons-material/Cached';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { elementTypeAcceptingRef } from "@mui/utils";
 
 
 function Output ({streams, setStreams}) {
 
     function patchReq(streamType, streamName) {
+
+        const controller = new AbortController();
+        //const { signal } = controller;
+
         JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
             method: "PATCH",
-            headers: {"Content-type": "application/json; charset=UTF-8"}
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+            signal: controller.signal
         })
         .then(res => res.json())
         .then(dataJSON => JSON.parse(dataJSON))
@@ -34,7 +40,26 @@ function Output ({streams, setStreams}) {
             console.log("Failed to patch signal(s)!");
         }));
 
+        console.log("type: " + streamType + ", name: " + streamName)
+        setTimeout(patchAbort, 100);
+
+        function patchAbort() {
+            controller.abort();
+            console.log("Canceled!")
+            updateArray();
+        }
+
     };
+
+    function startAll() {
+        var streamsToStart = streams.filter((stream) => stream.running == false);
+        var i = 1;
+        console.log(streamsToStart.length)
+        streamsToStart.forEach(element => {
+            setTimeout(patchReq, 200*i, element.type, element.name);
+            i++;
+        });
+    }
 
     function updateArray() {
         var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
@@ -93,7 +118,7 @@ function Output ({streams, setStreams}) {
                                                 start all
                                             </Typography>
 
-                                            <IconButton size="small" onClick={ () => (streams.filter((stream) => stream.running == false)).map((streamsRunning) => patchReq(streamsRunning.type, streamsRunning.name))}>
+                                            <IconButton size="small" onClick={ () => startAll()}>
 
                                                 <PlayCircleFilledWhiteRoundedIcon sx={{ fontSize: 30, color: purple[900] }}/>
 
