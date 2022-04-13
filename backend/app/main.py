@@ -19,7 +19,7 @@ socketio = SocketIO(app)
 test_client = SocketIOTestClient(app = app, socketio=socketio)
 test_client.connect()
 
-print(test_client.is_connected())
+#print(test_client.is_connected())
 
 
 app.config['SECRET_KEY'] = 'secret!'
@@ -86,9 +86,7 @@ spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 class HandleSignals(Resource):
     def put(self, signal_type, signal_name):
 
-        publisher = 'kafka'
-        socketio.emit('ping_event', {'data': 42})
-        print(test_client.get_received())
+        publisher = 'websocket'
 
         # Check if the the given name is already in use 
         for index in running_signal_args:
@@ -120,10 +118,14 @@ class HandleSignals(Resource):
         elif publisher == 'mqtt':
             producer = MQTT_Signal_producer(name=signal_name, args=args, type=signal_type)
         elif publisher == "websocket":
-            producer = Websockets_message_producer(name=signal_name, args=args, type=signal_type, socketio = socketio)
+            producer = Websockets_message_producer(name=signal_name, args=args, type=signal_type, test_client=test_client)
         else:
             return "Invalid Publisher"
-        print("reached2")
+
+        socketio.emit('ping_event', {'name': signal_name, "type": signal_type})
+        print(test_client.get_received())
+        print(test_client.is_connected())
+        print("")
         
         # Add the signal object to the objects dictionary 
         running_signal_objects[signal_name] = producer 
@@ -134,7 +136,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def patch(self, publisher, signal_type,signal_name):
+    def patch(self, signal_type,signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
@@ -157,7 +159,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def delete(self, publisher, signal_type, signal_name):
+    def delete(self, signal_type, signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
