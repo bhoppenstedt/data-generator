@@ -21,14 +21,14 @@ import TextField from '@mui/material/TextField';
 import { elementTypeAcceptingRef } from "@mui/utils";
 
 
-function Output ({streams, setStreams}) {
+function Output ({format, streams, setStreams}) {
 
     function patchReq(streamType, streamName) {
 
         const controller = new AbortController();
         //const { signal } = controller;
 
-        JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
+        JSON.stringify(fetch('http://localhost:5000/api/' + format + '/' + streamType + '/' + streamName + '/', {
             method: "PATCH",
             headers: {"Content-type": "application/json; charset=UTF-8"},
             signal: controller.signal
@@ -71,8 +71,8 @@ function Output ({streams, setStreams}) {
                             }));
     }
 
-    const [content, setContent] = useState("")
-    const streamElements = streams.filter((x) => x.name.startsWith(content)).map((stream) => 
+
+    const streamElements = streams.filter((x) => x.name.toLowerCase().startsWith(content.toLowerCase())).map((stream) => 
     <StreamBoxElem 
         name={stream.name} 
         type={stream.type} 

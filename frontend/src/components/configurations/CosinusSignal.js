@@ -4,9 +4,11 @@ import { Stack } from "@mui/material";
 import { NumberFormatCustom } from "../NumberFormatCustom";
 import { GenerateButton } from '../GenerateButton';
 import { Typography } from '@mui/material';
+import { Autocomplete} from "@mui/material";
 
 export const CosinusSignal = (props) => {
-
+ 
+  
   const handleNameChange = e => {
     setSignalName(e.target.value)
   };
@@ -23,7 +25,7 @@ export const CosinusSignal = (props) => {
   function putReq() {
     
     var params={frequency,amplitude,transmissionFrequency}
-    fetch('http://localhost:5000/api/cosinus/' + signalName + '/', {
+    fetch('http://localhost:5000/api/' + props.format + '/cosinus/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -36,11 +38,14 @@ export const CosinusSignal = (props) => {
     });
 
   };
-  
+ 
   const [signalName, setSignalName] = useState('')
   const [frequency, setFrequency] = useState(3)
   const [amplitude, setAmplitude] = useState(50)
   const [transmissionFrequency, setTransmissionFrequency] = useState(1)
+
+
+// different inputs for the the following signal 
 
   var styleTypo = {
     fontFamily: 'Open Sans, sans-serif', 
@@ -102,7 +107,9 @@ export const CosinusSignal = (props) => {
                       inputComponent: NumberFormatCustom,
                     }}
                   />
-                  <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
+                  <GenerateButton name={"Generate"} format ={props.format} setFormat = {props.setFormat} onClick={() => putReq()} icon={<></>}/>
+                  
+               
                 </Stack>
     )
 }

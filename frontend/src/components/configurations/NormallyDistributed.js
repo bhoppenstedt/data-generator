@@ -20,10 +20,11 @@ export const NormallyDistributed = (props) => {
     setTransmissionFrequency(e.target.value)
   };
 
+
   function putReq() {
     
     var params={center,scale,transmissionFrequency}
-    fetch('http://localhost:5000/api/emphasized/' + signalName + '/', {
+    fetch('http://localhost:5000/api/' + props.format + '/emphasized/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -36,7 +37,6 @@ export const NormallyDistributed = (props) => {
     });
 
   };
-  
   const [signalName, setSignalName] = useState('')
   const [center , setCenter] = useState(100)
   const [scale, setScale] = useState(15)
@@ -93,7 +93,7 @@ export const NormallyDistributed = (props) => {
                       inputComponent: NumberFormatCustom,
                     }}
                   />
-                  <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
+                  <GenerateButton name={"Generate"} format ={props.format} setFormat = {props.setFormat} onClick={() => putReq()} icon={<></>}/>
                   </Stack>
                 
     )

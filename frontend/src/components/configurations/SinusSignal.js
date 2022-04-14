@@ -8,6 +8,7 @@ import { Typography } from "@mui/material";
 
 export const SinusSignal = (props) => {
 
+  // update the states of each input
   const handleNameChange = e => {
     setSignalName(e.target.value)
   };
@@ -20,11 +21,14 @@ export const SinusSignal = (props) => {
   const handleTFChange = e => {
     setTransmissionFrequency(e.target.value)
   };
+  const handleFormatChange = e => {
+    props.setFormat(e.target.value)
+  };
 
   function putReq() {
     
     var params={frequency,amplitude,transmissionFrequency}
-    fetch('http://localhost:5000/api/sinus/' + signalName + '/', {
+    fetch('http://localhost:5000/api/' + props.format + '/sinus/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -38,11 +42,13 @@ export const SinusSignal = (props) => {
 
   };
   
+
   const [signalName, setSignalName] = useState('')
   const [frequency, setFrequency] = useState(3)
   const [amplitude, setAmplitude] = useState(50)
   const [transmissionFrequency, setTransmissionFrequency] = useState(1)
 
+  // diffrent inputs for bowndries with handleChange 
   return (
     <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
       
@@ -96,7 +102,7 @@ export const SinusSignal = (props) => {
                     inputComponent: NumberFormatCustom,
                   }}
                 />
-                <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
+                <GenerateButton name={"Generate"} format ={props.format} setFormat = {props.setFormat} onClick={() => putReq()} icon={<></>}/>
               </Stack>
   )
 }

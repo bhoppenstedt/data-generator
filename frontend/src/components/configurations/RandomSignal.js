@@ -6,7 +6,8 @@ import { GenerateButton } from "../GenerateButton.js";
 import { Typography } from "@mui/material";
 
 
-export function RandomSignal ({streams, setStreams}) {
+export function RandomSignal ({streams, setStreams, format, setFormat}) {
+  
 
   const handleNameChange = e => {
     setSignalName(e.target.value)
@@ -21,10 +22,11 @@ export function RandomSignal ({streams, setStreams}) {
     setTransmissionFrequency(e.target.value)
   };
 
+  //
   function putReq() {
     
     var params={lowerBoundary,upperBoundary,transmissionFrequency}
-    fetch('http://localhost:5000/api/random/' + signalName + '/', {
+    fetch('http://localhost:5000/api/' + format + '/random/' + signalName + '/', {
         method: "PUT",
         body: JSON.stringify(params),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -42,6 +44,8 @@ export function RandomSignal ({streams, setStreams}) {
   const [lowerBoundary, setLowerBoundary] = useState(0)
   const [upperBoundary, setUpperBoundary] = useState(1)
   const [transmissionFrequency, setTransmissionFrequency] = useState(1)
+
+  // diffrent inputs for bowndries with handleChange 
 
       return (
               <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
@@ -80,7 +84,7 @@ export function RandomSignal ({streams, setStreams}) {
                     }}
                     onChange={handleUBChange}
                   />
-
+                  
                   <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
                             transmission frequency:
                   </Typography>
@@ -93,7 +97,9 @@ export function RandomSignal ({streams, setStreams}) {
                     }}
                    onChange={handleTFChange}
                   />
-                  <GenerateButton name={"Generate"} onClick={() => putReq()} icon={<></>}/>
+
+                  <GenerateButton name={"Generate"} format ={format} setFormat = {setFormat} onClick={() => putReq()} icon={<></>}/>
+
               </Stack>
     )
 }
