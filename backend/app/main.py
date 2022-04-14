@@ -4,11 +4,46 @@ from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from flask_cors import CORS 
 from numpy import add
-from message_producer import Random_signal_producer, Sinus_signal_producer, Cosinus_signal_producer, Spiked_signal_producer, Emphasized_signal_producer
+from message_producer import Kafka_signal_producer
+from mqtt_message_producer import MQTT_Signal_producer
+from flask_swagger_ui import get_swaggerui_blueprint
+from flask_socketio import SocketIO
+from test_client import SocketIOTestClient
+from websockets_message_producer import Websockets_message_producer
+
 
 # Initialize Server and API
 app = Flask(__name__)
+socketio = SocketIO(app)
+
+test_client = SocketIOTestClient(app = app, socketio=socketio)
+test_client.connect()
+
+#print(test_client.is_connected())
+
+
+app.config['SECRET_KEY'] = 'secret!'
 api = Api(app)
+
+@socketio.on('message')
+def handle_message(data):
+    print('received message: ' + data)
+
+
+# Swagger Configuration
+
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.json'
+SWAGGER_BLUEPRINT = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config = {
+        'app_name': "datastream generator"
+    }
+)
+
+app.register_blueprint(SWAGGER_BLUEPRINT, url_prefix = SWAGGER_URL)
+
 
 # Allow cross origin REST requests
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -51,56 +86,47 @@ spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 class HandleSignals(Resource):
     def put(self, signal_type, signal_name):
 
+        publisher = 'websocket'
+
         # Check if the the given name is already in use 
         for index in running_signal_args:
             if signal_name == index['name']:
                 return "Signal name already in use"
 
-        # Add the arguments of the signal to the args dictionary and create the correct producer object 
-        if(signal_type == "random"):
-            args = random_arguments.parse_args()
-            args["type"] = "random"
-            args["running"] = False
-            args["name"] = signal_name
-
-            producer = Random_signal_producer(args["lowerBoundary"],args["upperBoundary"],args["transmissionFrequency"])
-
-        elif(signal_type == "sinus"):
-            args = sinus_arguments.parse_args()
-            args["type"] = "sinus"
-            args["running"] = False
-            args["name"] = signal_name
-
-            producer = Sinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
-
-        elif(signal_type=="cosinus"):
-            args = cosinus_arguments.parse_args()
-            args["type"] = "cosinus"
-            args["running"] = False
-            args["name"] = signal_name
-
-            producer = Cosinus_signal_producer(args["frequency"],args["amplitude"],args["transmissionFrequency"])
         
-        elif(signal_type=="emphasized"):
-            args = emphasized_arguments.parse_args()
-            args["type"] = "emphasized"
-            args["running"] = False
-            args["name"] = signal_name
-
-            producer = Emphasized_signal_producer(args["center"], args["scale"], args["transmissionFrequency"])
-
-        elif(signal_type=="spiked"):
+        # Create args dictionary corresponding to the type 
+        if(signal_type == 'random'):
+            args = random_arguments.parse_args()
+        elif(signal_type == 'sinus'):
+            args = sinus_arguments.parse_args()
+        elif(signal_type == 'cosinus'):
+            args = cosinus_arguments.parse_args()
+        elif(signal_type == 'emphasized'):
+            args = emphasized_arguments.parse_args()        
+        elif(signal_type == 'spiked'):
             args = spiked_arguments.parse_args()
-            args["type"] = "spiked"
-            args["running"] = False
-            args["name"] = signal_name
-
-            producer = Spiked_signal_producer(args["base"],args["distance"],args["propability"],args["size"],args["transmissionFrequency"])
-
         else:
-            return "Invalid signal type"
+            return "Invalid signal type "
 
+        # Add type, name and running flag to args dictionary
+        args["type"] = signal_type
+        args["name"]  = signal_name
+        args["running"] = False
+         
+        if publisher == "kafka":
+            producer = Kafka_signal_producer(name=signal_name, args=args, type=signal_type)
+        elif publisher == 'mqtt':
+            producer = MQTT_Signal_producer(name=signal_name, args=args, type=signal_type)
+        elif publisher == "websocket":
+            producer = Websockets_message_producer(name=signal_name, args=args, type=signal_type, test_client=test_client)
+        else:
+            return "Invalid Publisher"
 
+        socketio.emit('ping_event', {'name': signal_name, "type": signal_type})
+        print(test_client.get_received())
+        print(test_client.is_connected())
+        print("")
+        
         # Add the signal object to the objects dictionary 
         running_signal_objects[signal_name] = producer 
 
@@ -177,4 +203,5 @@ def root():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    socketio.run(app = app, debug=True, host="0.0.0.0", port=5000)
+    #app.run(debug=True, host="0.0.0.0", port=5000)

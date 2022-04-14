@@ -33,16 +33,12 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
     })
     .then(res => res.json())
     .then(dataJSON => JSON.parse(dataJSON))
-    .then(data => setStreams(Array.from(data)));
+    .then(data => setStreams(Array.from(data)))
+    .catch(function() {
+      console.log("Failed to create random signal!");
+    });
 
   };
-
-  function wrapper() {
-    putReq();
-    //updateArray();
-    console.log("PUT and GET done!")
-  }
-  // update the states of each inputgit 
   
   const [signalName, setSignalName] = useState('')
   const [lowerBoundary, setLowerBoundary] = useState(0)
@@ -101,7 +97,9 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
                     }}
                    onChange={handleTFChange}
                   />
-                  <GenerateButton name={"Generate"} format ={format} setFormat = {setFormat} onClick={() => wrapper()} icon={<></>}/>
+
+                  <GenerateButton name={"Generate"} format ={format} setFormat = {setFormat} onClick={() => putReq()} icon={<></>}/>
+
               </Stack>
     )
 }
