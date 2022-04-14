@@ -4,7 +4,7 @@ from time import sleep
 from kafka import KafkaProducer
 
 
-bootstrap_servers=['localhost:9092']
+bootstrap_servers=['kafka:9092']
 
 def serialize(signal):
     """Serializing the signal."""

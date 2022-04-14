@@ -25,12 +25,12 @@ function Output ({format, streams, setStreams}) {
 
     const [content, setContent] = useState("");
 
-    function patchReq(streamType, streamName) {
+    function patchReq(streamType, streamName, publisher) {
 
         const controller = new AbortController();
         //const { signal } = controller;
 
-        JSON.stringify(fetch('http://localhost:5000/api/' + format + '/' + streamType + '/' + streamName + '/', {
+        JSON.stringify(fetch('http://localhost:5000/api/' + publisher + "/" + streamType + '/' + streamName + '/', {
             method: "PATCH",
             headers: {"Content-type": "application/json; charset=UTF-8"},
             signal: controller.signal
@@ -58,7 +58,7 @@ function Output ({format, streams, setStreams}) {
         var i = 1;
         console.log(streamsToStart.length)
         streamsToStart.forEach(element => {
-            setTimeout(patchReq, 200*i, element.type, element.name);
+            setTimeout(patchReq, 200*i, element.type, element.name, element.publisher);
             i++;
         });
     }
@@ -78,11 +78,12 @@ function Output ({format, streams, setStreams}) {
     <StreamBoxElem 
         name={stream.name} 
         type={stream.type} 
-        argument1={stream[(Object.keys(stream)[0])]} 
-        argument2={stream[(Object.keys(stream)[1])]} 
-        argument3={stream[(Object.keys(stream)[2])]}
-        argument4={stream[(Object.keys(stream)[3])]}
-        argument5={stream[(Object.keys(stream)[4])]}
+        formatType = {stream.publisher}
+        argument1={stream[(Object.keys(stream)[4])]} 
+        argument2={stream[(Object.keys(stream)[5])]} 
+        argument3={stream[(Object.keys(stream)[7])]}
+        argument4={stream[(Object.keys(stream)[6])]}
+        argument5={stream[(Object.keys(stream)[8])]}
         runningState={stream.running} 
         streams={streams} 
         setStreams={setStreams}/>);
@@ -134,7 +135,7 @@ function Output ({format, streams, setStreams}) {
                                                 stop all
                                             </Typography>
 
-                                            <IconButton size="small" onClick={ () => (streams.filter((stream) => stream.running == true)).map((streamsRunning) => patchReq(streamsRunning.type, streamsRunning.name))}>
+                                            <IconButton size="small" onClick={ () => (streams.filter((stream) => stream.running == true)).map((streamsRunning) => patchReq(streamsRunning.type, streamsRunning.name, streamsRunning.publisher))}>
                                                 
                                                 <StopCircleRoundedIcon sx={{ fontSize: 30, color:purple[900] }}/>
 

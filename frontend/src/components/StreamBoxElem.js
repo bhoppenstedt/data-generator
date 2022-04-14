@@ -14,7 +14,9 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 
 
-const StreamBoxElem = ({name, type, argument1, argument2, argument3, argument4, argument5, runningState, streams, setStreams}) => {
+const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3, argument4, argument5, runningState, streams, setStreams}) => {
+
+    console.log(formatType);
 
     function updateArray() {
         var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
@@ -37,7 +39,7 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, argument4, 
     }
 
     function patchReq(streamType, streamName) {
-        JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
+        JSON.stringify(fetch('http://localhost:5000/api/'+ formatType + "/" +  streamType + '/' + streamName + '/', {
             method: "PATCH",
             headers: {"Content-type": "application/json; charset=UTF-8"},
             signal: controller.signal
@@ -54,7 +56,7 @@ const StreamBoxElem = ({name, type, argument1, argument2, argument3, argument4, 
   };
 
     function deleteReq(streamType, streamName) {
-        JSON.stringify(fetch('http://localhost:5000/api/'+ streamType + '/' + streamName + '/', {
+        JSON.stringify(fetch('http://localhost:5000/api/'+ formatType + "/" + streamType + '/' + streamName + '/', {
             method: "DELETE",
             headers: {"Content-type": "application/json; charset=UTF-8"}
         })
@@ -109,7 +111,7 @@ return (
                             {name}
                         </Typography>
                         <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600",  color: runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.6)", paddingLeft: "10px", paddingTop: "5px"}}>
-                            [ WEBSOCKET ]
+                            {formatType == "websocket" ? "[ WEBSOCKET ]" : formatType == "kafka" ? "[ KAFKA ]" : formatType == "mqtt" ? "[ MQTT ]" : "[]"}
                         </Typography>
                     </Stack>
                     </Grid>
