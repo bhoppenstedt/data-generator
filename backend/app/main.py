@@ -125,7 +125,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def patch(self, signal_type,signal_name):
+    def patch(self, publisher, signal_type,signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
@@ -148,7 +148,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def delete(self, signal_type, signal_name):
+    def delete(self, publisher, signal_type, signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
