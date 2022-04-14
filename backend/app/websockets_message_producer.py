@@ -88,7 +88,6 @@ class Websockets_message_producer(object):
             random_number = int(random.randint(self.lowerBoundary,self.upperBoundary))
             print(f"Emitting number {random_number}")
             self.socketio.emit('random_test_event', {'data': random_number})
-            print(f"Sending number {random_number}")
             sleep(self.transmissionFrequency)
 
     def sendSinusSignal(self):
@@ -99,7 +98,6 @@ class Websockets_message_producer(object):
                 periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
                 print(f"Emitting number {periodic_number}")
                 self.socketio.emit('sinus_test_event', {'data': periodic_number})
-                print(f"Sending number {periodic_number}")
                 sleep(self.transmissionFrequency)
     
     def sendCosinusSignal(self):
@@ -110,7 +108,6 @@ class Websockets_message_producer(object):
                 periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
                 print(f"Emitting number {periodic_number}")
                 self.socketio.emit('cosinus_test_event', {'data': periodic_number})
-                print(f"Sending number {periodic_number}")
                 sleep(self.transmissionFrequency)
 
     def sendEmphasizedRandomSignal(self):
@@ -122,7 +119,6 @@ class Websockets_message_producer(object):
                 emphasized_number = i
                 print(f"Emitting number {emphasized_number}")
                 self.socketio.emit('emphasized_test_event', {'data': emphasized_number})
-                print(f"Sending number {emphasized_number}")
                 sleep(self.transmissionFrequency)
 
     def sendSpikedSignal(self):
@@ -136,7 +132,6 @@ class Websockets_message_producer(object):
                 spiked_number = self.base
             print(f"Emitting number {spiked_number}")
             self.socketio.emit('spiked_test_event', {'data': spiked_number})
-            print(f"Sending number {spiked_number}")
             sleep(self.transmissionFrequency)
             i = i + 1
 
