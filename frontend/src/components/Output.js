@@ -23,6 +23,8 @@ import { elementTypeAcceptingRef } from "@mui/utils";
 
 function Output ({format, streams, setStreams}) {
 
+    const [content, setContent] = useState("");
+
     function patchReq(streamType, streamName) {
 
         const controller = new AbortController();

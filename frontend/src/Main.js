@@ -9,6 +9,7 @@ import { useState } from 'react';
 const Main = (props) => {
 
     const [streams, setStreams] = useState([]);
+    const [format, setFormat] = useState("");
     
     return (
         <Grid container={true} >
