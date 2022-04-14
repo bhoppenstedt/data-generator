@@ -99,6 +99,8 @@ class Websockets_message_producer(object):
                 print(f"Emitting number {periodic_number}")
                 self.socketio.emit('sinus_test_event', {'data': periodic_number})
                 sleep(self.transmissionFrequency)
+                if not self.running:
+                    break
     
     def sendCosinusSignal(self):
         """A sinus signal with the parameters of the corresponding object is created and sent through websocket for 'Sinus-Signal'.
@@ -109,6 +111,8 @@ class Websockets_message_producer(object):
                 print(f"Emitting number {periodic_number}")
                 self.socketio.emit('cosinus_test_event', {'data': periodic_number})
                 sleep(self.transmissionFrequency)
+                if not self.running:
+                    break
 
     def sendEmphasizedRandomSignal(self):
         """A normally distributed signal with the parameters of the corresponding object is created and sent through websocket for 'Emphasized-Signal'.
@@ -120,6 +124,8 @@ class Websockets_message_producer(object):
                 print(f"Emitting number {emphasized_number}")
                 self.socketio.emit('emphasized_test_event', {'data': emphasized_number})
                 sleep(self.transmissionFrequency)
+                if not self.running:
+                    break
 
     def sendSpikedSignal(self):
         """A spiked signal with the parameters of the corresponding object is created and sent through websocket for 'Spiked-Signal'.
