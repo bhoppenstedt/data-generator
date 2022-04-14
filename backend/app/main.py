@@ -86,23 +86,27 @@ class HandleSignals(Resource):
         
         # Create args dictionary corresponding to the type 
         if(signal_type == 'random'):
-            args = random_arguments.parse_args()
+            args2 = random_arguments.parse_args()
         elif(signal_type == 'sinus'):
-            args = sinus_arguments.parse_args()
+            args2 = sinus_arguments.parse_args()
         elif(signal_type == 'cosinus'):
-            args = cosinus_arguments.parse_args()
+            args2 = cosinus_arguments.parse_args()
         elif(signal_type == 'emphasized'):
-            args = emphasized_arguments.parse_args()        
+            args2 = emphasized_arguments.parse_args()        
         elif(signal_type == 'spiked'):
-            args = spiked_arguments.parse_args()
+            args2 = spiked_arguments.parse_args()
         else:
             return "Invalid signal type "
 
         # Add type, name and running flag to args dictionary
-        args["type"] = signal_type
-        args['publisher'] = publisher
-        args["name"]  = signal_name
-        args["running"] = False
+        args1 = {}
+        args1["name"]  = signal_name
+        args1["type"] = signal_type
+        args1["publisher"] = publisher
+        args1["running"] = False
+
+        args = {**args1, **args2}
+
          
         if publisher == "kafka":
             producer = Kafka_signal_producer(name=signal_name, args=args, type=signal_type)
