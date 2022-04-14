@@ -104,9 +104,14 @@ return (
 
 
                     <Grid item xs={12}>
+                    <Stack direction={"horizontal"}> 
                         <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 20, fontWeight: "600" }} color={runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.6)" }>
                             {name}
                         </Typography>
+                        <Typography sx={{ fontFamily: "Open Sans, sans-serif", fontSize: 14, fontWeight: "600",  color: runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.6)", paddingLeft: "10px", paddingTop: "5px"}}>
+                            [ WEBSOCKET ]
+                        </Typography>
+                    </Stack>
                     </Grid>
 
 
@@ -172,7 +177,7 @@ return (
                 </Grid>
             </Grid>
             <Grid item xs={2}>
-                <Stack direction="column" alignItems={"center"} marginTop="20%">
+                <Stack direction="column" alignItems={"center"} marginTop="30%">
                     <Typography sx={{ fontSize: 15, fontWeight: "600",  color: runningState ? "#5FA500" : "#9D9D9D", lineHeight: "normal"}}>
                         {runningState ? "running.." : "stopped"}
                     </Typography>

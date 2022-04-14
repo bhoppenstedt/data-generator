@@ -150,7 +150,7 @@ function Output ({streams, setStreams}) {
                                     size="small" 
                                     sx={{paddingX:"12px", paddingBottom:"4px"}} 
                                     fullWidth 
-                                    label="serach datastreams" 
+                                    label="search datastreams" 
                                     onChange={(x) => setContent(x.target.value)}
                                 />
 
