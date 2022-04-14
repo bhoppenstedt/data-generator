@@ -184,7 +184,7 @@ class GetAllSignals(Resource):
 api.add_resource(GetAllSignals, '/api/signals/')
 
 # Add endpoints for PUT, PATCH, DELETE requests
-api.add_resource(HandleSignals,'/api/<string:signal_type>/<string:signal_name>/')
+api.add_resource(HandleSignals,'/api/<string:publisher>/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
 def root():
