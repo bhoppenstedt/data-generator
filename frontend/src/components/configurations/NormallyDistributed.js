@@ -30,7 +30,10 @@ export const NormallyDistributed = (props) => {
     })
     .then(res => res.json())
     .then(dataJSON => JSON.parse(dataJSON))
-    .then(data => props.setStreams(Array.from(data)));
+    .then(data => props.setStreams(Array.from(data)))
+    .catch(function() {
+      console.log("Failed to create normally distributed signal!");
+    });
 
   };
   
