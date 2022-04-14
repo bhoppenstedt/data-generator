@@ -15,19 +15,14 @@ from websockets_message_producer import Websockets_message_producer
 # Initialize Server and API
 app = Flask(__name__)
 socketio = SocketIO(app)
-
-test_client = SocketIOTestClient(app = app, socketio=socketio)
-test_client.connect()
-
-#print(test_client.is_connected())
-
-
 app.config['SECRET_KEY'] = 'secret!'
 api = Api(app)
 
-@socketio.on('message')
-def handle_message(data):
-    print('received message: ' + data)
+#test_client = SocketIOTestClient(app = app, socketio=socketio)
+#test_client.connect()
+
+
+
 
 
 # Swagger Configuration
@@ -84,9 +79,7 @@ spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 
 class HandleSignals(Resource):
-    def put(self, signal_type, signal_name):
-
-        publisher = 'websocket'
+    def put(self, publisher, signal_type, signal_name):
 
         # Check if the the given name is already in use 
         for index in running_signal_args:
@@ -118,15 +111,11 @@ class HandleSignals(Resource):
         elif publisher == 'mqtt':
             producer = MQTT_Signal_producer(name=signal_name, args=args, type=signal_type)
         elif publisher == "websocket":
-            producer = Websockets_message_producer(name=signal_name, args=args, type=signal_type, test_client=test_client)
+            producer = Websockets_message_producer(name=signal_name, args=args, type=signal_type, socketio = socketio)
         else:
             return "Invalid Publisher"
 
-        socketio.emit('ping_event', {'name': signal_name, "type": signal_type})
-        print(test_client.get_received())
-        print(test_client.is_connected())
-        print("")
-        
+       
         # Add the signal object to the objects dictionary 
         running_signal_objects[signal_name] = producer 
 
