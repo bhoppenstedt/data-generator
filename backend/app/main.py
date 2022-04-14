@@ -1,3 +1,4 @@
+import asyncio
 from cProfile import run
 import json
 from flask import Flask, jsonify
@@ -174,7 +175,10 @@ api.add_resource(GetAllSignals, '/api/signals/')
 api.add_resource(HandleSignals,'/api/<string:publisher>/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
-def root():
+async def root():
+    #asyncio.create_task(running_signal_objects['test'].patch())
+    task =  asyncio.create_task(running_signal_objects['test'].patch())
+    print('reched here')
     return jsonify({"message": "Message"})
 
 

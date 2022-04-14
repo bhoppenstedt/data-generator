@@ -1,10 +1,10 @@
-import json, random , math 
+import json, random , math , asyncio
 from numpy.random import normal
 from time import sleep
 from kafka import KafkaProducer
 
 
-bootstrap_servers=['kafka:9092']
+bootstrap_servers=['localhost:9092']
 
 def serialize(signal):
     """Serializing the signal."""
@@ -65,14 +65,14 @@ class Kafka_signal_producer(object):
         self.transmissionFrequency = emphasized_args["transmissionFrequency"]
 
 
-    def patch(self):
+    async def patch(self):
         """[Start/Pause the signal]
 
         Returns:
             [Bool]: [Returns true if successful. Note there's no Return when starting a signal]
         """
         self.running = not self.running
-        
+        print('reached')
         if self.running:
             if self.type == 'random':
                 self.sendRandomSignal()
@@ -86,6 +86,7 @@ class Kafka_signal_producer(object):
                 self.sendSpikedSignal()
 
     def sendRandomSignal(self):
+        print('resfsd')
         """A random signal with the parameters of the corresponding signal is created and sent to the kafka topic 'Random-Signal'.
         """
         while(self.running):
