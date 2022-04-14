@@ -7,11 +7,27 @@ from numpy import add
 from message_producer import Kafka_signal_producer
 from mqtt_message_producer import MQTT_Signal_producer
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_socketio import SocketIO
+from test_client import SocketIOTestClient
+from websockets_message_producer import Websockets_message_producer
 
 
 # Initialize Server and API
 app = Flask(__name__)
+socketio = SocketIO(app)
+
+test_client = SocketIOTestClient(app = app, socketio=socketio)
+test_client.connect()
+
+#print(test_client.is_connected())
+
+
+app.config['SECRET_KEY'] = 'secret!'
 api = Api(app)
+
+@socketio.on('message')
+def handle_message(data):
+    print('received message: ' + data)
 
 
 # Swagger Configuration
@@ -68,7 +84,9 @@ spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 
 class HandleSignals(Resource):
-    def put(self, publisher, signal_type, signal_name):
+    def put(self, signal_type, signal_name):
+
+        publisher = 'websocket'
 
         # Check if the the given name is already in use 
         for index in running_signal_args:
@@ -94,15 +112,21 @@ class HandleSignals(Resource):
         args["type"] = signal_type
         args["name"]  = signal_name
         args["running"] = False
-
+         
         if publisher == "kafka":
-                producer = Kafka_signal_producer(name=signal_name, args=args, type=signal_type)
+            producer = Kafka_signal_producer(name=signal_name, args=args, type=signal_type)
         elif publisher == 'mqtt':
-                producer = MQTT_Signal_producer(name=signal_name, args=args, type=signal_type)
+            producer = MQTT_Signal_producer(name=signal_name, args=args, type=signal_type)
+        elif publisher == "websocket":
+            producer = Websockets_message_producer(name=signal_name, args=args, type=signal_type, test_client=test_client)
         else:
             return "Invalid Publisher"
 
-
+        socketio.emit('ping_event', {'name': signal_name, "type": signal_type})
+        print(test_client.get_received())
+        print(test_client.is_connected())
+        print("")
+        
         # Add the signal object to the objects dictionary 
         running_signal_objects[signal_name] = producer 
 
@@ -112,7 +136,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def patch(self, publisher, signal_type,signal_name):
+    def patch(self, signal_type,signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
@@ -135,7 +159,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def delete(self, publisher, signal_type, signal_name):
+    def delete(self, signal_type, signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
@@ -171,7 +195,7 @@ class GetAllSignals(Resource):
 api.add_resource(GetAllSignals, '/api/signals/')
 
 # Add endpoints for PUT, PATCH, DELETE requests
-api.add_resource(HandleSignals,'/api/<string:publisher>/<string:signal_type>/<string:signal_name>/')
+api.add_resource(HandleSignals,'/api/<string:signal_type>/<string:signal_name>/')
 
 @app.route("/api/")
 def root():
@@ -179,4 +203,5 @@ def root():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    socketio.run(app = app, debug=True, host="0.0.0.0", port=5000)
+    #app.run(debug=True, host="0.0.0.0", port=5000)

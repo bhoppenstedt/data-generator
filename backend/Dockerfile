@@ -6,6 +6,7 @@ RUN pip install numpy
 RUN pip install flask-restful
 RUN pip install paho-mqtt
 RUN pip install flask-swagger-ui
+RUN pip install flask_socketio
 
 
 COPY ./app /app
