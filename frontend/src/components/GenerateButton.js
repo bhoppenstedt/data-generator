@@ -9,7 +9,8 @@ import Grid from "@mui/material/Grid";
 export function GenerateButton(props){
     const format = [
         {label: 'mqtt'},
-        {label: 'kafka'}
+        {label: 'kafka'},
+        {label: 'websocket'}
     ];
 
     return (

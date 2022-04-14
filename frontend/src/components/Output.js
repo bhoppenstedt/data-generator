@@ -33,7 +33,7 @@ function Output ({format, streams, setStreams}) {
 
   };
 
-  function updateArray() {t
+  function updateArray() {
     var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
                         .then(res => res.json())
                         .then(dataJSON => JSON.parse(dataJSON))
