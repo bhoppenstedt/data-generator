@@ -22,9 +22,6 @@ api = Api(app)
 #test_client.connect()
 
 
-
-
-
 # Swagger Configuration
 
 SWAGGER_URL = '/swagger'
@@ -103,6 +100,7 @@ class HandleSignals(Resource):
 
         # Add type, name and running flag to args dictionary
         args["type"] = signal_type
+        args['publisher'] = publisher
         args["name"]  = signal_name
         args["running"] = False
          
@@ -121,6 +119,7 @@ class HandleSignals(Resource):
 
         # Add the arguments of the signal to the args dictionary 
         running_signal_args.append(args)
+        print(running_signal_args)
 
         # Return all existing signals
         return json.dumps(running_signal_args)
