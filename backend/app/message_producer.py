@@ -18,8 +18,8 @@ class Kafka_signal_producer(object):
         is not intially running and has to be patched once at the start.
 
         Args:
-            lowerBoundary (int): The lower boundary of the random signal
-            upperBoundary (int): The upper boundary of the random signal
+            lowerBoundary (float): The lower boundary of the random signal
+            upperBoundary (float): The upper boundary of the random signal
             transmissionFrequency(float): The pause in between ticks of the signal
         """
         print('reached3')
@@ -90,7 +90,7 @@ class Kafka_signal_producer(object):
         """A random signal with the parameters of the corresponding signal is created and sent to the kafka topic 'Random-Signal'.
         """
         while(self.running):
-            random_number = int(random.randint(self.lowerBoundary,self.upperBoundary))
+            random_number = random.uniform(self.lowerBoundary,self.upperBoundary)
             print(f"Sending number {random_number}")
             self.producer.send('Random-Signal',value=serialize((random_number)))
             sleep(self.transmissionFrequency)
@@ -98,19 +98,23 @@ class Kafka_signal_producer(object):
     def sendSinusSignal(self):
         """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
         """
-        while(True):
-            for i in range(0, 360) and self.running:
+        while(self.running):
+            for i in range(0, 360):
+                if not self.running: 
+                    break
                 periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
                 print(f"Sending number {periodic_number}")
                 self.producer.send('Sinus-Signal',value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
-
+                
     def sendCosinusSignal(self):
         """A cosinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Cosinus-Signal'.
         """
 
-        while(True):
-            for i in range(0, 360) and self.running:
+        while(self.running):
+            for i in range(0, 360):
+                if not self.running: 
+                    break
                 periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
                 print(f"Sending number {periodic_number}")
                 self.producer.send('Cosinus-Signal',value=serialize(periodic_number))
@@ -119,9 +123,11 @@ class Kafka_signal_producer(object):
     def sendEmphasizedRandomSignal(self):
         """A normally distributed signal with the parameters of the corresponding object is created and sent to the kafka topic 'Emphasized-Signal'.
         """
-        while(True):
+        while(self.running):
             data = normal(loc=self.center, scale=self.scale, size=200)
-            for i in data and self.running:
+            for i in data:
+                if not self.running: 
+                    break
                 emphasizedNumber = i
                 print(f"Sending number {emphasizedNumber}")
                 self.producer.send('Emphasized-Signal',value=serialize(emphasizedNumber))
