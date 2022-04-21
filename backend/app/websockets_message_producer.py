@@ -85,7 +85,7 @@ class Websockets_message_producer(object):
         """A random signal with the parameters of the corresponding object is created and sent through websocket for 'Random-Signal'.
         """
         while(self.running):
-            random_number = int(random.randint(self.lowerBoundary,self.upperBoundary))
+            random_number = random.uniform(self.lowerBoundary,self.upperBoundary)
             print(f"Emitting number {random_number}")
             self.socketio.emit('random_test_event', {'data': random_number})
             sleep(self.transmissionFrequency)
