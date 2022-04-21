@@ -16,14 +16,14 @@ const Main = (props) => {
             <Grid item xs ={12}>
                 <Header title="Data generator"/>
             </Grid>
-            <Grid item xs ={1}/>
-            <Grid item xs ={5} sx={{pt:"26px"}}>
+            <Grid item xs ={0} xl = {1}/>
+            <Grid item xs ={6} xl = {5} sx={{pt:"26px"}}>
                 <SignalScreen streams={streams} setStreams={setStreams} format ={format} setFormat = {setFormat}/>
             </Grid>
-            <Grid item xs ={5} sx={{pt:"26px"}}>
+            <Grid item xs ={6} xl = {5} sx={{pt:"26px"}}>
                 <Output streams={streams} setStreams={setStreams}/>
             </Grid>
-            <Grid item xs ={1}/>
+            <Grid item xs ={0} xl = {1}/>
         </Grid>
     )
 }
