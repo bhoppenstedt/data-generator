@@ -3,7 +3,7 @@ from numpy.random import normal
 from time import sleep
 from kafka import KafkaProducer
 
-
+# Specify the address of the kafka broker
 bootstrap_servers=['kafka:9092']
 
 def serialize(signal):
@@ -13,20 +13,36 @@ def serialize(signal):
 
 class Kafka_signal_producer(object):
 
-    def __init__(self, type, name , args):
-        """Called when an new signal of the corresponding type is created. Creats an object that has the parameters of the signal stored in its variables. Note that the signal
-        is not intially running and has to be patched once at the start.
+    """ 
+    This class handles all signals that are published through the kafka message protocol.
+    For each new signal an object of this class is created and saved into the dictionaries
+    that are specified in main.py. The bootstrap_servers variable defined at the start of 
+    this module holds the address of the kafka broker to which the datastreams get published.
+
+    """
+
+    def __init__(self, type: str, name: str , args: dict):
+        """
+        Called when a new signal that uses the kafka message protocol is created. 
+        Creates an object that has the parameters of the signal stored in its variables.
+        Note that signals are not initially running on creation and need to be patched
+        once. Also note that the this object is polimorphic, which means that the args 
+        dictionary contains different entries for different signal types.
 
         Args:
-            lowerBoundary (float): The lower boundary of the random signal
-            upperBoundary (float): The upper boundary of the random signal
-            transmissionFrequency(float): The pause in between ticks of the signal
-        """
-        print('reached3')
+            type (String): Type of the signal. The following values are valid: 'random', 'sinus', 'cosinus', 'emphasized', 'spiked'
+            name (String): Name of the signal.
+            args (Dictionary): A dictionary that contains all parameters of the corresponding signal.
+        """      
+
+        # Kafka producer object is created 
         self.producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
+
+        # Type and state of the object are initially declared
         self.running = False
         self.type = type 
         
+        # Depending on the type of the new signal a coresponding function is called that stores the parameters into the objects variables.
         if type == "random":
             self.random_constructor(args)
         elif type == "sinus":
@@ -39,21 +55,61 @@ class Kafka_signal_producer(object):
             self.spiked_constructor(args)
 
     def random_constructor(self,random_args):
+        """Called when a new signal of the type 'random' is created.
+
+        Args:
+            random_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
+
+            lowerBoundary (float): The lower boundary of the random signal
+            upperBoundary (float): The upper boundary of the random signal
+            transmissionFrequency(float): The pause in between ticks of the signal
+
+        """        
         self.lowerBoundary = random_args["lowerBoundary"]
         self.upperBoundary = random_args["upperBoundary"]
         self.transmissionFrequency = random_args["transmissionFrequency"]
 
     def sinus_constructor(self,sinus_args):
+        """Called when a new signal of the type 'random' is created.
+
+        Args:
+            random_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
+
+            lowerBoundary (float): The lower boundary of the random signal
+            upperBoundary (float): The upper boundary of the random signal
+            transmissionFrequency(float): The pause in between ticks of the signal
+
+        """  
         self.frequency = sinus_args["frequency"]
         self.amplitude = sinus_args["amplitude"]
         self.transmissionFrequency = sinus_args["transmissionFrequency"]
 
     def cosinus_constructor(self,cosinus_args):
+        """Called when a new signal of the type 'random' is created.
+
+        Args:
+            random_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
+
+            lowerBoundary (float): The lower boundary of the random signal
+            upperBoundary (float): The upper boundary of the random signal
+            transmissionFrequency(float): The pause in between ticks of the signal
+
+        """  
         self.frequency = cosinus_args["frequency"]
         self.amplitude = cosinus_args["amplitude"]
         self.transmissionFrequency = cosinus_args["transmissionFrequency"]
 
     def spiked_constructor(self,spiked_args):
+        """Called when a new signal of the type 'random' is created.
+
+        Args:
+            random_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
+
+            lowerBoundary (float): The lower boundary of the random signal
+            upperBoundary (float): The upper boundary of the random signal
+            transmissionFrequency(float): The pause in between ticks of the signal
+
+        """  
         self.base = spiked_args["base"]
         self.distance = spiked_args["distance"]
         self.propability = spiked_args["propability"]
@@ -61,6 +117,16 @@ class Kafka_signal_producer(object):
         self.transmissionFrequency = spiked_args["transmissionFrequency"]
 
     def emphasized_constructor(self,emphasized_args):
+        """Called when a new signal of the type 'random' is created.
+
+        Args:
+            random_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
+
+            lowerBoundary (float): The lower boundary of the random signal
+            upperBoundary (float): The upper boundary of the random signal
+            transmissionFrequency(float): The pause in between ticks of the signal
+
+        """  
         self.center = emphasized_args["center"]
         self.scale = emphasized_args["scale"]
         self.transmissionFrequency = emphasized_args["transmissionFrequency"]
