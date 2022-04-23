@@ -70,13 +70,13 @@ class Kafka_signal_producer(object):
         self.transmissionFrequency = random_args["transmissionFrequency"]
 
     def sinus_constructor(self,sinus_args):
-        """Called when a new signal of the type 'random' is created.
+        """Called when a new signal of the type 'sinus' is created.
 
         Args:
-            random_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
+            sinus_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
 
-            lowerBoundary (float): The lower boundary of the random signal
-            upperBoundary (float): The upper boundary of the random signal
+            frequency (float): The frequency of the sinus signal 
+            amplitude (float): The amplitude of the sinus signal 
             transmissionFrequency(float): The pause in between ticks of the signal
 
         """  
@@ -85,28 +85,30 @@ class Kafka_signal_producer(object):
         self.transmissionFrequency = sinus_args["transmissionFrequency"]
 
     def cosinus_constructor(self,cosinus_args):
-        """Called when a new signal of the type 'random' is created.
+        """Called when a new signal of the type 'cosinus' is created.
 
         Args:
-            random_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
+            cosinus_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
 
-            lowerBoundary (float): The lower boundary of the random signal
-            upperBoundary (float): The upper boundary of the random signal
+            frequency (float): The frequency of the cosinus signal 
+            amplitude (float): The amplitude of the cosinus signal 
             transmissionFrequency(float): The pause in between ticks of the signal
 
-        """  
+        """   
         self.frequency = cosinus_args["frequency"]
         self.amplitude = cosinus_args["amplitude"]
         self.transmissionFrequency = cosinus_args["transmissionFrequency"]
 
     def spiked_constructor(self,spiked_args):
-        """Called when a new signal of the type 'random' is created.
+        """Called when a new signal of the type 'spiked' is created.
 
         Args:
-            random_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
+            spiked_args (Dictionary): A dictionary which contains the necessary parameters for a spiked signal which are: 
 
-            lowerBoundary (float): The lower boundary of the random signal
-            upperBoundary (float): The upper boundary of the random signal
+            base (float): The signal's baseline
+            distance (float): The amount of ticks in between potential spikes 
+            probability (float): The probability that a spike occurs. Must be in range of 0-1
+            size (float): The size of the spikes 
             transmissionFrequency(float): The pause in between ticks of the signal
 
         """  
@@ -117,13 +119,13 @@ class Kafka_signal_producer(object):
         self.transmissionFrequency = spiked_args["transmissionFrequency"]
 
     def emphasized_constructor(self,emphasized_args):
-        """Called when a new signal of the type 'random' is created.
+        """Called when a new signal of the type 'emphasized' is created.
 
         Args:
-            random_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
+            emphasized_args (Dictionary): A dictionary which contains the necessary parameters for a random signal which are: 
 
-            lowerBoundary (float): The lower boundary of the random signal
-            upperBoundary (float): The upper boundary of the random signal
+            center (float): The center of the normally distributed signal 
+            scale (float): The standard deviation of the normally distributed signal
             transmissionFrequency(float): The pause in between ticks of the signal
 
         """  
@@ -153,7 +155,7 @@ class Kafka_signal_producer(object):
                 self.sendSpikedSignal()
 
     def sendRandomSignal(self):
-        """A random signal with the parameters of the corresponding signal is created and sent to the kafka topic 'Random-Signal'.
+        """A steam of random numbers between the specified boundaries that are stored in the object's variables is created and sent to the kafka topic 'Random-Signal'
         """
         while(self.running):
             random_number = random.uniform(self.lowerBoundary,self.upperBoundary)
@@ -162,7 +164,7 @@ class Kafka_signal_producer(object):
             sleep(self.transmissionFrequency)
 
     def sendSinusSignal(self):
-        """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
+        """A datastream, which follows a sinus curve is created and set to the kafka topic 'Sinus-Signal'
         """
         while(self.running):
             for i in range(0, 360):
@@ -174,7 +176,7 @@ class Kafka_signal_producer(object):
                 sleep(self.transmissionFrequency)
                 
     def sendCosinusSignal(self):
-        """A cosinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Cosinus-Signal'.
+        """A datastream, which follows a cosinus curve is created and set to the kafka topic 'Cosinus-Signal'
         """
 
         while(self.running):
@@ -187,7 +189,7 @@ class Kafka_signal_producer(object):
                 sleep(self.transmissionFrequency)
 
     def sendEmphasizedRandomSignal(self):
-        """A normally distributed signal with the parameters of the corresponding object is created and sent to the kafka topic 'Emphasized-Signal'.
+        """A datastream that follows a gaussian ditribution curve is created and sent to the kafka topic 'Emphasized-Signal'
         """
         while(self.running):
             data = normal(loc=self.center, scale=self.scale, size=200)
@@ -200,7 +202,7 @@ class Kafka_signal_producer(object):
                 sleep(self.transmissionFrequency)
     
     def sendSpikedSignal(self):
-        """A spiked signal with the parameters of the corresponding object is created and sent to the kafka topic 'Spiked-Signal'.
+        """A datastream with a specified baseline and potential spikes in regular intervals is created and sent to the kafka topic 'Spiked-Signal'
         """
         i = 0
         while(self.running):
