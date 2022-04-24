@@ -3,14 +3,13 @@ from time import sleep
 from paho.mqtt import client as mqtt_client
 from numpy.random import normal
 
-broker = 'localhost'
+# Specifiy the 
+broker = 'http://localhost'
 port=1883
+
+
 qos=0 
-#topic = "python/mqtt"
-# generate client ID with pub prefix randomly
-#client_id = f'python-mqtt-{random.randint(0, 1000)}'
-# username = 'emqx'
-# password = 'public'
+
 
 
 def on_connect(client, userdata, flags, rc):
