@@ -15,7 +15,6 @@ from websockets_message_producer import Websockets_message_producer
 # Initialize Server and API
 app = Flask(__name__)
 socketio = SocketIO(app)
-app.config['SECRET_KEY'] = 'secret!'
 api = Api(app)
 
 #test_client = SocketIOTestClient(app = app, socketio=socketio)
@@ -98,16 +97,17 @@ class HandleSignals(Resource):
         else:
             return "Invalid signal type "
 
-        # Add type, name and running flag to args dictionary
+        # Add type, name and running flag to another dictionary
         args1 = {}
         args1["name"]  = signal_name
         args1["type"] = signal_type
         args1["publisher"] = publisher
         args1["running"] = False
 
+        # Combine the two args dictionaries
         args = {**args1, **args2}
 
-         
+        # Create an object of the selected publisher type 
         if publisher == "kafka":
             producer = Kafka_signal_producer(name=signal_name, args=args, type=signal_type)
         elif publisher == 'mqtt':
@@ -123,7 +123,6 @@ class HandleSignals(Resource):
 
         # Add the arguments of the signal to the args dictionary 
         running_signal_args.append(args)
-        print(running_signal_args)
 
         # Return all existing signals
         return json.dumps(running_signal_args)
@@ -173,13 +172,14 @@ class HandleSignals(Resource):
             if signal_name == index['name']:
                 running_signal_args.remove(index)
 
+
         # Return all existing signals
         return json.dumps(running_signal_args)
 
 
 class GetAllSignals(Resource):
 
-    # Return all existing signals
+    # Return all existing signals. Note that all signals, including paused ones are returned.
     def get(self):
         return json.dumps(running_signal_args)
 
@@ -189,11 +189,7 @@ api.add_resource(GetAllSignals, '/api/signals/')
 # Add endpoints for PUT, PATCH, DELETE requests
 api.add_resource(HandleSignals,'/api/<string:publisher>/<string:signal_type>/<string:signal_name>/')
 
-@app.route("/api/")
-def root():
-    return jsonify({"message": "Message"})
-
 
 if __name__ == "__main__":
-    socketio.run(app = app, debug=True, host="0.0.0.0", port=5000)
-    #app.run(debug=True, host="0.0.0.0", port=5000)
+    #socketio.run(app = app, debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=True, host="0.0.0.0", port=5000)

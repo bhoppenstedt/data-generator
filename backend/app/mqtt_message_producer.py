@@ -106,7 +106,7 @@ class MQTT_Signal_producer(object):
         """A random signal with the parameters of the corresponding signal is created and sent to the kafka topic 'Random-Signal'.
         """
         while(self.running):
-            random_number = int(random.randint(self.lowerBoundary,self.upperBoundary))
+            random_number = random.uniform(self.lowerBoundary,self.upperBoundary)
             result = self.client.publish(topic = self.topic, payload = random_number, qos=qos)
             status = result[0]
             if status == 0:
@@ -119,9 +119,11 @@ class MQTT_Signal_producer(object):
         """A sinus signal with the parameters of the corresponding object is created and sent to the kafka topic 'Sinus-Signal'.
         """
         while(self.running):
-            for i in range(0, 360) and self.running:
+            for i in range(0, 360):
+                if not self.running: 
+                    break
                 periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
-                result = self.client.publish(self.topic, periodic_number, qos=qos)
+                result = self.client.publish(self.topic, payload = periodic_number, qos=qos)
                 status = result[0]
                 if status == 0:
                     print(f"Send `{periodic_number}` to topic `{self.topic}`")
@@ -134,8 +136,10 @@ class MQTT_Signal_producer(object):
         """
         while(self.running):
             for i in range(0, 360):
+                if not self.running: 
+                    break
                 periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
-                result = self.client.publish(self.topic, periodic_number, qos=qos)
+                result = self.client.publish(self.topic, payload = periodic_number, qos=qos)
                 status = result[0]
                 if status == 0:
                     print(f"Send `{periodic_number}` to topic `{self.topic}`")
@@ -149,8 +153,10 @@ class MQTT_Signal_producer(object):
         while(self.running):
             data = normal(loc=self.center, scale=self.scale, size=200)
             for i in data:
+                if not self.running: 
+                    break
                 emphasized_number = i
-                result = self.client.publish(self.topic, emphasized_number, qos=qos)
+                result = self.client.publish(self.topic, payload = emphasized_number, qos=qos)
                 status = result[0]
                 if status == 0:
                     print(f"Send `{emphasized_number}` to topic `{self.topic}`")
@@ -167,7 +173,7 @@ class MQTT_Signal_producer(object):
                 spiked_number = self.base + self.size
             else:
                 spiked_number = self.base
-            result = self.client.publish(self.topic, spiked_number, qos=qos)
+            result = self.client.publish(self.topic, payload = spiked_number, qos=qos)
             status = result[0]
             if status == 0:
                 print(f"Send `{spiked_number}` to topic `{self.topic}`")
