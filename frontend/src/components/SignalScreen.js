@@ -59,7 +59,7 @@ function SignalScreen ({streams, setStreams, format, setFormat}) {
                         <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "700",fontSize: 24, color: '#3F0092', marginTop:"0.1vw", marginBottom:"0.5vw" }}>
                             signal configuration
                         </Typography>
-                    
+                     
                         {currentSignalType === 'random' ? (<RandomSignal format ={format} setFormat = {setFormat} streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>)
                             : currentSignalType === 'sinus' ? <SinusSignal format ={format} setFormat = {setFormat} streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>
                             : currentSignalType === 'cosinus' ? <CosinusSignal format ={format} setFormat = {setFormat} streams={streams} setStreams={setStreams} handleChange={(e) => {}} numberformat={value.numberformat}/>

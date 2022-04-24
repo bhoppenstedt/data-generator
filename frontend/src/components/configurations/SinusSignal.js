@@ -5,25 +5,35 @@ import { NumberFormatCustom } from "../NumberFormatCustom";
 import { SignalButton } from "../SignalButton";
 import { GenerateButton } from "../GenerateButton.js";
 import { Typography } from "@mui/material";
+import InputField from "./InputField.js"
+import { Autocomplete } from "@mui/material";
 
 export const SinusSignal = (props) => {
+
+  const formatOptions = [
+    {label: 'MQTT'},
+    {label: 'Kafka'},
+    {label: 'Websocket'}
+  ];
 
   // update the states of each input
   const handleNameChange = e => {
     setSignalName(e.target.value)
+    checkField();
   };
   const handleFRChange = e => {
     setFrequency(e.target.value)
+    checkField();
   };
   const handleAMChange = e => {
     setAmplitude(e.target.value)
+    checkField();
   };
   const handleTFChange = e => {
     setTransmissionFrequency(e.target.value)
+    checkField();
   };
-  const handleFormatChange = e => {
-    props.setFormat(e.target.value)
-  };
+
 
   function putReq() {
     
@@ -41,68 +51,94 @@ export const SinusSignal = (props) => {
     });
 
   };
+
+  function checkField() {
+    if(signalName == "") {
+      setMissingSN(true);
+    } else {
+      setMissingSN(false);
+    }
+
+    if(frequency == "") {
+      setMissingFre(true);
+    } else {
+      setMissingFre(false);
+    }
+
+    if(amplitude == "") {
+      setMissingAmp(true);
+    } else {
+      setMissingAmp(false);
+    }
+
+    if(transmissionFrequency == "") {
+      setMissingTF(true);
+    } else {
+      setMissingTF(false);
+    }
+  }
+
+  function checkAndSend() {
+    checkField();
+    if(!missingSN && !missingFre && !missingAmp && !missingTF) {
+      putReq();
+    }
+  }
   
 
   const [signalName, setSignalName] = useState('')
-  const [frequency, setFrequency] = useState(3)
-  const [amplitude, setAmplitude] = useState(50)
-  const [transmissionFrequency, setTransmissionFrequency] = useState(1)
+  const [frequency, setFrequency] = useState(0)
+  const [amplitude, setAmplitude] = useState(0)
+  const [transmissionFrequency, setTransmissionFrequency] = useState(0)
 
-  // diffrent inputs for bowndries with handleChange 
+  const [missingSN, setMissingSN] = useState(false);
+  const [missingFre, setMissingFre] = useState(false);
+  const [missingAmp, setMissingAmp] = useState(false);
+  const [missingTF, setMissingTF] = useState(false);
+
   return (
-    <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
+    <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
+
+                <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
+
+                <InputField inputText={"frequency"} helpingText={"Enter a frequency."} onChange={handleFRChange} missing={missingFre} ></InputField>
+
+                <InputField inputText={"amplitude"} helpingText={"Enter an amplitude."} onChange={handleAMChange} missing={missingAmp} value={frequency} ></InputField>
+
+                <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} ></InputField>
+
+                <Autocomplete 
+                      options={formatOptions}
+                      //sx={{ width: "100%" }}
+                      sx = {
+                        {'& label.Mui-focused': {
+                        color: '#3F0092',
+                        },
+                        '& .MuiInput-underline:after': {
+                        borderBottomColor: '#3F0092',
+                        },
+                        '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                            borderColor: '#3F0092',
+                        },
+                        '&:hover fieldset': {
+                            borderColor: '#3F0092',
+                        },
+                        '&.Mui-focused fieldset': {
+                            borderColor: '#3F0092',
+                        }}}}
+                      onChange={(event, value) => props.setFormat(value.label.toLowerCase())}
+                      renderInput={(params) => 
+                        <Stack container spacing={'12px'}>
+                          <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                              publisher:
+                          </Typography>
+                          <TextField {...params} size="small" label="" />
+                        </Stack>
+                      }
+                />    
       
-                <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                          signal name:
-                </Typography>
-                <TextField 
-                id="outlined-basic"
-                variant="outlined" 
-                onChange={handleNameChange}
-                />
-
-                <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                          frequency:
-                </Typography>
-                <TextField
-                  variant="outlined"
-                  value={props.numberformat}
-                  onChange={handleFRChange}
-                  name="numberformat"
-                  id="formatted-numberformat-input"
-                  InputProps={{
-                    inputComponent: NumberFormatCustom,
-                  }}
-                />
-
-                <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                          amplitude:
-                </Typography>
-                <TextField
-                  variant="outlined"
-                  value={props.numberformat}
-                  onChange={handleAMChange}
-                  name="numberformat"
-                  id="formatted-numberformat-input"
-                  InputProps={{
-                    inputComponent: NumberFormatCustom,
-                  }}
-                />
-
-                <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                          transmission frequency:
-                </Typography>
-                <TextField
-                  variant="outlined"
-                  value={props.numberformat}
-                  onChange={handleTFChange}
-                  name="numberformat"
-                  id="formatted-numberformat-input"
-                  InputProps={{
-                    inputComponent: NumberFormatCustom,
-                  }}
-                />
-                <GenerateButton name={"Generate"} format ={props.format} setFormat = {props.setFormat} onClick={() => putReq()} icon={<></>}/>
-              </Stack>
+                <GenerateButton name={"Generate"} format ={props.format} setFormat = {props.setFormat} onClick={() => checkAndSend()} icon={<></>}/>
+      </Stack>
   )
 }

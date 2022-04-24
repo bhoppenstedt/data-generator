@@ -4,25 +4,35 @@ import React, { useState } from "react";
 import { NumberFormatCustom } from "../NumberFormatCustom";
 import { GenerateButton } from "../GenerateButton.js";
 import { Typography } from "@mui/material";
+import InputField from "./InputField.js"
+import { Autocomplete } from "@mui/material";
 
 
 export function RandomSignal ({streams, setStreams, format, setFormat}) {
-  
 
+  const formatOptions = [
+    {label: 'MQTT'},
+    {label: 'Kafka'},
+    {label: 'Websocket'}
+  ];
+  
   const handleNameChange = e => {
     setSignalName(e.target.value)
+    checkField();
   };
   const handleLBChange = e => {
     setLowerBoundary(e.target.value)
+    checkField();
   };
   const handleUBChange = e => {
     setUpperBoundary(e.target.value)
+    checkField();
   };
   const handleTFChange = e => {
     setTransmissionFrequency(e.target.value)
+    checkField();
   };
 
-  //
   function putReq() {
     
     var params={lowerBoundary,upperBoundary,transmissionFrequency}
@@ -39,66 +49,96 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
     });
 
   };
+
+  function checkField() {
+    if(signalName == "") {
+      setMissingSN(true);
+    } else {
+      setMissingSN(false);
+    }
+
+    if(lowerBoundary == "") {
+      setMissingLB(true);
+    } else {
+      setMissingLB(false);
+    }
+
+    if(upperBoundary == "") {
+      setMissingUB(true);
+    } else {
+      setMissingUB(false);
+    }
+
+    if(transmissionFrequency == "") {
+      setMissingTF(true);
+    } else {
+      setMissingTF(false);
+    }
+  }
+
+  function checkAndSend() {
+    checkField();
+    if(!missingSN && !missingLB && !missingUB && !missingTF) {
+      putReq();
+    }
+  }
   
-  const [signalName, setSignalName] = useState('')
+  const [signalName, setSignalName] = useState("")
   const [lowerBoundary, setLowerBoundary] = useState(0)
-  const [upperBoundary, setUpperBoundary] = useState(1)
-  const [transmissionFrequency, setTransmissionFrequency] = useState(1)
+  const [upperBoundary, setUpperBoundary] = useState(0)
+  const [transmissionFrequency, setTransmissionFrequency] = useState(0)
+
+  const [missingSN, setMissingSN] = useState(false);
+  const [missingLB, setMissingLB] = useState(false);
+  const [missingUB, setMissingUB] = useState(false);
+  const [missingTF, setMissingTF] = useState(false);
 
   // diffrent inputs for bowndries with handleChange 
 
       return (
-              <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
+              <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
                 
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                            signal name:
-                  </Typography>
-                  <TextField 
-                  id="name"  
-                  variant="outlined"
-                  size="normal"
-                  onChange={handleNameChange}
-                  />
+                  <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                            lower boundary:
-                  </Typography>
-                  <TextField 
-                    variant="outlined"
-                    name="numberformat"
-                    id="lowerBoundary"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                    onChange={handleLBChange}
-                  />
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                            upper boundary:
-                  </Typography>
-                  <TextField
-                    variant="outlined"
-                    name="numberformat"
-                    id="upperBoundary"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                    onChange={handleUBChange}
-                  />
-                  
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                            transmission frequency:
-                  </Typography>
-                  <TextField
-                    variant="outlined"
-                    name="numberformat"
-                    id="transmissionFrequency"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                   onChange={handleTFChange}
-                  />
+                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary."} onChange={handleLBChange} missing={missingLB} ></InputField>
 
-                  <GenerateButton name={"Generate"} format ={format} setFormat = {setFormat} onClick={() => putReq()} icon={<></>}/>
+                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary."} onChange={handleUBChange} missing={missingUB} ></InputField>
+
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} ></InputField>
+
+                  <Autocomplete 
+                        options={formatOptions}
+                        //sx={{ width: "100%" }}
+                        sx = {
+                          {'& label.Mui-focused': {
+                          color: '#3F0092',
+                          },
+                          '& .MuiInput-underline:after': {
+                          borderBottomColor: '#3F0092',
+                          },
+                          '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                              borderColor: '#3F0092',
+                          },
+                          '&:hover fieldset': {
+                              borderColor: '#3F0092',
+                          },
+                          '&.Mui-focused fieldset': {
+                              borderColor: '#3F0092',
+                          }}}}
+                        onChange={(event, value) => setFormat(value.label.toLowerCase())}
+                        //isOptionEqualToValue={(option, value) => option.id === value.id}
+                        renderInput={(params) => 
+                          <Stack container spacing={'12px'}>
+                            <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                                publisher:
+                            </Typography>
+                            <TextField {...params} size="small" label="" />
+                          </Stack>
+                        }
+                  />    
+
+                  <GenerateButton name={"Generate"} onClick={() => checkAndSend()} icon={<></>}/>
 
               </Stack>
     )
