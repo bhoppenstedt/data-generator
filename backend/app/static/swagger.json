@@ -606,12 +606,12 @@
             "type": "string"
           },
           "lowerBoundary": {
-            "type": "integer",
-            "format": "int32"
+            "type": "number",
+            "format": "float"
           },
           "upperBoundary": {
-            "type": "integer",
-            "format": "int32"
+            "type": "number",
+            "format": "float"
           },
           "transmissionFrequency": {
             "type": "number",
