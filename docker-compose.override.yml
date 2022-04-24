@@ -43,10 +43,7 @@ services:
     environment:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-<<<<<<< HEAD
       KAFKA_CREATE_TOPICS: "Random-Signal:1:1,Sinus-Signal:1:1,Cosinus-Signal:1:1,Emphasized-Signal:1:1,Spiked-Signal:1:1"
-=======
-      KAFKA_CREATE_TOPICS: "Random-Signal:1:1,Sinus-Signal:1:1,Cosinus-Signal:1:1,Emphasized-Signal:1:1,Spiked-Signal:1:1" 
 
   mosquitto:
     image: eclipse-mosquitto
@@ -59,4 +56,4 @@ services:
       - ./data:/mosquitto/data
       - ./log:/mosquitto/log
 
->>>>>>> c000d1f564c861a6f2bb4088c88ff2644955a9db
+
