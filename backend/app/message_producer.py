@@ -159,7 +159,6 @@ class Kafka_signal_producer(object):
         """
         while(self.running):
             random_number = random.uniform(self.lowerBoundary,self.upperBoundary)
-            print(f"Sending number {random_number}")
             self.producer.send('Random-Signal',value=serialize((random_number)))
             sleep(self.transmissionFrequency)
 
@@ -171,7 +170,6 @@ class Kafka_signal_producer(object):
                 if not self.running: 
                     break
                 periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
-                print(f"Sending number {periodic_number}")
                 self.producer.send('Sinus-Signal',value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
                 
@@ -183,7 +181,6 @@ class Kafka_signal_producer(object):
                 if not self.running: 
                     break
                 periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
-                print(f"Sending number {periodic_number}")
                 self.producer.send('Cosinus-Signal',value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
 
@@ -196,7 +193,6 @@ class Kafka_signal_producer(object):
                 if not self.running: 
                     break
                 emphasizedNumber = i
-                print(f"Sending number {emphasizedNumber}")
                 self.producer.send('Emphasized-Signal',value=serialize(emphasizedNumber))
                 sleep(self.transmissionFrequency)
     
@@ -207,10 +203,8 @@ class Kafka_signal_producer(object):
         while(self.running):
             if i % self.distance == 0 and random.random() <= self.propability:
                 spiked_number = self.base + self.size
-                print(f"Sending number {spiked_number}")
             else:
                 spiked_number = self.base
-                print(f"Sending number {spiked_number}")
             self.producer.send('Spiked-Signal', value=serialize(spiked_number))
             sleep(self.transmissionFrequency)
             i = i + 1

@@ -172,12 +172,7 @@ class MQTT_Signal_producer(object):
         """
         while(self.running):
             random_number = random.uniform(self.lowerBoundary,self.upperBoundary)
-            result = self.client.publish(topic = self.topic, payload = random_number, qos=qos)
-            status = result[0]
-            if status == 0:
-                print(f"Send `{random_number}` to topic `{self.topic}`")
-            else:
-                print(f"Failed to send message to topic {self.topic}")
+            self.client.publish(topic = self.topic, payload = random_number, qos=qos)
             sleep(self.transmissionFrequency)
 
     def sendSinusSignal(self):
@@ -188,12 +183,7 @@ class MQTT_Signal_producer(object):
                 if not self.running: 
                     break
                 periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
-                result = self.client.publish(self.topic, payload = periodic_number, qos=qos)
-                status = result[0]
-                if status == 0:
-                    print(f"Send `{periodic_number}` to topic `{self.topic}`")
-                else:
-                    print(f"Failed to send message to topic {self.topic}")
+                self.client.publish(self.topic, payload = periodic_number, qos=qos)
                 sleep(self.transmissionFrequency)
     
     def sendCosinusSignal(self):
@@ -204,12 +194,7 @@ class MQTT_Signal_producer(object):
                 if not self.running: 
                     break
                 periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
-                result = self.client.publish(self.topic, payload = periodic_number, qos=qos)
-                status = result[0]
-                if status == 0:
-                    print(f"Send `{periodic_number}` to topic `{self.topic}`")
-                else:
-                    print(f"Failed to send message to topic {self.topic}")
+                self.client.publish(self.topic, payload = periodic_number, qos=qos)
                 sleep(self.transmissionFrequency)
 
     def sendEmphasizedRandomSignal(self):
@@ -221,12 +206,7 @@ class MQTT_Signal_producer(object):
                 if not self.running: 
                     break
                 emphasized_number = i
-                result = self.client.publish(self.topic, payload = emphasized_number, qos=qos)
-                status = result[0]
-                if status == 0:
-                    print(f"Send `{emphasized_number}` to topic `{self.topic}`")
-                else:
-                    print(f"Failed to send message to topic {self.topic}")
+                self.client.publish(self.topic, payload = emphasized_number, qos=qos)
                 sleep(self.transmissionFrequency)
 
     def sendSpikedSignal(self):
@@ -238,12 +218,7 @@ class MQTT_Signal_producer(object):
                 spiked_number = self.base + self.size
             else:
                 spiked_number = self.base
-            result = self.client.publish(self.topic, payload = spiked_number, qos=qos)
-            status = result[0]
-            if status == 0:
-                print(f"Send `{spiked_number}` to topic `{self.topic}`")
-            else:
-                print(f"Failed to send message to topic {self.topic}")
+            self.client.publish(self.topic, payload = spiked_number, qos=qos)
             sleep(self.transmissionFrequency)
             i = i + 1
 
