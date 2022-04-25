@@ -155,7 +155,7 @@ class Kafka_signal_producer(object):
                 self.sendSpikedSignal()
 
     def sendRandomSignal(self):
-        """A steam of random numbers between the specified boundaries that are stored in the object's variables is created and sent to the kafka topic 'Random-Signal'
+        """A stream of random numbers between the specified boundaries that are stored in the object's variables is created and sent to the kafka topic 'Random-Signal'
         """
         while(self.running):
             random_number = random.uniform(self.lowerBoundary,self.upperBoundary)
@@ -178,7 +178,6 @@ class Kafka_signal_producer(object):
     def sendCosinusSignal(self):
         """A datastream, which follows a cosinus curve is created and set to the kafka topic 'Cosinus-Signal'
         """
-
         while(self.running):
             for i in range(0, 360):
                 if not self.running: 
