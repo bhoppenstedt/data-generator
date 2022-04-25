@@ -77,8 +77,14 @@ export const NormallyDistributed = (props) => {
 
   function checkAndSend() {
     checkField();
-    if(!missingSN && !missingCe && !missingSc && !missingTF) {
+    if(!missingSN && !missingCe && !missingSc && !missingTF && !missingFormat) {
       putReq();
+    }
+
+    if(props.format == "") {
+      setMissingFormat(true);
+    } else {
+      setMissingFormat(false);
     }
   }
 
@@ -90,7 +96,8 @@ export const NormallyDistributed = (props) => {
   const [missingSN, setMissingSN] = useState(false);
   const [missingCe, setMissingCe] = useState(false);
   const [missingSc, setMissingSc] = useState(false);
-  const [missingTF, setMissingTF] = useState(false);
+  const [missingTF, setMissingTF] = useState(false); 
+  const [missingFormat, setMissingFormat] = useState(false);
 
     return (
       <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
@@ -114,7 +121,7 @@ export const NormallyDistributed = (props) => {
                           },
                           '& .MuiOutlinedInput-root': {
                           '& fieldset': {
-                              borderColor: '#3F0092',
+                              borderColor: missingFormat ? "red" : '#3F0092',
                           },
                           '&:hover fieldset': {
                               borderColor: '#3F0092',
@@ -122,13 +129,14 @@ export const NormallyDistributed = (props) => {
                           '&.Mui-focused fieldset': {
                               borderColor: '#3F0092',
                           }}}}
-                        onChange={(event, value) => props.setFormat(value.label.toLowerCase())}
+                        //onChange={(event, value) => props.setFormat(value.label.toLowerCase())}
+                        onInputChange={(event, inputValue) => props.setFormat(inputValue.toLowerCase())}
                         renderInput={(params) => 
                           <Stack container spacing={'12px'}>
                             <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
                                 publisher:
                             </Typography>
-                            <TextField {...params} size="small" label="" />
+                            <TextField {...params} size="small" fullWidth helperText={missingFormat ? "Choose a publisher." : ""}  />
                           </Stack>
                         }
                   />    
