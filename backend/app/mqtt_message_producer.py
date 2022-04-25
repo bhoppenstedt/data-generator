@@ -3,11 +3,11 @@ from time import sleep
 from paho.mqtt import client as mqtt_client
 from numpy.random import normal
 
-# Specifiy the 
+# Specifiy the URL and port of the MQTT Broker
 broker = 'host.docker.internal'
 port=1883
 
-
+# Specifiy the quality of service. With qos = 0 the client doesn#t wait for acks from the broker which increases performance
 qos=0 
 
 
@@ -19,11 +19,7 @@ def on_connect(client, userdata, flags, rc):
     # reconnect then subscriptions will be renewed.
     #client.subscribe("$SYS/#")
 
-def on_message(client, userdata, message):
-    print("message received " ,str(message.payload.decode("utf-8")))
-    print("message topic=",message.topic)
-    print("message qos=",message.qos)
-    print("message retain flag=",message.retain)
+
 
 class MQTT_Signal_producer(object):
     
@@ -31,7 +27,6 @@ class MQTT_Signal_producer(object):
        
         self.client = mqtt_client.Client(name)
         self.client.on_connect = on_connect
-        self.client.on_message = on_message
         self.topic = f"mqtt/{name}"
         self.running = False
         self.type = type
@@ -186,9 +181,3 @@ class MQTT_Signal_producer(object):
 
 
         
-#client = mqtt_client.Client()
-#client.on_connect = on_connect
-#client.on_message = on_message
-#client.connect('localhost', 1883, 60)
-#client.loop_forever()
-#client.publish('fdsfds', random.randint(10,20))
