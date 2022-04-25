@@ -44,16 +44,3 @@ services:
       KAFKA_ADVERTISED_HOST_NAME: kafka
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CREATE_TOPICS: "Random-Signal:1:1,Sinus-Signal:1:1,Cosinus-Signal:1:1,Emphasized-Signal:1:1,Spiked-Signal:1:1"
-
-  mosquitto:
-    image: eclipse-mosquitto
-    network_mode: host
-    container_name: mosquitto
-    ports:
-      - '1883:1883'
-    volumes:
-      - ./conf:/mosquitto/conf
-      - ./data:/mosquitto/data
-      - ./log:/mosquitto/log
-
-
