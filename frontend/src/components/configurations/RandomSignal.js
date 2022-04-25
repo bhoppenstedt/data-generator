@@ -74,11 +74,17 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
     } else {
       setMissingTF(false);
     }
+
+    if(format == "") {
+      setMissingFormat(true);
+    } else {
+      setMissingFormat(false);
+    }
   }
 
   function checkAndSend() {
     checkField();
-    if(!missingSN && !missingLB && !missingUB && !missingTF) {
+    if(!missingSN && !missingLB && !missingUB && !missingTF && !missingFormat) {
       putReq();
     }
   }
@@ -92,6 +98,7 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
   const [missingLB, setMissingLB] = useState(false);
   const [missingUB, setMissingUB] = useState(false);
   const [missingTF, setMissingTF] = useState(false);
+  const [missingFormat, setMissingFormat] = useState(false);
 
   // diffrent inputs for bowndries with handleChange 
 
@@ -118,7 +125,7 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
                           },
                           '& .MuiOutlinedInput-root': {
                           '& fieldset': {
-                              borderColor: '#3F0092',
+                              borderColor: missingFormat ? "red" : '#3F0092',
                           },
                           '&:hover fieldset': {
                               borderColor: '#3F0092',
@@ -126,14 +133,18 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
                           '&.Mui-focused fieldset': {
                               borderColor: '#3F0092',
                           }}}}
-                        onChange={(event, value) => setFormat(value.label.toLowerCase())}
+                        onInputChange={(event, inputValue) => setFormat(inputValue.toLowerCase())}
                         //isOptionEqualToValue={(option, value) => option.id === value.id}
                         renderInput={(params) => 
                           <Stack container spacing={'12px'}>
                             <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
                                 publisher:
                             </Typography>
-                            <TextField {...params} size="small" label="" />
+                            <TextField {...params} 
+                              size="small" 
+                              label=""
+                              helperText={missingFormat ? "Choose a publisher." : ""} 
+                            />
                           </Stack>
                         }
                   />    

@@ -74,11 +74,17 @@ export const CosinusSignal = (props) => {
     } else {
       setMissingTF(false);
     }
+
+    if(props.format == "") {
+      setMissingFormat(true);
+    } else {
+      setMissingFormat(false);
+    }
   }
 
   function checkAndSend() {
     checkField();
-    if(!missingSN && !missingFre && !missingAmp && !missingTF) {
+    if(!missingSN && !missingFre && !missingAmp && !missingTF && !missingFormat) {
       putReq();
     }
   }
@@ -91,7 +97,8 @@ export const CosinusSignal = (props) => {
   const [missingSN, setMissingSN] = useState(false);
   const [missingFre, setMissingFre] = useState(false);
   const [missingAmp, setMissingAmp] = useState(false);
-  const [missingTF, setMissingTF] = useState(false);
+  const [missingTF, setMissingTF] = useState(false); 
+  const [missingFormat, setMissingFormat] = useState(false);
 
 
 
@@ -127,7 +134,7 @@ export const CosinusSignal = (props) => {
                 },
                 '& .MuiOutlinedInput-root': {
                 '& fieldset': {
-                    borderColor: '#3F0092',
+                    borderColor: missingFormat ? "red" : '#3F0092',
                 },
                 '&:hover fieldset': {
                     borderColor: '#3F0092',
@@ -135,13 +142,13 @@ export const CosinusSignal = (props) => {
                 '&.Mui-focused fieldset': {
                     borderColor: '#3F0092',
                 }}}}
-              onChange={(event, value) => props.setFormat(value.label.toLowerCase())}
+              onInputChange={(event, inputValue) => props.setFormat(inputValue.toLowerCase())}
               renderInput={(params) => 
                 <Stack container spacing={'12px'}>
                   <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
                       publisher:
                   </Typography>
-                  <TextField {...params} size="small" label="" />
+                  <TextField {...params} size="small" label="" helperText={missingFormat ? "Choose a publisher." : ""}  />
                 </Stack>
               }
         />    
