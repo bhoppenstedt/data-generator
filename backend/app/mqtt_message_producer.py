@@ -4,7 +4,7 @@ from paho.mqtt import client as mqtt_client
 from numpy.random import normal
 
 # Specifiy the 
-broker = 'http://localhost'
+broker = 'host.docker.internal'
 port=1883
 
 
