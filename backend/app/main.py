@@ -17,8 +17,8 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 api = Api(app)
 
-#test_client = SocketIOTestClient(app = app, socketio=socketio)
-#test_client.connect()
+test_client = SocketIOTestClient(app = app, socketio=socketio)
+test_client.connect()
 
 
 # Swagger Configuration
@@ -183,13 +183,25 @@ class GetAllSignals(Resource):
     def get(self):
         return json.dumps(running_signal_args)
 
+
+class GetAllSignals2(Resource):
+    
+    # Return all existing signals. Note that all signals, including paused ones are returned.
+    def get(self):
+        return test_client.get_received()
+
 # Add endpoint for GET requests
 api.add_resource(GetAllSignals, '/api/signals/')
+
+api.add_resource(GetAllSignals2, '/api/signals2/')
 
 # Add endpoints for PUT, PATCH, DELETE requests
 api.add_resource(HandleSignals,'/api/<string:publisher>/<string:signal_type>/<string:signal_name>/')
 
 
+
+
+
 if __name__ == "__main__":
-    #socketio.run(app = app, debug=True, host="0.0.0.0", port=5000)
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    socketio.run(app = app, debug=True, host="0.0.0.0", port=5000)
+    #app.run(debug=True, host="0.0.0.0", port=5000)
