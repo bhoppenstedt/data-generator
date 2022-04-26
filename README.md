@@ -16,16 +16,16 @@ Requirements
 
 Getting started 
 ---------------
-This application runs with docker compose and can be started by cloning this repository and running 'docker compose up'  
-in the root directory. Note that the mqtt broker is not included in the docker setup of this project and needs to be  
-configured manually. This can be done by installing the local [mosquitto broker](https://mosquitto.org/download/) that implements  
-the mqtt message protocol. Alternatively an external broker can be used by simply changing the address that is stored in the broker 
-variable at the start of the mqtt_message_producer module to the address of said broker. 
+This application runs with docker compose and can be started by cloning this repository and running 'docker compose up' in the root directory.  
+Note that the mqtt broker is not included in the docker setup of this project and needs to be configured manually.  
+This can be done by installing the local [mosquitto broker](https://mosquitto.org/download/) that implements the mqtt message protocol.  
+Alternatively an external broker can be used by simply changing the address that is stored in the broker variable at the start of the  
+mqtt_message_producer module to the address of said broker. 
 
 
 Usage 
 ------
 
 * Kafka:  
-
+test
 
