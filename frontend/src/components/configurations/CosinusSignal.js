@@ -22,16 +22,19 @@ export const CosinusSignal = (props) => {
     checkField();
   };
   const handleFRChange = e => {
-    setFrequency(e.target.value)
-    checkField();
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 && e.target.value >= 1 || e.target.value === "") {
+      setFrequency(e.target.value)
+    }
   };
   const handleAMChange = e => {
-    setAmplitude(e.target.value)
-    checkField();
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 && e.target.value >= 1 || e.target.value === "") {
+      setAmplitude(e.target.value)
+    }
   };
   const handleTFChange = e => {
-    setTransmissionFrequency(e.target.value)
-    checkField();
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 200 || e.target.value === "") {
+      setTransmissionFrequency(e.target.value)
+    }
   };
 
   function putReq() {
@@ -90,9 +93,9 @@ export const CosinusSignal = (props) => {
   }
  
   const [signalName, setSignalName] = useState('')
-  const [frequency, setFrequency] = useState(0)
-  const [amplitude, setAmplitude] = useState(0)
-  const [transmissionFrequency, setTransmissionFrequency] = useState(0)
+  const [frequency, setFrequency] = useState("")
+  const [amplitude, setAmplitude] = useState("")
+  const [transmissionFrequency, setTransmissionFrequency] = useState("")
 
   const [missingSN, setMissingSN] = useState(false);
   const [missingFre, setMissingFre] = useState(false);
@@ -116,11 +119,11 @@ export const CosinusSignal = (props) => {
         
         <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-        <InputField inputText={"frequency"} helpingText={"Enter a frequency."} onChange={handleFRChange} missing={missingFre} ></InputField>
+        <InputField inputText={"frequency"} helpingText={"Enter a frequency."} onChange={handleFRChange} missing={missingFre} value={frequency} ></InputField>
 
-        <InputField inputText={"amplitude"} helpingText={"Enter an amplitude."} onChange={handleAMChange} missing={missingAmp} ></InputField>
+        <InputField inputText={"amplitude"} helpingText={"Enter an amplitude."} onChange={handleAMChange} missing={missingAmp} value={amplitude} ></InputField>
 
-        <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} ></InputField>
+        <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
         <Autocomplete 
               options={formatOptions}

@@ -25,6 +25,7 @@ export function InputField(props){
                 //id="upperBoundary"
                 //name="numberformat"
                 helperText={props.missing ? props.helpingText : ""}
+                value={props.value}
                 //id="name"  
                 variant="outlined"
                 size="small"

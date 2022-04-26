@@ -22,25 +22,34 @@ export const SpikesSignal = (props) => {
     checkField();
   };
   const handleBAChange = e => {
-    setBase(e.target.value)
-    checkField();
+    console.log("value: " + e.target.value.length)
+    if(e.target.value === "-") {
+      setBase(e.target.value)
+    }
+    if(e.target.value <= 10000000 && e.target.value >= -10000000 || e.target.value === "") {
+      setBase(e.target.value)
+    }
   };
   const handleDIChange = e => {
-    setDistance(e.target.value)
-    checkField();
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 && e.target.value >= 1 || e.target.value === "") {
+      setDistance(e.target.value)
+    }
   };
   const handleSIChange = e => {
-    setSize(e.target.value)
-    checkField();
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 && e.target.value >= 1 || e.target.value === "") {
+      setSize(e.target.value)
+    }
   };
   const handlePRChange = e => {
-    setPropability(e.target.value)
-    checkField();
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 1 || e.target.value === "") {
+      setPropability(e.target.value)
+    }
   };
   const handleTFChange = e => {
-    setTransmissionFrequency(e.target.value)
-    checkField();
-  };
+      if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
+        setTransmissionFrequency(e.target.value)
+      }
+    }
 
   function putReq() {
     
@@ -113,11 +122,11 @@ export const SpikesSignal = (props) => {
 
 
   const [signalName, setSignalName] = useState('')
-  const [base , setBase] = useState(0)
-  const [distance, setDistance] = useState(0)
-  const [size, setSize] = useState(0)
-  const [propability, setPropability] = useState(0)
-  const [transmissionFrequency, setTransmissionFrequency] = useState(0)
+  const [base , setBase] = useState("")
+  const [distance, setDistance] = useState("")
+  const [size, setSize] = useState("")
+  const [propability, setPropability] = useState("")
+  const [transmissionFrequency, setTransmissionFrequency] = useState("")
 
   const [missingSN, setMissingSN] = useState(false);
   const [missingBa, setMissingBa] = useState(false);
@@ -132,15 +141,15 @@ export const SpikesSignal = (props) => {
 
                   <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <InputField inputText={"base"} helpingText={"Enter a base."} onChange={handleBAChange} missing={missingBa} ></InputField>
+                  <InputField inputText={"base"} helpingText={"Enter a base."} onChange={handleBAChange} missing={missingBa} value={base}></InputField>
 
-                  <InputField inputText={"distance"} helpingText={"Enter a distance."} onChange={handleDIChange} missing={missingDi} ></InputField>
+                  <InputField inputText={"distance"} helpingText={"Enter a distance."} onChange={handleDIChange} missing={missingDi} value={distance} ></InputField>
 
-                  <InputField inputText={"size"} helpingText={"Enter a size."} onChange={handleSIChange} missing={missingSi} ></InputField>
+                  <InputField inputText={"size"} helpingText={"Enter a size."} onChange={handleSIChange} missing={missingSi} value={size} ></InputField>
 
-                  <InputField inputText={"probability"} helpingText={"Enter a probability."} onChange={handlePRChange} missing={missingPro} ></InputField>
+                  <InputField inputText={"probability"} helpingText={"Enter a probability."} onChange={handlePRChange} missing={missingPro} value={propability} ></InputField>
 
-                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} ></InputField>
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
                   <Autocomplete 
                         options={formatOptions}

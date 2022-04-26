@@ -27,14 +27,28 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
     setSignalName(e.target.value)
   };
   const handleLBChange = e => {
-    setLowerBoundary(e.target.value)
+    console.log("value: " + e.target.value.length)
+    if(e.target.value === "-") {
+      setLowerBoundary(e.target.value)
+    }
+    if(e.target.value <= 10000000 && e.target.value >= -10000000 || e.target.value === "") {
+      setLowerBoundary(e.target.value)
+    }
   };
   const handleUBChange = e => {
-    setUpperBoundary(e.target.value)
+    console.log("value: " + e.target.value.length)
+    if(e.target.value === "-") {
+      setUpperBoundary(e.target.value)
+    }
+    if(e.target.value <= 10000000 && e.target.value >= -10000000 || e.target.value === "") {
+      setUpperBoundary(e.target.value)
+    }
   };
   const handleTFChange = e => {
-    setTransmissionFrequency(e.target.value)
-  };
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
+      setTransmissionFrequency(e.target.value)
+    }
+  }
   function handleFormatChange(formatValue) {
     setFormat(formatValue);
   }
@@ -104,9 +118,9 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
   }
   
   const [signalName, setSignalName] = useState("")
-  const [lowerBoundary, setLowerBoundary] = useState(0)
-  const [upperBoundary, setUpperBoundary] = useState(0)
-  const [transmissionFrequency, setTransmissionFrequency] = useState(0)
+  const [lowerBoundary, setLowerBoundary] = useState("")
+  const [upperBoundary, setUpperBoundary] = useState("")
+  const [transmissionFrequency, setTransmissionFrequency] = useState("")
 
   const [missingSN, setMissingSN] = useState(false);
   const [missingLB, setMissingLB] = useState(false);
@@ -122,11 +136,11 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
                 
                   <InputField inputText={"signal name"} helpingText={nameAlreadyTaken ? "Name already in use!" : "Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary."} onChange={handleLBChange} missing={missingLB} ></InputField>
+                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary."} onChange={handleLBChange} missing={missingLB} value={lowerBoundary} ></InputField>
 
-                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary."} onChange={handleUBChange} missing={missingUB} ></InputField>
+                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary."} onChange={handleUBChange} missing={missingUB} value={upperBoundary} ></InputField>
 
-                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} ></InputField>
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
                   <Autocomplete 
                         options={formatOptions}
