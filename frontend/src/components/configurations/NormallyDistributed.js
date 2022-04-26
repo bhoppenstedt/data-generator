@@ -16,8 +16,14 @@ export const NormallyDistributed = (props) => {
   ];
 
   const handleNameChange = e => {
+    if(checkNameTaken(e.target.value)){
+      setNameAlreadyTaken(true);
+      setMissingSN(true);
+    } else {
+      setNameAlreadyTaken(false);
+      setMissingSN(false);
+    }
     setSignalName(e.target.value)
-    checkField();
   };
   const handleCEChange = e => {
     console.log("value: " + e.target.value.length)
@@ -36,6 +42,14 @@ export const NormallyDistributed = (props) => {
   const handleTFChange = e => { 
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
       setTransmissionFrequency(e.target.value)
+    }
+  }
+
+  function checkNameTaken(enteredName) {
+    for (const stream of props.streams) {
+      if(stream.name === enteredName) {
+        return true;
+      }
     }
   }
 
@@ -104,6 +118,7 @@ export const NormallyDistributed = (props) => {
   const [missingSc, setMissingSc] = useState(false);
   const [missingTF, setMissingTF] = useState(false); 
   const [missingFormat, setMissingFormat] = useState(false);
+  const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
 
     return (
       <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>

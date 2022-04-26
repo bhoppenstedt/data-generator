@@ -18,8 +18,14 @@ export const CosinusSignal = (props) => {
 
   // update the states of each input
   const handleNameChange = e => {
+    if(checkNameTaken(e.target.value)){
+      setNameAlreadyTaken(true);
+      setMissingSN(true);
+    } else {
+      setNameAlreadyTaken(false);
+      setMissingSN(false);
+    }
     setSignalName(e.target.value)
-    checkField();
   };
   const handleFRChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 && e.target.value >= 1 || e.target.value === "") {
@@ -36,6 +42,14 @@ export const CosinusSignal = (props) => {
       setTransmissionFrequency(e.target.value)
     }
   };
+
+  function checkNameTaken(enteredName) {
+    for (const stream of props.streams) {
+      if(stream.name === enteredName) {
+        return true;
+      }
+    }
+  }
 
   function putReq() {
     
@@ -102,6 +116,7 @@ export const CosinusSignal = (props) => {
   const [missingAmp, setMissingAmp] = useState(false);
   const [missingTF, setMissingTF] = useState(false); 
   const [missingFormat, setMissingFormat] = useState(false);
+  const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
 
 
 
