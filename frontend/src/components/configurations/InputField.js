@@ -20,8 +20,8 @@ export function InputField(props){
             </Typography>
 
             <TextField 
-                value={props.frequency}
-                label=""
+                //value={""}
+                //label=""
                 //id="upperBoundary"
                 //name="numberformat"
                 helperText={props.missing ? props.helpingText : ""}

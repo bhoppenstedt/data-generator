@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { fabClasses, Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import { NumberFormatCustom } from "../NumberFormatCustom";
@@ -17,21 +17,35 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
   ];
   
   const handleNameChange = e => {
+    if(checkNameTaken(e.target.value)){
+      setNameAlreadyTaken(true);
+      setMissingSN(true);
+    } else {
+      setNameAlreadyTaken(false);
+      setMissingSN(false);
+    }
     setSignalName(e.target.value)
-    checkField();
   };
   const handleLBChange = e => {
     setLowerBoundary(e.target.value)
-    checkField();
   };
   const handleUBChange = e => {
     setUpperBoundary(e.target.value)
-    checkField();
   };
   const handleTFChange = e => {
     setTransmissionFrequency(e.target.value)
-    checkField();
   };
+  function handleFormatChange(formatValue) {
+    setFormat(formatValue);
+  }
+
+  function checkNameTaken(enteredName) {
+    for (const stream of streams) {
+      if(stream.name === enteredName) {
+        return true;
+      }
+    }
+  }
 
   function putReq() {
     
@@ -99,13 +113,14 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
   const [missingUB, setMissingUB] = useState(false);
   const [missingTF, setMissingTF] = useState(false);
   const [missingFormat, setMissingFormat] = useState(false);
+  const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
 
   // diffrent inputs for bowndries with handleChange 
 
       return (
               <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
                 
-                  <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
+                  <InputField inputText={"signal name"} helpingText={nameAlreadyTaken ? "Name already in use!" : "Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
                   <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary."} onChange={handleLBChange} missing={missingLB} ></InputField>
 
@@ -133,7 +148,7 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
                           '&.Mui-focused fieldset': {
                               borderColor: '#3F0092',
                           }}}}
-                        onInputChange={(event, inputValue) => setFormat(inputValue.toLowerCase())}
+                        onInputChange={(event, inputValue) => handleFormatChange(inputValue.toLowerCase())}
                         //isOptionEqualToValue={(option, value) => option.id === value.id}
                         renderInput={(params) => 
                           <Stack container spacing={'12px'}>
