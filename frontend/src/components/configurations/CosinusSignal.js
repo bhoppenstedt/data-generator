@@ -134,9 +134,9 @@ export const CosinusSignal = (props) => {
         
         <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-        <InputField inputText={"frequency"} helpingText={"Enter a frequency."} onChange={handleFRChange} missing={missingFre} value={frequency} ></InputField>
+        <InputField inputText={"frequency"} helpingText={"Enter a frequency. (1 - 10.000.000)"} onChange={handleFRChange} missing={missingFre} value={frequency} ></InputField>
 
-        <InputField inputText={"amplitude"} helpingText={"Enter an amplitude."} onChange={handleAMChange} missing={missingAmp} value={amplitude} ></InputField>
+        <InputField inputText={"amplitude"} helpingText={"Enter an amplitude. (1 - 10.000.000)"} onChange={handleAMChange} missing={missingAmp} value={amplitude} ></InputField>
 
         <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 

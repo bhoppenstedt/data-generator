@@ -160,13 +160,13 @@ export const SpikesSignal = (props) => {
 
                   <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <InputField inputText={"base"} helpingText={"Enter a base."} onChange={handleBAChange} missing={missingBa} value={base}></InputField>
+                  <InputField inputText={"base"} helpingText={"Enter a base. (-10.000.000 - 10.000.000)"} onChange={handleBAChange} missing={missingBa} value={base}></InputField>
 
-                  <InputField inputText={"distance"} helpingText={"Enter a distance."} onChange={handleDIChange} missing={missingDi} value={distance} ></InputField>
+                  <InputField inputText={"distance"} helpingText={"Enter a distance. (1 - 10.000.000)"} onChange={handleDIChange} missing={missingDi} value={distance} ></InputField>
 
-                  <InputField inputText={"size"} helpingText={"Enter a size."} onChange={handleSIChange} missing={missingSi} value={size} ></InputField>
+                  <InputField inputText={"size"} helpingText={"Enter a size. (1 - 10.000.000)"} onChange={handleSIChange} missing={missingSi} value={size} ></InputField>
 
-                  <InputField inputText={"probability"} helpingText={"Enter a probability."} onChange={handlePRChange} missing={missingPro} value={propability} ></InputField>
+                  <InputField inputText={"probability"} helpingText={"Enter a probability. (0 - 1)"} onChange={handlePRChange} missing={missingPro} value={propability} ></InputField>
 
                   <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 

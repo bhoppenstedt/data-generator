@@ -127,9 +127,9 @@ export const NormallyDistributed = (props) => {
       <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
                   <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <InputField inputText={"expected value"} helpingText={"Enter an expected value."} onChange={handleCEChange} missing={missingCe} value={center} ></InputField>
+                  <InputField inputText={"expected value"} helpingText={"Enter an expected value. (-10.000.000 - 10.000.000)"} onChange={handleCEChange} missing={missingCe} value={center} ></InputField>
 
-                  <InputField inputText={"standard deviation"} helpingText={"Enter a standard deviation."} onChange={handleSCChange} missing={missingSc} value={scale} ></InputField>
+                  <InputField inputText={"standard deviation"} helpingText={"Enter a standard deviation. (1 - 10.000.000)"} onChange={handleSCChange} missing={missingSc} value={scale} ></InputField>
 
                   <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
