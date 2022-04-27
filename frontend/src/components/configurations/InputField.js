@@ -20,18 +20,17 @@ export function InputField(props){
             </Typography>
 
             <TextField 
+                error={props.error}
                 //value={""}
                 //label=""
                 //id="upperBoundary"
                 //name="numberformat"
-                helperText={props.missing ? props.helpingText : ""}
+                helperText={(props.missing || props.error) ? props.helpingText : ""}
                 value={props.value}
                 //id="name"  
                 variant="outlined"
                 size="small"
                 onChange={props.onChange}
-
-
                 sx = {
                 {'& label.Mui-focused': {
                 color: '#3F0092',

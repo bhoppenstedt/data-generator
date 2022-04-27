@@ -108,11 +108,19 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
     } else {
       setMissingFormat(false);
     }
+
+    if(lowerBoundary === "" && upperBoundary === "") {
+      setBoundaryError(false);
+    } else if(lowerBoundary >= upperBoundary){
+      setBoundaryError(true);
+    } else {
+      setBoundaryError(false);
+    }
   }
 
   function checkAndSend() {
     checkField();
-    if(!missingSN && !missingLB && !missingUB && !missingTF && !missingFormat) {
+    if(!missingSN && !missingLB && !missingUB && !missingTF && !missingFormat && !boundaryError) {
       putReq();
     }
   }
@@ -128,6 +136,8 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
   const [missingTF, setMissingTF] = useState(false);
   const [missingFormat, setMissingFormat] = useState(false);
   const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
+  const [boundaryError, setBoundaryError] = useState(false);
+
 
   // diffrent inputs for bowndries with handleChange 
 
@@ -136,9 +146,9 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
                 
                   <InputField inputText={"signal name"} helpingText={nameAlreadyTaken ? "Name already in use!" : "Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary."} onChange={handleLBChange} missing={missingLB} value={lowerBoundary} ></InputField>
+                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary." + (boundaryError ? " Needs to be lower than upper boundary!" : "")} onChange={handleLBChange} missing={missingLB} value={lowerBoundary} error={boundaryError} ></InputField>
 
-                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary."} onChange={handleUBChange} missing={missingUB} value={upperBoundary} ></InputField>
+                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary." + (boundaryError ? " Needs to be higher than lower boundary!" : "")} onChange={handleUBChange} missing={missingUB} value={upperBoundary} error={boundaryError} ></InputField>
 
                   <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
