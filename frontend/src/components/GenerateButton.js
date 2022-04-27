@@ -8,21 +8,16 @@ import Grid from "@mui/material/Grid";
 
 export function GenerateButton(props){
     const format = [
-        {label: 'mqtt'},
-        {label: 'kafka'},
-        {label: 'websocket'}
+        {label: 'MQTT'},
+        {label: 'Kafka'},
+        {label: 'Websocket'}
     ];
 
     return (
         
             <Stack direction="row" spacing={1} justifyContent="center" alignItems="center" alignSelf={"center"} sx={{width: '100%'}}>
 
-                    <Autocomplete 
-                        options={format}
-                        sx={{ width: 120 }}
-                        onChange={(event, value) => props.setFormat(value.label)}
-                        renderInput={(params) => <TextField {...params} label="Format" />}
-                    />              
+                              
                     <Button sx={{
                             background: 'linear-gradient( to bottom, rgba(255,255,255,1) , rgba(232,232,232,1)) !important',
                             color: '#3F0092 !important',

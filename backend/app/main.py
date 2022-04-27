@@ -15,19 +15,10 @@ from websockets_message_producer import Websockets_message_producer
 # Initialize Server and API
 app = Flask(__name__)
 socketio = SocketIO(app)
+api = Api(app)
 
 test_client = SocketIOTestClient(app = app, socketio=socketio)
 test_client.connect()
-
-#print(test_client.is_connected())
-
-
-app.config['SECRET_KEY'] = 'secret!'
-api = Api(app)
-
-@socketio.on('message')
-def handle_message(data):
-    print('received message: ' + data)
 
 
 # Swagger Configuration
@@ -84,9 +75,7 @@ spiked_arguments.add_argument("transmissionFrequency",type=float,required=True)
 
 
 class HandleSignals(Resource):
-    def put(self, signal_type, signal_name):
-
-        publisher = 'websocket'
+    def put(self, publisher, signal_type, signal_name):
 
         # Check if the the given name is already in use 
         for index in running_signal_args:
@@ -96,37 +85,39 @@ class HandleSignals(Resource):
         
         # Create args dictionary corresponding to the type 
         if(signal_type == 'random'):
-            args = random_arguments.parse_args()
+            args2 = random_arguments.parse_args()
         elif(signal_type == 'sinus'):
-            args = sinus_arguments.parse_args()
+            args2 = sinus_arguments.parse_args()
         elif(signal_type == 'cosinus'):
-            args = cosinus_arguments.parse_args()
+            args2 = cosinus_arguments.parse_args()
         elif(signal_type == 'emphasized'):
-            args = emphasized_arguments.parse_args()        
+            args2 = emphasized_arguments.parse_args()        
         elif(signal_type == 'spiked'):
-            args = spiked_arguments.parse_args()
+            args2 = spiked_arguments.parse_args()
         else:
             return "Invalid signal type "
 
-        # Add type, name and running flag to args dictionary
-        args["type"] = signal_type
-        args["name"]  = signal_name
-        args["running"] = False
-         
+        # Add type, name and running flag to another dictionary
+        args1 = {}
+        args1["name"]  = signal_name
+        args1["type"] = signal_type
+        args1["publisher"] = publisher
+        args1["running"] = False
+
+        # Combine the two args dictionaries
+        args = {**args1, **args2}
+
+        # Create an object of the selected publisher type 
         if publisher == "kafka":
             producer = Kafka_signal_producer(name=signal_name, args=args, type=signal_type)
         elif publisher == 'mqtt':
             producer = MQTT_Signal_producer(name=signal_name, args=args, type=signal_type)
         elif publisher == "websocket":
-            producer = Websockets_message_producer(name=signal_name, args=args, type=signal_type, test_client=test_client)
+            producer = Websockets_message_producer(name=signal_name, args=args, type=signal_type, socketio = socketio)
         else:
             return "Invalid Publisher"
 
-        socketio.emit('ping_event', {'name': signal_name, "type": signal_type})
-        print(test_client.get_received())
-        print(test_client.is_connected())
-        print("")
-        
+       
         # Add the signal object to the objects dictionary 
         running_signal_objects[signal_name] = producer 
 
@@ -136,7 +127,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def patch(self, signal_type,signal_name):
+    def patch(self, publisher ,signal_type,signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
@@ -159,7 +150,7 @@ class HandleSignals(Resource):
         # Return all existing signals
         return json.dumps(running_signal_args)
 
-    def delete(self, signal_type, signal_name):
+    def delete(self,publisher, signal_type, signal_name):
         
         # Check if a signal with the given name exists 
         if signal_name not in running_signal_objects: 
@@ -181,25 +172,34 @@ class HandleSignals(Resource):
             if signal_name == index['name']:
                 running_signal_args.remove(index)
 
+
         # Return all existing signals
         return json.dumps(running_signal_args)
 
 
 class GetAllSignals(Resource):
 
-    # Return all existing signals
+    # Return all existing signals. Note that all signals, including paused ones are returned.
     def get(self):
         return json.dumps(running_signal_args)
+
+
+class GetAllSignals2(Resource):
+    
+    # Return all existing signals. Note that all signals, including paused ones are returned.
+    def get(self):
+        return test_client.get_received()
 
 # Add endpoint for GET requests
 api.add_resource(GetAllSignals, '/api/signals/')
 
-# Add endpoints for PUT, PATCH, DELETE requests
-api.add_resource(HandleSignals,'/api/<string:signal_type>/<string:signal_name>/')
+api.add_resource(GetAllSignals2, '/api/signals2/')
 
-@app.route("/api/")
-def root():
-    return jsonify({"message": "Message"})
+# Add endpoints for PUT, PATCH, DELETE requests
+api.add_resource(HandleSignals,'/api/<string:publisher>/<string:signal_type>/<string:signal_name>/')
+
+
+
 
 
 if __name__ == "__main__":

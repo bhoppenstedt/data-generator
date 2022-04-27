@@ -1,28 +1,73 @@
-import { Stack } from "@mui/material";
+import { fabClasses, Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import { NumberFormatCustom } from "../NumberFormatCustom";
 import { GenerateButton } from "../GenerateButton.js";
 import { Typography } from "@mui/material";
+import InputField from "./InputField.js"
+import { Autocomplete } from "@mui/material";
 
 
 export function RandomSignal ({streams, setStreams, format, setFormat}) {
-  
 
+  const formatOptions = [
+    {label: 'MQTT'},
+    {label: 'Kafka'},
+    {label: 'Websocket'}
+  ];
+  
   const handleNameChange = e => {
+    if(checkNameTaken(e.target.value)){
+      setNameAlreadyTaken(true);
+      setMissingSN(true);
+    } else {
+      setNameAlreadyTaken(false);
+      setMissingSN(false);
+    }
     setSignalName(e.target.value)
   };
   const handleLBChange = e => {
-    setLowerBoundary(e.target.value)
+    console.log("value: " + e.target.value.length)
+    if(e.target.value === "-") {
+      setLowerBoundary(e.target.value)
+    }
+    if((/^\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 || e.target.value === "") {
+      setLowerBoundary(e.target.value)
+    }
+    if((/^-\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value >= -10000000 || e.target.value === "") {
+      setLowerBoundary(e.target.value)
+    }
+
   };
   const handleUBChange = e => {
-    setUpperBoundary(e.target.value)
+    console.log("value: " + e.target.value.length)
+    if(e.target.value === "-") {
+      setUpperBoundary(e.target.value)
+    }
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 || e.target.value === "") {
+      setUpperBoundary(e.target.value)
+    }
+    if((/^-\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value >= -10000000 || e.target.value === "") {
+      setUpperBoundary(e.target.value)
+    }
   };
   const handleTFChange = e => {
-    setTransmissionFrequency(e.target.value)
-  };
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
+      setTransmissionFrequency(e.target.value)
+    }
+  }
+  function handleFormatChange(formatValue) {
+    setFormat(formatValue);
+  }
 
-  //
+  function checkNameTaken(enteredName) {
+    for (const stream of streams) {
+      if(stream.name === enteredName) {
+        return true;
+      }
+    }
+  }
+
   function putReq() {
     
     var params={lowerBoundary,upperBoundary,transmissionFrequency}
@@ -39,66 +84,118 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
     });
 
   };
+
+  function checkField() {
+    if(signalName == "") {
+      setMissingSN(true);
+    } else {
+      setMissingSN(false);
+    }
+
+    if(lowerBoundary == "") {
+      setMissingLB(true);
+    } else {
+      setMissingLB(false);
+    }
+
+    if(upperBoundary == "") {
+      setMissingUB(true);
+    } else {
+      setMissingUB(false);
+    }
+
+    if(transmissionFrequency == "") {
+      setMissingTF(true);
+    } else {
+      setMissingTF(false);
+    }
+
+    if(format == "") {
+      setMissingFormat(true);
+    } else {
+      setMissingFormat(false);
+    }
+
+    if(lowerBoundary === "" && upperBoundary === "") {
+      setBoundaryError(false);
+    } else if(lowerBoundary >= upperBoundary){
+      setBoundaryError(true);
+    } else {
+      setBoundaryError(false);
+    }
+  }
+
+  function checkAndSend() {
+    checkField();
+    if(!missingSN && !missingLB && !missingUB && !missingTF && !missingFormat && !boundaryError) {
+      putReq();
+    }
+  }
   
-  const [signalName, setSignalName] = useState('')
-  const [lowerBoundary, setLowerBoundary] = useState(0)
-  const [upperBoundary, setUpperBoundary] = useState(1)
-  const [transmissionFrequency, setTransmissionFrequency] = useState(1)
+  const [signalName, setSignalName] = useState("")
+  const [lowerBoundary, setLowerBoundary] = useState("")
+  const [upperBoundary, setUpperBoundary] = useState("")
+  const [transmissionFrequency, setTransmissionFrequency] = useState("")
+
+  const [missingSN, setMissingSN] = useState(false);
+  const [missingLB, setMissingLB] = useState(false);
+  const [missingUB, setMissingUB] = useState(false);
+  const [missingTF, setMissingTF] = useState(false);
+  const [missingFormat, setMissingFormat] = useState(false);
+  const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
+  const [boundaryError, setBoundaryError] = useState(false);
+
 
   // diffrent inputs for bowndries with handleChange 
 
       return (
-              <Stack container spacing={'15px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
+              <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
                 
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                            signal name:
-                  </Typography>
-                  <TextField 
-                  id="name"  
-                  variant="outlined"
-                  size="normal"
-                  onChange={handleNameChange}
-                  />
+                  <InputField inputText={"signal name"} helpingText={nameAlreadyTaken ? "Name already in use!" : "Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                            lower boundary:
-                  </Typography>
-                  <TextField 
-                    variant="outlined"
-                    name="numberformat"
-                    id="lowerBoundary"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                    onChange={handleLBChange}
-                  />
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                            upper boundary:
-                  </Typography>
-                  <TextField
-                    variant="outlined"
-                    name="numberformat"
-                    id="upperBoundary"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                    onChange={handleUBChange}
-                  />
-                  
-                  <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
-                            transmission frequency:
-                  </Typography>
-                  <TextField
-                    variant="outlined"
-                    name="numberformat"
-                    id="transmissionFrequency"
-                    InputProps={{
-                      inputComponent: NumberFormatCustom,
-                    }}
-                   onChange={handleTFChange}
-                  />
+                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary." + (boundaryError ? " Needs to be lower than upper boundary!" : " (-10.000.000 - 10.000.000)")} onChange={handleLBChange} missing={missingLB} value={lowerBoundary} error={boundaryError} ></InputField>
 
-                  <GenerateButton name={"Generate"} format ={format} setFormat = {setFormat} onClick={() => putReq()} icon={<></>}/>
+                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary." + (boundaryError ? " Needs to be higher than lower boundary!" : " (-10.000.000 - 10.000.000)")} onChange={handleUBChange} missing={missingUB} value={upperBoundary} error={boundaryError} ></InputField>
+
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
+
+                  <Autocomplete 
+                        options={formatOptions}
+                        //sx={{ width: "100%" }}
+                        sx = {
+                          {'& label.Mui-focused': {
+                          color: '#3F0092',
+                          },
+                          '& .MuiInput-underline:after': {
+                          borderBottomColor: '#3F0092',
+                          },
+                          '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                              borderColor: missingFormat ? "red" : '#3F0092',
+                          },
+                          '&:hover fieldset': {
+                              borderColor: '#3F0092',
+                          },
+                          '&.Mui-focused fieldset': {
+                              borderColor: '#3F0092',
+                          }}}}
+                        onInputChange={(event, inputValue) => handleFormatChange(inputValue.toLowerCase())}
+                        //isOptionEqualToValue={(option, value) => option.id === value.id}
+                        renderInput={(params) => 
+                          <Stack container spacing={'12px'}>
+                            <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
+                                publisher:
+                            </Typography>
+                            <TextField {...params} 
+                              size="small" 
+                              label=""
+                              helperText={missingFormat ? "Choose a publisher." : ""} 
+                            />
+                          </Stack>
+                        }
+                  />    
+
+                  <GenerateButton name={"Generate"} onClick={() => checkAndSend()} icon={<></>}/>
 
               </Stack>
     )
