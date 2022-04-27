@@ -130,7 +130,7 @@ export const SinusSignal = (props) => {
 
                 <InputField inputText={"amplitude"} helpingText={"Enter an amplitude."} onChange={handleAMChange} missing={missingAmp} value={amplitude} ></InputField>
 
-                <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
+                <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
                 <Autocomplete 
                       options={formatOptions}

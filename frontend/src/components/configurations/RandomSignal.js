@@ -31,16 +31,23 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
     if(e.target.value === "-") {
       setLowerBoundary(e.target.value)
     }
-    if(e.target.value <= 10000000 && e.target.value >= -10000000 || e.target.value === "") {
+    if((/^\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 || e.target.value === "") {
       setLowerBoundary(e.target.value)
     }
+    if((/^-\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value >= -10000000 || e.target.value === "") {
+      setLowerBoundary(e.target.value)
+    }
+
   };
   const handleUBChange = e => {
     console.log("value: " + e.target.value.length)
     if(e.target.value === "-") {
       setUpperBoundary(e.target.value)
     }
-    if(e.target.value <= 10000000 && e.target.value >= -10000000 || e.target.value === "") {
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 || e.target.value === "") {
+      setUpperBoundary(e.target.value)
+    }
+    if((/^-\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value >= -10000000 || e.target.value === "") {
       setUpperBoundary(e.target.value)
     }
   };
@@ -146,11 +153,11 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
                 
                   <InputField inputText={"signal name"} helpingText={nameAlreadyTaken ? "Name already in use!" : "Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary." + (boundaryError ? " Needs to be lower than upper boundary!" : "")} onChange={handleLBChange} missing={missingLB} value={lowerBoundary} error={boundaryError} ></InputField>
+                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary." + (boundaryError ? " Needs to be lower than upper boundary!" : " (-10.000.000 - 10.000.000)")} onChange={handleLBChange} missing={missingLB} value={lowerBoundary} error={boundaryError} ></InputField>
 
-                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary." + (boundaryError ? " Needs to be higher than lower boundary!" : "")} onChange={handleUBChange} missing={missingUB} value={upperBoundary} error={boundaryError} ></InputField>
+                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary." + (boundaryError ? " Needs to be higher than lower boundary!" : " (-10.000.000 - 10.000.000)")} onChange={handleUBChange} missing={missingUB} value={upperBoundary} error={boundaryError} ></InputField>
 
-                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
                   <Autocomplete 
                         options={formatOptions}

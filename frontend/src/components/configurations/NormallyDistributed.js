@@ -30,7 +30,10 @@ export const NormallyDistributed = (props) => {
     if(e.target.value === "-") {
       setCenter(e.target.value)
     }
-    if( e.target.value <= 10000000 && e.target.value >= -1000000 || e.target.value === "") {
+    if((/^\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 || e.target.value === "") {
+      setCenter(e.target.value)
+    }
+    if((/^-\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value >= -10000000 || e.target.value === "") {
       setCenter(e.target.value)
     }
   };
@@ -128,7 +131,7 @@ export const NormallyDistributed = (props) => {
 
                   <InputField inputText={"standard deviation"} helpingText={"Enter a standard deviation."} onChange={handleSCChange} missing={missingSc} value={scale} ></InputField>
 
-                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
                   <Autocomplete 
                         options={formatOptions}

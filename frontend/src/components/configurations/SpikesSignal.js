@@ -32,7 +32,10 @@ export const SpikesSignal = (props) => {
     if(e.target.value === "-") {
       setBase(e.target.value)
     }
-    if(e.target.value <= 10000000 && e.target.value >= -10000000 || e.target.value === "") {
+    if((/^\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 || e.target.value === "") {
+      setBase(e.target.value)
+    }
+    if((/^-\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value >= -10000000 || e.target.value === "") {
       setBase(e.target.value)
     }
   };
@@ -165,7 +168,7 @@ export const SpikesSignal = (props) => {
 
                   <InputField inputText={"probability"} helpingText={"Enter a probability."} onChange={handlePRChange} missing={missingPro} value={propability} ></InputField>
 
-                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
                   <Autocomplete 
                         options={formatOptions}
