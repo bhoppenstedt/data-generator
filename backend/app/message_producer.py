@@ -160,7 +160,7 @@ class Kafka_signal_producer(object):
         """
         while(self.running):
             random_number = random.uniform(self.lowerBoundary,self.upperBoundary)
-            self.producer.send('Random-Signal', value=serialize((random_number)))
+            self.producer.send('Random-Signal', key = self.name, value=serialize((random_number)))
             sleep(self.transmissionFrequency)
 
     def sendSinusSignal(self):
@@ -171,7 +171,7 @@ class Kafka_signal_producer(object):
                 if not self.running: 
                     break
                 periodic_number = self.amplitude * math.sin(self.frequency * math.radians(i))
-                self.producer.send('Sinus-Signal',value=serialize(periodic_number))
+                self.producer.send('Sinus-Signal', key = self.name,value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
                 
     def sendCosinusSignal(self):
@@ -182,7 +182,7 @@ class Kafka_signal_producer(object):
                 if not self.running: 
                     break
                 periodic_number = self.amplitude * math.cos(self.frequency * math.radians(i))
-                self.producer.send('Cosinus-Signal',value=serialize(periodic_number))
+                self.producer.send('Cosinus-Signal', key = self.name,value=serialize(periodic_number))
                 sleep(self.transmissionFrequency)
 
     def sendEmphasizedRandomSignal(self):
@@ -194,7 +194,7 @@ class Kafka_signal_producer(object):
                 if not self.running: 
                     break
                 emphasizedNumber = i
-                self.producer.send('Emphasized-Signal',value=serialize(emphasizedNumber))
+                self.producer.send('Emphasized-Signal', key = self.name, value=serialize(emphasizedNumber))
                 sleep(self.transmissionFrequency)
     
     def sendSpikedSignal(self):
@@ -206,7 +206,7 @@ class Kafka_signal_producer(object):
                 spiked_number = self.base + self.size
             else:
                 spiked_number = self.base
-            self.producer.send('Spiked-Signal', value=serialize(spiked_number))
+            self.producer.send('Spiked-Signal', key = self.name, value=serialize(spiked_number))
             sleep(self.transmissionFrequency)
             i = i + 1
 
