@@ -1,32 +1,51 @@
 /// <reference types="cypress" />
 
+const distributedSignalName = '.css-1a0kl2o-MuiStack-root > :nth-child(1) > .MuiFormControl-root > .MuiOutlinedInput-root > .MuiOutlinedInput-input';
+const distributedSignalValue = ':nth-child(2) > .MuiFormControl-root > .MuiOutlinedInput-root > .MuiOutlinedInput-input';
+const distributedSignalDeviation = '.css-1a0kl2o-MuiStack-root > :nth-child(3) > .MuiFormControl-root > .MuiOutlinedInput-root > .MuiOutlinedInput-input';
+const distributedSignalTransmissionFrequency = ':nth-child(4) > .MuiFormControl-root > .MuiOutlinedInput-root > .MuiOutlinedInput-input';
+const signalRepresentation = '.css-1kav7zp-MuiPaper-root > .MuiPaper-root';
+const activeSignalsList = '.css-ne2ks3-MuiGrid-root > .MuiTypography-root';
+
+
 it("Create Normally Distributed Signal and verify that one signal with name 'normalsignal' has been created", () => {
     cy.visit("/")
     cy.get("button").contains("NORM. DIST. SIGNAL").click()
-    cy.get('#outlined-basic').type("normalsignal").should("have.value", "normalsignal")
-    cy.get(':nth-child(4) > .MuiOutlinedInput-root > #formatted-numberformat-input').type(2)
+
+    cy.get(distributedSignalName)
+    .type("normalsignal")
+    .should("have.value", "normalsignal")
+
+    cy.get(distributedSignalValue)
+    .type(2)
     .should('have.value', 2)
-    cy.get(':nth-child(6) > .MuiOutlinedInput-root > #formatted-numberformat-input').type(4)
+
+    cy.get(distributedSignalDeviation)
+    .type(4)
     .should('have.value', 4)
-    cy.get(':nth-child(8) > .MuiOutlinedInput-root > #formatted-numberformat-input').type(6)
+
+    cy.get(distributedSignalTransmissionFrequency)
+    .type(6)
     .should('have.value', 6)
+
     cy.get("[data-testid='ArrowDropDownIcon']").click()
-    cy.contains("#mui-2-option-2", 'websocket').click()
+    cy.contains("#mui-2-option-2", 'Websocket').click()
+
+    cy.contains("button", "CREATE").click()
     cy.contains("button", "CREATE").click()
     
-    cy.intercept('GET', 'http://localhost:5000/api/signals/')
-    
-    cy.get('.css-1kav7zp-MuiPaper-root > .MuiPaper-root').should("contain", "normalsignal")
-    cy.get('.css-ne2ks3-MuiGrid-root > .MuiTypography-root').should("contain", "0 / 1")
+    cy.get(signalRepresentation).should("contain", "normalsignal")
+    cy.get(activeSignalsList).should("contain", "0 / 1")
     cy.get('[data-testid="PlayArrowRoundedIcon"]').click()
+    
     cy.wait(2000)
-    cy.get('.css-g7hzhr-MuiStack-root > .MuiTypography-root').should("contain", "running..")
+    cy.get(signalRepresentation).should("contain", "running..")
     cy.get('[data-testid="StopCircleRoundedIcon"]').click()
     cy.get('[data-testid="StopCircleRoundedIcon"]').click()
     
-    cy.get('.css-g7hzhr-MuiStack-root > .MuiTypography-root').should("not.contain", "running..")
-    cy.get('.css-g7hzhr-MuiStack-root > .MuiTypography-root').should("contain", "stopped")
+    cy.get(signalRepresentation).should("not.contain", "running..")
+    cy.get(signalRepresentation).should("contain", "stopped")
 
     cy.get('[data-testid="DeleteForeverIcon"]').click()
-    cy.get('.css-ne2ks3-MuiGrid-root > .MuiTypography-root').should("not.contain", "0 / 1")
+    cy.get(activeSignalsList).should("not.contain", "0 / 1")
 })
