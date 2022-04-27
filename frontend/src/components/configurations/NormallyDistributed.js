@@ -16,25 +16,48 @@ export const NormallyDistributed = (props) => {
   ];
 
   const handleNameChange = e => {
+    if(checkNameTaken(e.target.value)){
+      setNameAlreadyTaken(true);
+      setMissingSN(true);
+    } else {
+      setNameAlreadyTaken(false);
+      setMissingSN(false);
+    }
     setSignalName(e.target.value)
-    checkField();
   };
   const handleCEChange = e => {
-    setCenter(e.target.value)
-    checkField();
+    console.log("value: " + e.target.value.length)
+    if(e.target.value === "-") {
+      setCenter(e.target.value)
+    }
+    if((/^\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 || e.target.value === "") {
+      setCenter(e.target.value)
+    }
+    if((/^-\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value >= -10000000 || e.target.value === "") {
+      setCenter(e.target.value)
+    }
   };
   const handleSCChange = e => {
-    setScale(e.target.value)
-    checkField();
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000  && e.target.value >= 1 || e.target.value === "") {
+      setScale(e.target.value)
+    }
   };
-  const handleTFChange = e => {
-    setTransmissionFrequency(e.target.value)
-    checkField();
-  };
+  const handleTFChange = e => { 
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
+      setTransmissionFrequency(e.target.value)
+    }
+  }
+
+  function checkNameTaken(enteredName) {
+    for (const stream of props.streams) {
+      if(stream.name === enteredName) {
+        return true;
+      }
+    }
+  }
 
 
   function putReq() {
-    
     var params={center,scale,transmissionFrequency}
     fetch('http://localhost:5000/api/' + props.format + '/emphasized/' + signalName + '/', {
         method: "PUT",
@@ -89,25 +112,26 @@ export const NormallyDistributed = (props) => {
   }
 
   const [signalName, setSignalName] = useState('')
-  const [center , setCenter] = useState(0)
-  const [scale, setScale] = useState(0)
-  const [transmissionFrequency, setTransmissionFrequency] = useState(0)
+  const [center , setCenter] = useState("")
+  const [scale, setScale] = useState("")
+  const [transmissionFrequency, setTransmissionFrequency] = useState("")
 
   const [missingSN, setMissingSN] = useState(false);
   const [missingCe, setMissingCe] = useState(false);
   const [missingSc, setMissingSc] = useState(false);
   const [missingTF, setMissingTF] = useState(false); 
   const [missingFormat, setMissingFormat] = useState(false);
+  const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
 
     return (
       <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
                   <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <InputField inputText={"expected value"} helpingText={"Enter an expected value."} onChange={handleCEChange} missing={missingCe} ></InputField>
+                  <InputField inputText={"expected value"} helpingText={"Enter an expected value. (-10.000.000 - 10.000.000)"} onChange={handleCEChange} missing={missingCe} value={center} ></InputField>
 
-                  <InputField inputText={"standard deviation"} helpingText={"Enter a standard deviation."} onChange={handleSCChange} missing={missingSc} ></InputField>
+                  <InputField inputText={"standard deviation"} helpingText={"Enter a standard deviation. (1 - 10.000.000)"} onChange={handleSCChange} missing={missingSc} value={scale} ></InputField>
 
-                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} ></InputField>
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
                   <Autocomplete 
                         options={formatOptions}

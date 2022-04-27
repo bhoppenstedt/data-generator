@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { fabClasses, Stack } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import { NumberFormatCustom } from "../NumberFormatCustom";
@@ -17,21 +17,56 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
   ];
   
   const handleNameChange = e => {
+    if(checkNameTaken(e.target.value)){
+      setNameAlreadyTaken(true);
+      setMissingSN(true);
+    } else {
+      setNameAlreadyTaken(false);
+      setMissingSN(false);
+    }
     setSignalName(e.target.value)
-    checkField();
   };
   const handleLBChange = e => {
-    setLowerBoundary(e.target.value)
-    checkField();
+    console.log("value: " + e.target.value.length)
+    if(e.target.value === "-") {
+      setLowerBoundary(e.target.value)
+    }
+    if((/^\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 || e.target.value === "") {
+      setLowerBoundary(e.target.value)
+    }
+    if((/^-\d(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value >= -10000000 || e.target.value === "") {
+      setLowerBoundary(e.target.value)
+    }
+
   };
   const handleUBChange = e => {
-    setUpperBoundary(e.target.value)
-    checkField();
+    console.log("value: " + e.target.value.length)
+    if(e.target.value === "-") {
+      setUpperBoundary(e.target.value)
+    }
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 || e.target.value === "") {
+      setUpperBoundary(e.target.value)
+    }
+    if((/^-\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value >= -10000000 || e.target.value === "") {
+      setUpperBoundary(e.target.value)
+    }
   };
   const handleTFChange = e => {
-    setTransmissionFrequency(e.target.value)
-    checkField();
-  };
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
+      setTransmissionFrequency(e.target.value)
+    }
+  }
+  function handleFormatChange(formatValue) {
+    setFormat(formatValue);
+  }
+
+  function checkNameTaken(enteredName) {
+    for (const stream of streams) {
+      if(stream.name === enteredName) {
+        return true;
+      }
+    }
+  }
 
   function putReq() {
     
@@ -80,38 +115,49 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
     } else {
       setMissingFormat(false);
     }
+
+    if(lowerBoundary === "" && upperBoundary === "") {
+      setBoundaryError(false);
+    } else if(lowerBoundary >= upperBoundary){
+      setBoundaryError(true);
+    } else {
+      setBoundaryError(false);
+    }
   }
 
   function checkAndSend() {
     checkField();
-    if(!missingSN && !missingLB && !missingUB && !missingTF && !missingFormat) {
+    if(!missingSN && !missingLB && !missingUB && !missingTF && !missingFormat && !boundaryError) {
       putReq();
     }
   }
   
   const [signalName, setSignalName] = useState("")
-  const [lowerBoundary, setLowerBoundary] = useState(0)
-  const [upperBoundary, setUpperBoundary] = useState(0)
-  const [transmissionFrequency, setTransmissionFrequency] = useState(0)
+  const [lowerBoundary, setLowerBoundary] = useState("")
+  const [upperBoundary, setUpperBoundary] = useState("")
+  const [transmissionFrequency, setTransmissionFrequency] = useState("")
 
   const [missingSN, setMissingSN] = useState(false);
   const [missingLB, setMissingLB] = useState(false);
   const [missingUB, setMissingUB] = useState(false);
   const [missingTF, setMissingTF] = useState(false);
   const [missingFormat, setMissingFormat] = useState(false);
+  const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
+  const [boundaryError, setBoundaryError] = useState(false);
+
 
   // diffrent inputs for bowndries with handleChange 
 
       return (
               <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
                 
-                  <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
+                  <InputField inputText={"signal name"} helpingText={nameAlreadyTaken ? "Name already in use!" : "Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
 
-                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary."} onChange={handleLBChange} missing={missingLB} ></InputField>
+                  <InputField inputText={"lower boundary"} helpingText={"Enter a lower boundary." + (boundaryError ? " Needs to be lower than upper boundary!" : " (-10.000.000 - 10.000.000)")} onChange={handleLBChange} missing={missingLB} value={lowerBoundary} error={boundaryError} ></InputField>
 
-                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary."} onChange={handleUBChange} missing={missingUB} ></InputField>
+                  <InputField inputText={"upper boundary"} helpingText={"Enter an upper boundary." + (boundaryError ? " Needs to be higher than lower boundary!" : " (-10.000.000 - 10.000.000)")} onChange={handleUBChange} missing={missingUB} value={upperBoundary} error={boundaryError} ></InputField>
 
-                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency."} onChange={handleTFChange} missing={missingTF} ></InputField>
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
 
                   <Autocomplete 
                         options={formatOptions}
@@ -133,7 +179,7 @@ export function RandomSignal ({streams, setStreams, format, setFormat}) {
                           '&.Mui-focused fieldset': {
                               borderColor: '#3F0092',
                           }}}}
-                        onInputChange={(event, inputValue) => setFormat(inputValue.toLowerCase())}
+                        onInputChange={(event, inputValue) => handleFormatChange(inputValue.toLowerCase())}
                         //isOptionEqualToValue={(option, value) => option.id === value.id}
                         renderInput={(params) => 
                           <Stack container spacing={'12px'}>
