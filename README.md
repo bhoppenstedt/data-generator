@@ -35,8 +35,7 @@ kafka communication protocol can be sent as key,value pairs).
 * MQTT:
 As previously mentioned a seperate mqtt broker must be configured before using this event protocol. If the broker is running on 'localhost:1883' it can be
 used immidiately (Note that the address 'host.docker.internal' specified in the mqtt_message_producer module is an alias for localhost, that allows
-applications running in a docker container to access the local network). If the broker is 
-running somewhere else the broker/port variables in said module must be adjusted.  
+applications running in a docker container to access the local network). If the broker is running somewhere else the broker/port variables in said module must be adjusted.  
 After configuring the broker this data generator can be used and the signals get published to the topic 'mqtt/<signal_name>'.
 
 * Websockets: 

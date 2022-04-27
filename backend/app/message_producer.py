@@ -160,7 +160,7 @@ class Kafka_signal_producer(object):
         """
         while(self.running):
             random_number = random.uniform(self.lowerBoundary,self.upperBoundary)
-            self.producer.send('Random-Signal', key = self.name, value=serialize((random_number)))
+            self.producer.send('Random-Signal', value=serialize((random_number)))
             sleep(self.transmissionFrequency)
 
     def sendSinusSignal(self):
