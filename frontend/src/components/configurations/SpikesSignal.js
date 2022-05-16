@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import TextField from "@mui/material/TextField";
 import {Stack} from "@mui/material";
 import { NumberFormatCustom } from "../NumberFormatCustom";
@@ -18,15 +18,9 @@ export const SpikesSignal = (props) => {
   ];
 
   const handleNameChange = e => {
-    if(checkNameTaken(e.target.value)){
-      setNameAlreadyTaken(true);
-      setMissingSN(true);
-    } else {
-      setNameAlreadyTaken(false);
-      setMissingSN(false);
-    }
     setSignalName(e.target.value)
   };
+
   const handleBAChange = e => {
     console.log("value: " + e.target.value.length)
     if(e.target.value === "-") {
@@ -55,22 +49,15 @@ export const SpikesSignal = (props) => {
     }
   };
   const handleTFChange = e => {
-      if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
-        setTransmissionFrequency(e.target.value)
-      }
-  }
-
-  function checkNameTaken(enteredName) {
-    for (const stream of props.streams) {
-      if(stream.name === enteredName) {
-        return true;
-      }
+    if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
+      setTransmissionFrequency(e.target.value)
     }
   }
-
+  function handleFormatChange(formatValue) {
+    props.setFormat(formatValue);
+  }
 
   function putReq() {
-    
     var params={base,distance,size,propability,transmissionFrequency}
     fetch('http://localhost:5000/api/' + props.format + '/spiked/' + signalName + '/', {
         method: "PUT",
@@ -88,6 +75,9 @@ export const SpikesSignal = (props) => {
   function checkField() {
     if(signalName == "") {
       setMissingSN(true);
+    } else if (checkNameTaken(signalName)) {
+      setMissingSN(true);
+      setNameAlreadyTaken(true);
     } else {
       setMissingSN(false);
     }
@@ -130,14 +120,22 @@ export const SpikesSignal = (props) => {
   }
 
   function checkAndSend() {
-    checkField();
-    if(!missingSN && !missingBa && !missingDi && !missingSi && !missingPro && !missingTF && !missingFormat) {
+    setShow(true);
+    if(!missingSN && !missingBa && !missingDi && !missingSi && !missingPro && !missingTF && !missingFormat && !nameAlreadyTaken) {
       putReq();
     }
   }
 
-
-
+  function checkNameTaken() {
+    for (const stream of props.streams) {
+      if(stream.name === signalName) {
+        setNameAlreadyTaken(true);
+        break;
+      } else {
+        setNameAlreadyTaken(false);
+      }
+    }
+  }
 
   const [signalName, setSignalName] = useState('')
   const [base , setBase] = useState("")
@@ -154,25 +152,33 @@ export const SpikesSignal = (props) => {
   const [missingTF, setMissingTF] = useState(false); 
   const [missingFormat, setMissingFormat] = useState(false);
   const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    checkNameTaken();
+  }, [signalName])
+
+  useEffect(() => {
+    checkField();
+  }, [signalName, base, distance, size, propability, transmissionFrequency, props.format])
 
     return (
       <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
 
-                  <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
+                  <InputField inputText={"signal name"} helpingText={nameAlreadyTaken ? "Name already in use!" : "Enter a name."} onChange={handleNameChange} missing={(show && missingSN)} error={nameAlreadyTaken} ></InputField>
 
-                  <InputField inputText={"base"} helpingText={"Enter a base. (-10.000.000 - 10.000.000)"} onChange={handleBAChange} missing={missingBa} value={base}></InputField>
+                  <InputField inputText={"base"} helpingText={"Enter a base. (-10.000.000 - 10.000.000)"} onChange={handleBAChange} missing={(show && missingBa)} value={base}></InputField>
 
-                  <InputField inputText={"distance"} helpingText={"Enter a distance. (1 - 10.000.000)"} onChange={handleDIChange} missing={missingDi} value={distance} ></InputField>
+                  <InputField inputText={"distance"} helpingText={"Enter a distance. (1 - 10.000.000)"} onChange={handleDIChange} missing={(show && missingDi)} value={distance} ></InputField>
 
-                  <InputField inputText={"size"} helpingText={"Enter a size. (1 - 10.000.000)"} onChange={handleSIChange} missing={missingSi} value={size} ></InputField>
+                  <InputField inputText={"size"} helpingText={"Enter a size. (1 - 10.000.000)"} onChange={handleSIChange} missing={(show && missingSi)} value={size} ></InputField>
 
-                  <InputField inputText={"probability"} helpingText={"Enter a probability. (0 - 1)"} onChange={handlePRChange} missing={missingPro} value={propability} ></InputField>
+                  <InputField inputText={"probability"} helpingText={"Enter a probability. (0 - 1)"} onChange={handlePRChange} missing={(show && missingPro)} value={propability} ></InputField>
 
-                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={(show && missingTF)} value={transmissionFrequency} ></InputField>
 
                   <Autocomplete 
                         options={formatOptions}
-                        //sx={{ width: "100%" }}
                         sx = {
                           {'& label.Mui-focused': {
                           color: '#3F0092',
@@ -182,7 +188,7 @@ export const SpikesSignal = (props) => {
                           },
                           '& .MuiOutlinedInput-root': {
                           '& fieldset': {
-                              borderColor: missingFormat ? "red" : '#3F0092',
+                              borderColor: (show && missingFormat) ? "red" : '#3F0092',
                           },
                           '&:hover fieldset': {
                               borderColor: '#3F0092',
@@ -190,18 +196,22 @@ export const SpikesSignal = (props) => {
                           '&.Mui-focused fieldset': {
                               borderColor: '#3F0092',
                           }}}}
-                        onInputChange={(event, inputValue) => props.setFormat(inputValue.toLowerCase())}
+                        onInputChange={(event, inputValue) => handleFormatChange(inputValue.toLowerCase())}
                         renderInput={(params) => 
                           <Stack container spacing={'12px'}>
                             <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
                                 publisher:
                             </Typography>
-                            <TextField {...params} size="small" label="" helperText={missingFormat ? "Choose a publisher." : ""}  />
+                            <TextField {...params} 
+                              size="small" 
+                              label="" 
+                              helperText={(show && missingFormat) ? "Choose a publisher." : ""} 
+                            />
                           </Stack>
                         }
                   />    
 
-                  <GenerateButton name={"Generate"} format ={props.format} setFormat = {props.setFormat} onClick={() => checkAndSend()} icon={<></>}/>
+                  <GenerateButton name={"Generate"} onClick={() => checkAndSend()} icon={<></>}/>
                 </Stack>
     )
 }

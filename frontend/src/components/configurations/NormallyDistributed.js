@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
 import { NumberFormatCustom } from "../NumberFormatCustom";
@@ -16,17 +16,10 @@ export const NormallyDistributed = (props) => {
   ];
 
   const handleNameChange = e => {
-    if(checkNameTaken(e.target.value)){
-      setNameAlreadyTaken(true);
-      setMissingSN(true);
-    } else {
-      setNameAlreadyTaken(false);
-      setMissingSN(false);
-    }
     setSignalName(e.target.value)
   };
+
   const handleCEChange = e => {
-    console.log("value: " + e.target.value.length)
     if(e.target.value === "-") {
       setCenter(e.target.value)
     }
@@ -47,15 +40,9 @@ export const NormallyDistributed = (props) => {
       setTransmissionFrequency(e.target.value)
     }
   }
-
-  function checkNameTaken(enteredName) {
-    for (const stream of props.streams) {
-      if(stream.name === enteredName) {
-        return true;
-      }
-    }
+  function handleFormatChange(formatValue) {
+    props.setFormat(formatValue);
   }
-
 
   function putReq() {
     var params={center,scale,transmissionFrequency}
@@ -75,6 +62,9 @@ export const NormallyDistributed = (props) => {
   function checkField() {
     if(signalName == "") {
       setMissingSN(true);
+    } else if (checkNameTaken(signalName)) {
+      setMissingSN(true);
+      setNameAlreadyTaken(true);
     } else {
       setMissingSN(false);
     }
@@ -96,18 +86,29 @@ export const NormallyDistributed = (props) => {
     } else {
       setMissingTF(false);
     }
-  }
-
-  function checkAndSend() {
-    checkField();
-    if(!missingSN && !missingCe && !missingSc && !missingTF && !missingFormat) {
-      putReq();
-    }
 
     if(props.format == "") {
       setMissingFormat(true);
     } else {
       setMissingFormat(false);
+    }
+  }
+
+  function checkAndSend() {
+    setShow(true);
+    if(!missingSN && !missingCe && !missingSc && !missingTF && !missingFormat  && !nameAlreadyTaken) {
+      putReq();
+    }
+  }
+
+  function checkNameTaken() {
+    for (const stream of props.streams) {
+      if(stream.name === signalName) {
+        setNameAlreadyTaken(true);
+        break;
+      } else {
+        setNameAlreadyTaken(false);
+      }
     }
   }
 
@@ -122,20 +123,28 @@ export const NormallyDistributed = (props) => {
   const [missingTF, setMissingTF] = useState(false); 
   const [missingFormat, setMissingFormat] = useState(false);
   const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    checkNameTaken();
+  }, [signalName])
+
+  useEffect(() => {
+    checkField();
+  }, [signalName, center, scale, transmissionFrequency, props.format])
 
     return (
       <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>
-                  <InputField inputText={"signal name"} helpingText={"Enter a name."} onChange={handleNameChange} missing={missingSN} ></InputField>
+                  <InputField inputText={"signal name"} helpingText={nameAlreadyTaken ? "Name already in use!" : "Enter a name."} onChange={handleNameChange} missing={(show && missingSN)} error={nameAlreadyTaken} ></InputField>
 
-                  <InputField inputText={"expected value"} helpingText={"Enter an expected value. (-10.000.000 - 10.000.000)"} onChange={handleCEChange} missing={missingCe} value={center} ></InputField>
+                  <InputField inputText={"expected value"} helpingText={"Enter an expected value. (-10.000.000 - 10.000.000)"} onChange={handleCEChange} missing={(show && missingCe)} value={center} ></InputField>
 
-                  <InputField inputText={"standard deviation"} helpingText={"Enter a standard deviation. (1 - 10.000.000)"} onChange={handleSCChange} missing={missingSc} value={scale} ></InputField>
+                  <InputField inputText={"standard deviation"} helpingText={"Enter a standard deviation. (1 - 10.000.000)"} onChange={handleSCChange} missing={(show && missingSc)} value={scale} ></InputField>
 
-                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={missingTF} value={transmissionFrequency} ></InputField>
+                  <InputField inputText={"transmission frequency"} helpingText={"Enter a transmission frequency. (0.1 - 200)"} onChange={handleTFChange} missing={(show && missingTF)} value={transmissionFrequency} ></InputField>
 
                   <Autocomplete 
                         options={formatOptions}
-                        //sx={{ width: "100%" }}
                         sx = {
                           {'& label.Mui-focused': {
                           color: '#3F0092',
@@ -145,7 +154,7 @@ export const NormallyDistributed = (props) => {
                           },
                           '& .MuiOutlinedInput-root': {
                           '& fieldset': {
-                              borderColor: missingFormat ? "red" : '#3F0092',
+                            borderColor: (show && missingFormat) ? "red" : '#3F0092',
                           },
                           '&:hover fieldset': {
                               borderColor: '#3F0092',
@@ -153,18 +162,21 @@ export const NormallyDistributed = (props) => {
                           '&.Mui-focused fieldset': {
                               borderColor: '#3F0092',
                           }}}}
-                        //onChange={(event, value) => props.setFormat(value.label.toLowerCase())}
-                        onInputChange={(event, inputValue) => props.setFormat(inputValue.toLowerCase())}
+                        onInputChange={(event, inputValue) => handleFormatChange(inputValue.toLowerCase())}
                         renderInput={(params) => 
                           <Stack container spacing={'12px'}>
                             <Typography component="div" sx={{ fontFamily: 'Open Sans, sans-serif', fontWeight: "400",fontSize: 15, color: '#3F0092'}}>
                                 publisher:
                             </Typography>
-                            <TextField {...params} size="small" fullWidth helperText={missingFormat ? "Choose a publisher." : ""}  />
+                            <TextField {...params} 
+                              size="small" 
+                              label=""
+                              helperText={(show && missingFormat) ? "Choose a publisher." : ""} 
+                            />
                           </Stack>
                         }
                   />    
-                  <GenerateButton name={"Generate"} format ={props.format} setFormat = {props.setFormat} onClick={() => checkAndSend()} icon={<></>}/>
+                  <GenerateButton name={"Generate"} onClick={() => checkAndSend()} icon={<></>}/>
       </Stack>
                 
     )

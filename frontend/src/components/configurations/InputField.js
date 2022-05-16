@@ -21,13 +21,8 @@ export function InputField(props){
 
             <TextField 
                 error={props.error}
-                //value={""}
-                //label=""
-                //id="upperBoundary"
-                //name="numberformat"
                 helperText={(props.missing || props.error) ? props.helpingText : ""}
-                value={props.value}
-                //id="name"  
+                value={props.value} 
                 variant="outlined"
                 size="small"
                 onChange={props.onChange}

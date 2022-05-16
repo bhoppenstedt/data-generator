@@ -16,8 +16,6 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3, argument4, argument5, runningState, streams, setStreams}) => {
 
-    console.log(formatType);
-
     function updateArray() {
         var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
                             .then(res => res.json())
@@ -35,7 +33,6 @@ const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3,
     function patchAbort() {
         controller.abort();
         updateArray();
-
     }
 
     function patchReq(streamType, streamName) {
@@ -52,8 +49,7 @@ const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3,
         }));
 
         setTimeout(patchAbort, 1000);
-
-  };
+    };
 
     function deleteReq(streamType, streamName) {
         JSON.stringify(fetch('http://localhost:5000/api/'+ formatType + "/" + streamType + '/' + streamName + '/', {
@@ -62,38 +58,37 @@ const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3,
         })
         .then(res => res.json())
         .then(dataJSON => JSON.parse(dataJSON))
-        .then(data => setStreams(Array.from(data))));
-        
-  };
+        .then(data => setStreams(Array.from(data)))); 
+    };
 
-  var params = [];
+    var params = [];
 
-  if (type == "random") {
-    params = ["signaltype:", "lower boundary:", "upper boundary:", "transmission frequency:"];
-  } else if (type == "sinus") {
-    params = ["signaltype:", "frequency:", "amplitude:", "transmission frequency:"];
-  } else if (type == "cosinus") {
-    params = ["signaltype:", "frequency:", "amplitude:", "transmission frequency:"];
-  } else if (type == "spiked") {
-    params = ["signaltype:", "base:", "distance:", "size:", "probability:", "transmission frequency:"];
-  } else if (type == "emphasized") {
-    params = ["signaltype:", "expected value:", "standard deviation:", "transmission frequency:"];
-  }
+    if (type == "random") {
+        params = ["signaltype:", "lower boundary:", "upper boundary:", "transmission frequency:"];
+    } else if (type == "sinus") {
+        params = ["signaltype:", "frequency:", "amplitude:", "transmission frequency:"];
+    } else if (type == "cosinus") {
+        params = ["signaltype:", "frequency:", "amplitude:", "transmission frequency:"];
+    } else if (type == "spiked") {
+        params = ["signaltype:", "base:", "distance:", "size:", "probability:", "transmission frequency:"];
+    } else if (type == "emphasized") {
+        params = ["signaltype:", "expected value:", "standard deviation:", "transmission frequency:"];
+    }
 
-  var style = {
-    fontFamily: "Open Sans, sans-serif",
-    fontSize: 14, 
-    fontWeight: "600", 
-    paddingRight: "10px", 
-    color: runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)",
-  }
+    var style = {
+        fontFamily: "Open Sans, sans-serif",
+        fontSize: 14, 
+        fontWeight: "600", 
+        paddingRight: "10px", 
+        color: runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)",
+    }
 
-  var styleArgs = {
-    fontFamily: "Open Sans, sans-serif",
-    fontSize: 14, 
-    fontWeight: "600", 
-    color: runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)",
-  }
+    var styleArgs = {
+        fontFamily: "Open Sans, sans-serif",
+        fontSize: 14, 
+        fontWeight: "600", 
+        color: runningState ? "rgba(63,0,146,1)" : "rgba(63,0,146,0.4)",
+    }
 
 
 return (

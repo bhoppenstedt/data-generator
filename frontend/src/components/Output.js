@@ -14,6 +14,7 @@ import StreamBoxElemNew from "./StreamBoxElem.js"
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import StopCircleRoundedIcon from '@mui/icons-material/StopCircleRounded';
+import SearchIcon from '@mui/icons-material/Search';
 import PlayCircleFilledWhiteRoundedIcon from '@mui/icons-material/PlayCircleFilledWhiteRounded';
 import CachedIcon from '@mui/icons-material/Cached';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -105,7 +106,7 @@ function Output ({format, streams, setStreams}) {
 
                             <Grid item xs={6} justifyContent="left" alignItems="left">
 
-                                <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900], margin: "10px" }} align={"left"}>
+                                <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600", color: purple[900], margin: "12px" }} align={"left"}>
                                     active streams: {(streams.filter((stream) => stream.running == true)).length} / {streams.length}
                                 </Typography>
 
@@ -113,7 +114,7 @@ function Output ({format, streams, setStreams}) {
 
                             <Grid item xs={6}>
 
-                                <Stack direction="row" spacing={1} justifyContent="right" alignItems="center">
+                                <Stack direction="row" spacing={1} justifyContent="right" alignItems="center" paddingX="12px">
 
                                     <Stack direction="row" spacing={-0.4} justifyContent="right" alignItems="center">
 
@@ -131,13 +132,13 @@ function Output ({format, streams, setStreams}) {
 
                                     <Stack direction="row" spacing={-0.4} justifyContent="right" alignItems="center">
 
-                                            <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600",fontSize: 20, color: purple[900], paddingRight: "5px"}} align={"right"}>
+                                            <Typography component="div" variant="h5" sx={{ fontSize: 20,fontFamily: 'Open Sans, sans-serif', fontWeight: "600", color: purple[900], paddingRight: "5px"}} align={"right"}>
                                                 stop all
                                             </Typography>
 
                                             <IconButton size="small" onClick={ () => (streams.filter((stream) => stream.running == true)).map((streamsRunning) => patchReq(streamsRunning.type, streamsRunning.name, streamsRunning.publisher))}>
                                                 
-                                                <StopCircleRoundedIcon sx={{ fontSize: 30, color:purple[900] }}/>
+                                                <StopCircleRoundedIcon sx={{ fontSize: 30, color:purple[900], marginRight:"-8px" }}/>
 
                                             </IconButton>
 
@@ -151,9 +152,44 @@ function Output ({format, streams, setStreams}) {
 
                                 <TextField 
                                     size="small" 
-                                    sx={{paddingX:"12px", paddingBottom:"4px"}} 
+                                    sx = {{
+                                        paddingX:"10px",
+                                        paddingBottom:"4px",
+                                        
+                                        '& label.Mui-focused': {
+                                        color: '#3F0092',
+                                        },
+                                        '& .MuiInput-underline:after': {
+                                        borderBottomColor: '#3F0092',
+                                        },
+                                        '& .MuiOutlinedInput-root': {
+                                        '& fieldset': {
+                                            borderColor: 'rgba(0,0,0,0)',
+                                            borderRadius: "5px",
+                                            height:"30px",
+                                            marginTop:"10px",
+                                            background:"rgba(204,202,252,0.8)", 
+                                        },
+                                        '& input': {
+                                            zIndex:"1",
+                                            color: '#3F0092',
+                                            fontFamily: 'Open Sans, sans-serif'
+                                        },
+                                        '&:hover fieldset': {
+                                            borderColor: '#3F0092',
+                                        },
+                                        '&.Mui-focused fieldset': {
+                                            borderColor: 'rgba(0,0,0,0)',
+                                        }}}}
                                     fullWidth 
-                                    label="search datastreams" 
+                                    label= {
+                                        <Stack direction={"row"} spacing={1}>
+                                            <SearchIcon sx={{color: "rgba(255,255,255,1)"}} fontSize="small" />
+                                            <Typography sx={{ fontSize: 14,fontFamily: 'Open Sans, sans-serif', fontWeight: "600", color: "rgba(255,255,255,1)"}} align={"left"}>
+                                                search streams..
+                                            </Typography>
+                                        </Stack>}
+                                    value={content}
                                     onChange={(x) => setContent(x.target.value)}
                                 />
 
@@ -180,8 +216,7 @@ function Output ({format, streams, setStreams}) {
                                     sx={{ 
                                         fontSize: 20,
                                         fontFamily: 'Open Sans, sans-serif',
-                                        fontWeight: "400",
-                                        fontSize: 20, 
+                                        fontWeight: "400", 
                                         color: "rgba(0,0,0,.3)",
                                         paddingTop:"0%"}}
                                     align={"center"}>
