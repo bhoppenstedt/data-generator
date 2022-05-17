@@ -3,14 +3,8 @@ import TextField from "@mui/material/TextField";
 import { Stack } from "@mui/material";
 import React, {useState} from "react";
 
-
-
-
-
-
-
-
-
+// InputField component used by the signal configurations
+// missing flags or error flags trigger color change and helpertext appearance
 export function InputField(props){
     return (
         <Stack container spacing={'12px'}>

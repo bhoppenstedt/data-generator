@@ -15,10 +15,16 @@ import { SpikesSignal } from "./configurations/SpikesSignal";
 import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 import { SignalButton } from "./SignalButton";
 
+// SignalScreen creates the entire left box and its elements of the webapp. (datastream creation and configuration)
 function SignalScreen ({streams, setStreams, format, setFormat}) {
+
+    // currentSignalType stores type selection, initialized with "random"
     const [currentSignalType, setCurrentSignalType] = useState('random')
     const [value] = useState("");
 
+
+    // onClick of "SignalButton" changes the signaltype selection
+    // currentSignalType value changes displayed configuration options 
     return (
         <Card variant= "outlined" sx={{bgcolor: 'background.paper', border: 3, borderColor: '#A1A5F9',height:"85vh", marginLeft: "8vw", marginRight: "1vw", boxShadow: '3px 3px 10px 1px rgba(0, 0, 0, 0.16)'}}>
 

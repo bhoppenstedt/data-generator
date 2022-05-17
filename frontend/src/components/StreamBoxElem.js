@@ -13,9 +13,14 @@ import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 
 
 
-
+// "StreamBoxElem" is a component created for every datastream, displays their arguments and configured values
 const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3, argument4, argument5, runningState, streams, setStreams}) => {
 
+    /**
+     * Sends a GET Request to the server.
+     * Response contains all created streams and their status.
+     * All streams are then stored in "streams".
+     */
     function updateArray() {
         var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
                             .then(res => res.json())
@@ -28,13 +33,21 @@ const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3,
 
 
     const controller = new AbortController();
-    const { signal } = controller;
 
+    /**
+     * method aborts PATCH-Request that expect no response from the server (PATCH-Request to start a stream).
+     * Aborting happens via the AbortController and its signal
+     */
     function patchAbort() {
         controller.abort();
         updateArray();
     }
 
+    /**
+     * PATCH-Request to server to start/stop a stream
+     * @param {string} streamType type of the stream to start
+     * @param {string} streamName name of the stream to start
+     */
     function patchReq(streamType, streamName) {
         JSON.stringify(fetch('http://localhost:5000/api/'+ formatType + "/" +  streamType + '/' + streamName + '/', {
             method: "PATCH",
@@ -47,10 +60,14 @@ const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3,
         .catch(function() {
             console.log("Failed to patch signal!");
         }));
-
         setTimeout(patchAbort, 1000);
     };
 
+    /**
+     * DELETE-Request to delete a stream from the list
+     * @param {string} streamType 
+     * @param {string} streamName 
+     */
     function deleteReq(streamType, streamName) {
         JSON.stringify(fetch('http://localhost:5000/api/'+ formatType + "/" + streamType + '/' + streamName + '/', {
             method: "DELETE",
@@ -61,8 +78,8 @@ const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3,
         .then(data => setStreams(Array.from(data)))); 
     };
 
+    // array that stores all the parameters that are displayed visually corresponding to the selected signaltype
     var params = [];
-
     if (type == "random") {
         params = ["signaltype:", "lower boundary:", "upper boundary:", "transmission frequency:"];
     } else if (type == "sinus") {
@@ -75,6 +92,7 @@ const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3,
         params = ["signaltype:", "expected value:", "standard deviation:", "transmission frequency:"];
     }
 
+    // styling used by all fixed text elements
     var style = {
         fontFamily: "Open Sans, sans-serif",
         fontSize: 14, 
@@ -83,6 +101,7 @@ const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3,
         color: runningState ? "rgba(1,1,1,1)" : "rgba(1,1,1,0.4)",
     }
 
+    // styling used by all variable text elements
     var styleArgs = {
         fontFamily: "Open Sans, sans-serif",
         fontSize: 14, 
@@ -93,6 +112,9 @@ const StreamBoxElem = ({name, type, formatType, argument1, argument2, argument3,
 
 return (
 
+// StreamBoxElem contains a background element.
+// Typography elements to display name, type, arguments.
+// Buttons to start/stop/delete streams.
 <Card sx={{ height: "100px", background: 'linear-gradient( to bottom, rgba(255,255,255,0.5), rgba(232,232,232,1))', boxShadow: '0px 3px 6px 0px rgba(0, 0, 0, .16)', marginBottom: "10px", paddingX:"14px", paddingY:"2px"}}>
     
         <Grid container item xs={12} direction="row">
@@ -174,19 +196,26 @@ return (
                 </Grid>
             </Grid>
             <Grid item xs={2}>
+
                 <Stack direction="column" alignItems={"center"} marginTop="30%">
+
                     <Typography sx={{ fontSize: 15, fontWeight: "600",  color: runningState ? "#5FA500" : "#9D9D9D", lineHeight: "normal"}}>
                         {runningState ? "running.." : "stopped"}
                     </Typography>
+
                     <Stack direction="row" spacing={0.5}>
+
                         <IconButton size="small" onClick={() => patchReq(type, name)}>
                             {runningState ? <StopIcon sx={{ fontSize: 25, color:'#3F0092' }}/> : <PlayArrowRoundedIcon sx={{fontSize: 25, color:'#5FA500' }}/>}
                         </IconButton>
+
                         <IconButton size="small" onClick={() => deleteReq(type, name)}>
                             <DeleteForeverIcon></DeleteForeverIcon>
                         </IconButton>
+
                     </Stack>
                 </Stack>
+
             </Grid>
         </Grid>
     

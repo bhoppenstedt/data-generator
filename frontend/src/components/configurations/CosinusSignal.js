@@ -9,37 +9,50 @@ import { Autocomplete } from "@mui/material";
 
 export const CosinusSignal = (props) => {
  
-  
+  // options to select at publisher selection, sets new value
   const formatOptions = [
     {label: 'MQTT'},
     {label: 'Kafka'},
     {label: 'Websocket'}
   ];
 
+  // method called on change of signalname inputfield, sets new value
   const handleNameChange = e => {
     setSignalName(e.target.value)
   };
 
+  // method called on change of frequency inputfield, sets new value
+  // REGEX to restrict values
   const handleFRChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 && e.target.value >= 1 || e.target.value === "") {
       setFrequency(e.target.value)
     }
-    
   };
+
+  // method called on change of amplitude inputfield, sets new value
+  // REGEX to restrict values
   const handleAMChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 && e.target.value >= 1 || e.target.value === "") {
       setAmplitude(e.target.value)
     }
   };
+
+  // method called on change of transmission frequency inputfield, sets new value
+  // REGEX to restrict values
   const handleTFChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 200 || e.target.value === "") {
       setTransmissionFrequency(e.target.value)
     }
   };
+
+  // method called on change of publisher selection, sets new value
   function handleFormatChange(formatValue) {
     props.setFormat(formatValue);
   }
 
+  /**
+   * PUT-Request to create a datastream
+   */
   function putReq() {    
     var params={frequency,amplitude,transmissionFrequency}
     fetch('http://localhost:5000/api/' + props.format + '/cosinus/' + signalName + '/', {
@@ -55,6 +68,9 @@ export const CosinusSignal = (props) => {
     });
   };
 
+  // function thats called using useEffect hook
+  // checks all inputfields for input
+  // empty inputfields set a missing flag
   function checkField() {
     if(signalName == "") {
       setMissingSN(true);
@@ -90,6 +106,8 @@ export const CosinusSignal = (props) => {
     }
   }
 
+  //show flag enables all helpertexts on empty or wrong inputs
+  // if no value is empty or missing and signalname is not taken, send PUT-Request
   function checkAndSend() {
     setShow(true);
     if(!missingSN && !missingFre && !missingAmp && !missingTF && !missingFormat && !nameAlreadyTaken) {
@@ -97,6 +115,7 @@ export const CosinusSignal = (props) => {
     }
   }
 
+  // checks current input of signalname for duplication
   function checkNameTaken() {
     for (const stream of props.streams) {
       if(stream.name === signalName) {
@@ -108,6 +127,7 @@ export const CosinusSignal = (props) => {
     }
   }
  
+  // declare state variables
   const [signalName, setSignalName] = useState('')
   const [frequency, setFrequency] = useState("")
   const [amplitude, setAmplitude] = useState("")
@@ -121,23 +141,17 @@ export const CosinusSignal = (props) => {
   const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
   const [show, setShow] = useState(false);
 
+  // useEffect hook triggers on signalname change
+  // calls method to validate name
   useEffect(() => {
     checkNameTaken();
   }, [signalName])
 
+  // hook triggers on change of all state variables
+  // calls checkField function
   useEffect(() => {
     checkField();
   }, [signalName, frequency, amplitude, transmissionFrequency, props.format])
-
-
-// different inputs for the the following signal 
-
-  var styleTypo = {
-    fontFamily: 'Open Sans, sans-serif', 
-    fontWeight: "400",
-    fontSize: 15, 
-    color: '#3F0092',
-  }
 
     return (
       <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>

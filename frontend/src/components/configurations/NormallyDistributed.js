@@ -9,16 +9,20 @@ import { Autocomplete } from "@mui/material";
 
 export const NormallyDistributed = (props) => {
 
+  // options to select at publisher selection, sets new value
   const formatOptions = [
     {label: 'MQTT'},
     {label: 'Kafka'},
     {label: 'Websocket'}
   ];
 
+  // method called on change of signalname inputfield, sets new value
   const handleNameChange = e => {
     setSignalName(e.target.value)
   };
 
+  // method called on change of center inputfield, sets new value
+  // REGEX to restrict values
   const handleCEChange = e => {
     if(e.target.value === "-") {
       setCenter(e.target.value)
@@ -30,20 +34,31 @@ export const NormallyDistributed = (props) => {
       setCenter(e.target.value)
     }
   };
+
+  // method called on change of scale inputfield, sets new value
+  // REGEX to restrict values
   const handleSCChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000  && e.target.value >= 1 || e.target.value === "") {
       setScale(e.target.value)
     }
   };
+
+  // method called on change of transmission frequency inputfield, sets new value
+  // REGEX to restrict values
   const handleTFChange = e => { 
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
       setTransmissionFrequency(e.target.value)
     }
   }
+
+  // method called on change of publisher selection, sets new value
   function handleFormatChange(formatValue) {
     props.setFormat(formatValue);
   }
 
+  /**
+   * PUT-Request to create a datastream
+   */
   function putReq() {
     var params={center,scale,transmissionFrequency}
     fetch('http://localhost:5000/api/' + props.format + '/emphasized/' + signalName + '/', {
@@ -59,6 +74,9 @@ export const NormallyDistributed = (props) => {
     });
   };
 
+  // function thats called using useEffect hook
+  // checks all inputfields for input
+  // empty inputfields set a missing flag
   function checkField() {
     if(signalName == "") {
       setMissingSN(true);
@@ -94,6 +112,8 @@ export const NormallyDistributed = (props) => {
     }
   }
 
+  //show flag enables all helpertexts on empty or wrong inputs
+  // if no value is empty or missing and signalname is not taken, send PUT-Request
   function checkAndSend() {
     setShow(true);
     if(!missingSN && !missingCe && !missingSc && !missingTF && !missingFormat  && !nameAlreadyTaken) {
@@ -101,6 +121,7 @@ export const NormallyDistributed = (props) => {
     }
   }
 
+  // checks current input of signalname for duplication
   function checkNameTaken() {
     for (const stream of props.streams) {
       if(stream.name === signalName) {
@@ -112,6 +133,7 @@ export const NormallyDistributed = (props) => {
     }
   }
 
+  // declare state variables
   const [signalName, setSignalName] = useState('')
   const [center , setCenter] = useState("")
   const [scale, setScale] = useState("")
@@ -125,10 +147,14 @@ export const NormallyDistributed = (props) => {
   const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
   const [show, setShow] = useState(false);
 
+  // useEffect hook triggers on signalname change
+  // calls method to validate name
   useEffect(() => {
     checkNameTaken();
   }, [signalName])
 
+  // hook triggers on change of all state variables
+  // calls checkField function
   useEffect(() => {
     checkField();
   }, [signalName, center, scale, transmissionFrequency, props.format])

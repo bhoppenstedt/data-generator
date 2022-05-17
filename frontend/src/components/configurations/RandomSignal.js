@@ -10,16 +10,20 @@ import { Autocomplete } from "@mui/material";
 
 export const RandomSignal = (props) => {
 
+  // options to select at publisher selection, sets new value
   const formatOptions = [
     {label: 'MQTT'},
     {label: 'Kafka'},
     {label: 'Websocket'}
   ];
   
+  // method called on change of signalname inputfield, sets new value
   const handleNameChange = e => {
     setSignalName(e.target.value)
   };
 
+  // method called on change of lower boundary inputfield, sets new value
+  // REGEX to restrict values
   const handleLBChange = e => {
     if(e.target.value === "-") {
       setLowerBoundary(e.target.value)
@@ -32,6 +36,8 @@ export const RandomSignal = (props) => {
     }
   };
 
+  // method called on change of upper boundary inputfield, sets new value
+  // REGEX to restrict values
   const handleUBChange = e => {
     if(e.target.value === "-") {
       setUpperBoundary(e.target.value)
@@ -44,16 +50,22 @@ export const RandomSignal = (props) => {
     }
   };
 
+  // method called on change of transmission frequency inputfield, sets new value
+  // REGEX to restrict values
   const handleTFChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
       setTransmissionFrequency(e.target.value)
     }
   }
 
+  // method called on change of publisher selection, sets new value
   function handleFormatChange(formatValue) {
     props.setFormat(formatValue);
   }
 
+  /**
+   * PUT-Request to create a datastream
+   */
   function putReq() {
     var params={lowerBoundary,upperBoundary,transmissionFrequency}
     fetch('http://localhost:5000/api/' + props.format + '/random/' + signalName + '/', {
@@ -69,6 +81,9 @@ export const RandomSignal = (props) => {
     });
   };
 
+  // function thats called using useEffect hook
+  // checks all inputfields for input
+  // empty inputfields set a missing flag
   function checkField() {
     if(signalName == "") {
       setMissingSN(true);
@@ -104,6 +119,8 @@ export const RandomSignal = (props) => {
     }
   }
 
+  //show flag enables all helpertexts on empty or wrong inputs
+  // if no value is empty or missing and signalname is not taken, send PUT-Request
   function checkAndSend() {
     setShow(true);
     if(!missingSN && !missingLB && !missingUB && !missingTF && !missingFormat && !boundaryError && !nameAlreadyTaken){
@@ -111,6 +128,7 @@ export const RandomSignal = (props) => {
     }
   }
 
+  // checks current input of signalname for duplication
   function checkNameTaken() {
     for (const stream of props.streams) {
       if(stream.name === signalName) {
@@ -122,6 +140,8 @@ export const RandomSignal = (props) => {
     }
   }
 
+  // ensures that lower boundary is not greater or equal to upper boundary
+  // if greater or equal, sets a error flag to show errortext and prevent PUT-Request from being sent
   function checkBoundaries(){
     if(lowerBoundary == "" && upperBoundary == "") {
       setBoundaryError(false);
@@ -134,7 +154,7 @@ export const RandomSignal = (props) => {
     }
   }
   
-  
+  // declare state variables
   const [signalName, setSignalName] = useState("")
   const [lowerBoundary, setLowerBoundary] = useState("")
   const [upperBoundary, setUpperBoundary] = useState("")
@@ -149,6 +169,8 @@ export const RandomSignal = (props) => {
   const [boundaryError, setBoundaryError] = useState(false);
   const [show, setShow] = useState(false);
 
+  // useEffect hook triggers on lower or upper boundary change
+  // calls method to check for a boundary error
   useEffect(() => {
     checkBoundaries();
   }, [lowerBoundary])
@@ -157,15 +179,17 @@ export const RandomSignal = (props) => {
     checkBoundaries();
   }, [upperBoundary])
 
+  // useEffect hook triggers on signalname change
+  // calls method to validate name
   useEffect(() => {
     checkNameTaken();
   }, [signalName])
 
+  // hook triggers on change of all state variables
+  // calls checkField function
   useEffect(() => {
     checkField();
   }, [signalName, lowerBoundary, upperBoundary, transmissionFrequency, props.format])
-
-  // diffrent inputs for bowndries with handleChange 
 
       return (
               <Stack container spacing={'12px'} direction="column" alignItems="left" justifyContent="center" sx={{width: '88%'}}>

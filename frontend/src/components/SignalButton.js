@@ -4,6 +4,7 @@ import { ThemeProvider, makeStyles } from '@mui/styles';
 import Stack from "@mui/material/Stack";
 import { ToggleButton } from "@mui/material";
 
+// Button to select a signal type
 export function SignalButton(props){
     return (
             <Stack direction="row" spacing={1} justifyContent="center" alignItems="center" alignSelf={"center"} sx={{width: '95%'}}>

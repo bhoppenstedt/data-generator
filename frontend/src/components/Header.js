@@ -6,7 +6,8 @@ import { IconButton, SvgIcon } from "@mui/material";
 import CachedIcon from '@mui/icons-material/Cached';
 import { Stack } from "@mui/material";
 
-
+// Header of the webapp.
+// Contains title and logo of the app.
 const Header = (props) => {
 
     const bg = 'linear-gradient(to bottom, rgba(144,189,251,0.73), rgba(161,165,259,1))'

@@ -6,12 +6,8 @@ import { ToggleButton } from "@mui/material";
 import { Autocomplete, Card, Divider, TextField } from "@mui/material";
 import Grid from "@mui/material/Grid";
 
+// Button below the signal configuration that creates a datastream with given arguments and selections
 export function GenerateButton(props){
-    const format = [
-        {label: 'MQTT'},
-        {label: 'Kafka'},
-        {label: 'Websocket'}
-    ];
 
     return (
         

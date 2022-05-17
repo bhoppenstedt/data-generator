@@ -11,18 +11,21 @@ import InputField from "./InputField.js"
 
 export const SpikesSignal = (props) => {
 
+  // options to select at publisher selection, sets new value
   const formatOptions = [
     {label: 'MQTT'},
     {label: 'Kafka'},
     {label: 'Websocket'}
   ];
 
+  // method called on change of signalname inputfield, sets new value
   const handleNameChange = e => {
     setSignalName(e.target.value)
   };
 
+  // method called on change of base inputfield, sets new value
+  // REGEX to restrict values
   const handleBAChange = e => {
-    console.log("value: " + e.target.value.length)
     if(e.target.value === "-") {
       setBase(e.target.value)
     }
@@ -33,30 +36,47 @@ export const SpikesSignal = (props) => {
       setBase(e.target.value)
     }
   };
+
+  // method called on change of distance inputfield, sets new value
+  // REGEX to restrict values
   const handleDIChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 && e.target.value >= 1 || e.target.value === "") {
       setDistance(e.target.value)
     }
   };
+
+  // method called on change of size inputfield, sets new value
+  // REGEX to restrict values
   const handleSIChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 10000000 && e.target.value >= 1 || e.target.value === "") {
       setSize(e.target.value)
     }
   };
+
+  // method called on change of probability inputfield, sets new value
+  // REGEX to restrict values
   const handlePRChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value <= 1 || e.target.value === "") {
       setPropability(e.target.value)
     }
   };
+
+  // method called on change of transmission frequency inputfield, sets new value
+  // REGEX to restrict values
   const handleTFChange = e => {
     if((/^\d*(.([1,2,3,4,5,6,7,8,9]\d{0,4})?)?$/.test(e.target.value)) && e.target.value !== "0.00000" && e.target.value <= 200) {
       setTransmissionFrequency(e.target.value)
     }
   }
+
+  // method called on change of publisher selection, sets new value
   function handleFormatChange(formatValue) {
     props.setFormat(formatValue);
   }
 
+  /**
+   * PUT-Request to create a datastream
+   */
   function putReq() {
     var params={base,distance,size,propability,transmissionFrequency}
     fetch('http://localhost:5000/api/' + props.format + '/spiked/' + signalName + '/', {
@@ -72,6 +92,9 @@ export const SpikesSignal = (props) => {
     });
   };
 
+  // function thats called using useEffect hook
+  // checks all inputfields for input
+  // empty inputfields set a missing flag
   function checkField() {
     if(signalName == "") {
       setMissingSN(true);
@@ -119,6 +142,8 @@ export const SpikesSignal = (props) => {
     }
   }
 
+  //show flag enables all helpertexts on empty or wrong inputs
+  // if no value is empty or missing and signalname is not taken, send PUT-Request
   function checkAndSend() {
     setShow(true);
     if(!missingSN && !missingBa && !missingDi && !missingSi && !missingPro && !missingTF && !missingFormat && !nameAlreadyTaken) {
@@ -126,6 +151,7 @@ export const SpikesSignal = (props) => {
     }
   }
 
+  // checks current input of signalname for duplication
   function checkNameTaken() {
     for (const stream of props.streams) {
       if(stream.name === signalName) {
@@ -137,6 +163,7 @@ export const SpikesSignal = (props) => {
     }
   }
 
+  // declare state variables
   const [signalName, setSignalName] = useState('')
   const [base , setBase] = useState("")
   const [distance, setDistance] = useState("")
@@ -154,10 +181,14 @@ export const SpikesSignal = (props) => {
   const [nameAlreadyTaken, setNameAlreadyTaken] = useState(false);
   const [show, setShow] = useState(false);
 
+  // useEffect hook triggers on signalname change
+  // calls method to validate name
   useEffect(() => {
     checkNameTaken();
   }, [signalName])
 
+  // hook triggers on change of all state variables
+  // calls checkField function
   useEffect(() => {
     checkField();
   }, [signalName, base, distance, size, propability, transmissionFrequency, props.format])

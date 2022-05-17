@@ -21,16 +21,21 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { elementTypeAcceptingRef } from "@mui/utils";
 
-
+// Output creates the entire left box and its elements of the webapp. (datastream management)
 function Output ({format, streams, setStreams}) {
 
+    // value of content is used to search for streams via the searchbar
     const [content, setContent] = useState("");
 
+    /**
+     * PATCH-Request with followed request-abortion
+     * @param {string} streamType type of signal to start/stop
+     * @param {string} streamName name of signal to start/stop
+     * @param {string} publisher publisher of signal to start/stop
+     */
     function patchReq(streamType, streamName, publisher) {
 
         const controller = new AbortController();
-        //const { signal } = controller;
-
         JSON.stringify(fetch('http://localhost:5000/api/' + publisher + "/" + streamType + '/' + streamName + '/', {
             method: "PATCH",
             headers: {"Content-type": "application/json; charset=UTF-8"},
@@ -42,18 +47,17 @@ function Output ({format, streams, setStreams}) {
         .catch(function() {
             console.log("Failed to patch signal(s)!");
         }));
-
-        console.log("type: " + streamType + ", name: " + streamName)
         setTimeout(patchAbort, 100);
 
         function patchAbort() {
             controller.abort();
-            console.log("Canceled!")
             updateArray();
         }
-
     };
 
+    /**
+     * function called via the "start all" button, starts all not currently running streams
+     */
     function startAll() {
         var streamsToStart = streams.filter((stream) => stream.running == false);
         var i = 1;
@@ -64,6 +68,9 @@ function Output ({format, streams, setStreams}) {
         });
     }
 
+    /**
+     * function to update current list of streams
+     */
     function updateArray() {
         var fetchArray = JSON.stringify(fetch('http://localhost:5000/api/signals/')
                             .then(res => res.json())
@@ -74,7 +81,7 @@ function Output ({format, streams, setStreams}) {
                             }));
     }
 
-
+    // streamElements creates a StreamBoxElem for every datastream that matches current filter
     const streamElements = streams.filter((x) => x.name.toLowerCase().startsWith(content.toLowerCase())).map((stream) => 
     <StreamBoxElem 
         name={stream.name} 
